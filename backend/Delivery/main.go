@@ -1,16 +1,12 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"net/http"
+    "github.com/A2SV/A2SV-2025-Internship-Pass-Me/Delivery/routers"
+    "github.com/A2SV/A2SV-2025-Internship-Pass-Me/Repositories"
 )
 
-func handler(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Server")
-}
-
 func main() {
-	http.HandleFunc("/", handler)
-	log.Fatal(http.ListenAndServe(":8080", nil))
+    Repositories.ConnectDB() 
+    r := routers.SetupRouter()
+    r.Run(":8080")
 }
