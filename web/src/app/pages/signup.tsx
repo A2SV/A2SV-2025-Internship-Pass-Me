@@ -1,6 +1,6 @@
 // src/app/pages/signup.tsx
 
-import FormContainer from "@/components/auth/FormContainer";
+import FormContainer from "../components/auth/FormContainer";
 
 export default function SignupPage() {
   return (
