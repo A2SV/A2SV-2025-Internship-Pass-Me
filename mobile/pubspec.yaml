@@ -1,14 +1,17 @@
 name: mobile
 description: "A new Flutter project."
-publish_to: 'none'
+publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: ^3.7.2
+  sdk: ^3.5.2
 
 dependencies:
   flutter:
     sdk: flutter
+  flutter_bloc: ^8.1.1
+  get_it:
+  font_awesome_flutter:
 
 dev_dependencies:
   flutter_test:
