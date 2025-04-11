@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import LoginForm from "./forms/LoginForm"; 
-import SignupForm from "./forms/SignupForm"; 
+import LoginForm from "./forms/LoginForm";
+import SignupForm from "./forms/SignupForm";
 
 interface FormContainerProps {
   initialType?: "login" | "signup"; // Optional: Pass the initial form type (login/signup)
