@@ -1,10 +1,10 @@
 'use client'
 import React from 'react'
-import Image from "next/image";
-import { useEffect, useState } from "react";
+// import Image from "next/image";
+// import { useState } from "react";
 import { useForm } from "react-hook-form";
-import Link from "next/link";
-import { useRouter } from "next/navigation";
+// import Link from "next/link";
+// import { useRouter } from "next/navigation";
 interface FormValues {
     fullName: string;
     email: string;
@@ -16,9 +16,9 @@ const LoginForm = () => {
 
 
   const form = useForm<FormValues>();
-    const [loading, setLoading] = useState(false);
-    const { register, handleSubmit, formState, reset } = form;
-    const { errors, isSubmitSuccessful } = formState;
+    // const [loading, setLoading] = useState(false);
+    const { register, handleSubmit, formState,  } = form;
+    const { errors,  } = formState;
 
     const onSubmit = () =>{
         console.log("done");
