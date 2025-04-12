@@ -9,7 +9,7 @@ import 'features/auth/presentation/pages/login_page.dart';
 import 'features/flight_info/presentation/pages/flight_empty_page.dart';
 import 'features/flight_info/presentation/pages/flight_list_page.dart';
 import 'features/flight_info/presentation/pages/flight_detail_page.dart';
-import 'features/onboarding/presentation/bloc/bloc.dart';
+
 import 'features/onboarding/presentation/pages/onboarding_page.dart';
 
 import 'injection_container.dart' as di;
