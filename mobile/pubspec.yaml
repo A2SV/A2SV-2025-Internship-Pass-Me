@@ -13,6 +13,9 @@ dependencies:
   get_it:
   font_awesome_flutter:
   google_fonts: ^6.1.0
+  equatable: ^2.0.5
+  dartz: ^0.10.1
+  
 
 dev_dependencies:
   flutter_test:
@@ -25,3 +28,4 @@ flutter:
     - assets/images/logo.png
     - assets/images/translation.png
     - assets/images/language.png
+    - assets/images/google_icon.png
