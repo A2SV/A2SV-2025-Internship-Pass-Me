@@ -23,7 +23,6 @@ const LoginForm = () => {
     console.log("done");
   }
   return (
-
     <div className='w-full'>
       <div className='mb-6'>
         <p className='text-[13px]'>WELCOME BACK</p>
