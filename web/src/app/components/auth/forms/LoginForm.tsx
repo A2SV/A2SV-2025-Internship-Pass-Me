@@ -70,7 +70,7 @@ const LoginForm = () => {
   {/* Password */}
   <div className="mb-8 relative">
 
-  <label htmlFor="password" className="absolute -top-3 left-3 text-[#BDBDBD] bg-white px-2 text-sm">
+  <label htmlFor="password" className="absolute -top-3 left-3 text-[#BDBDBD] bg-white  text-sm">
       Password
     </label> 
 <input
@@ -83,7 +83,7 @@ const LoginForm = () => {
           },
         })}
         placeholder="johnsondoe@gmail.com"
-        className="w-70 md:w-full h-14 px-3 py-2 border border-violet-200 rounded-md opacity-70 placeholder:text-sm focus:outline-none"
+        className="w-70 md:w-full relative h-14 px-3 py-2 border border-violet-200 rounded-md opacity-70 placeholder:text-sm focus:outline-none"
       />
       <button
         type="button"

@@ -96,11 +96,3 @@ function Banner() {
     </div>
   );
 }
-
-// function Form() {
-//   return (
-//     <div className='h-300 w-100 bg-white'>
-//       +asfdasfsf
-//     </div>
-//   )
-// }
