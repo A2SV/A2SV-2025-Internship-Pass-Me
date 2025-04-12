@@ -30,9 +30,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.dark(),
         initialRoute: '/',
         routes: {
-          // '/': (_) => LoginPage(),
-          '/': (_) => const FlightEmptyPage(),
-
+          '/': (_) => LoginPage(),
           '/flights/empty': (_) => const FlightEmptyPage(),
           '/flights/list': (_) => const FlightListPage(),
           '/flights/detail': (_) => const FlightDetailPage(),
