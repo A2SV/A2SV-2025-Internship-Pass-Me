@@ -34,7 +34,7 @@ const LoginForm = () => {
         <form className="flex flex-col w-full max-w-md" onSubmit={handleSubmit(onSubmit)} noValidate>
 
           {/* Email */}
-          <div className="mb-5 relative">
+          <div className="mb-5 relative group">
             <input
               type="email"
               id="email"
@@ -51,9 +51,9 @@ const LoginForm = () => {
                 }
               })}
               placeholder="Enter your email"
-              className="w-70 md:w-full h-12 px-3 py-2 border border-[#4242423] rounded-md opacity-70 placeholder:text-sm focus:outline-none"
+              className="w-70 group md:w-full h-12 px-3 py-2 border border-[#BDBDBD]  hover:border-[#424242] text-[#424242] rounded-md opacity-70 placeholder:text-sm focus:outline-none"
             />
-            <label htmlFor="email" className="absolute -top-3 left-3 bg-white px-2  text-sm">
+            <label htmlFor="email" className="absolute -top-3 left-3 bg-white px-2  text-sm text-[#BDBDBD] group-hover:text-[#424242] ">
               Email
             </label>
             {errors.email && (
@@ -64,11 +64,8 @@ const LoginForm = () => {
           </div>
 
           {/* Password */}
-          <div className="mb-5 relative">
+          <div className="mb-5 relative group">
 
-            <label htmlFor="password" className="absolute -top-3 left-3 text-[#BDBDBD] bg-white  text-sm">
-              Password
-            </label>
             <input
               type={showPassword ? "text" : "password"}
               id="password"
@@ -78,13 +75,17 @@ const LoginForm = () => {
                   message: "password required",
                 },
               })}
+      
               placeholder="johnsondoe@gmail.com"
-              className="w-70 md:w-full relative h-12 px-3 py-2 border border-violet-200 rounded-md opacity-70 placeholder:text-sm focus:outline-none"
+              className="w-70 md:w-full relative h-12 px-3 py-2 border  border-violet-200 hover:border-[#424242] rounded-md opacity-70 placeholder:text-sm focus:outline-none"
             />
+              <label htmlFor="password" className="absolute -top-3 px-2 left-3 text-[#BDBDBD] group-hover:text-[#424242] bg-white  text-sm">
+                Password
+              </label>
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className=" md:absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              className=" md:absolute right-3 top-1/2 transform -translate-y-1/2 text-[#BDBDBD] group-hover:text-[#424242]"
             >
               {showPassword ? (
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
