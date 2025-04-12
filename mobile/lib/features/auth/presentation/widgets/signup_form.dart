@@ -285,7 +285,7 @@ class _SocialIconsRow extends StatelessWidget {
           },
         ),
         IconButton(
-          icon: Image.asset('images/google_icon.png', width: 30),
+          icon: Image.asset('assets/images/google_icon.png', width: 30),
           onPressed: () {
             // Handle Google sign in
             // context.read<SignUpBloc>().add(SignInWithGoogle());

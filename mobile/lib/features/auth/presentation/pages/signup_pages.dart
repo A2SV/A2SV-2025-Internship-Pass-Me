@@ -12,7 +12,7 @@ class SignUpPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: AppColors.backgroundColor,
-        title: Image.asset('images/logo.png'),
+        title: Image.asset('assets/images/logo.png'),
       ),
       body: const Center(
         child: SingleChildScrollView(
