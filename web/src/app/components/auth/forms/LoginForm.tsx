@@ -6,9 +6,9 @@ import { useForm } from "react-hook-form";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 interface FormValues {
-    fullName: string;
-    email: string;
-    password: string;
+  fullName: string;
+  email: string;
+  password: string;
 
 }
 
@@ -23,24 +23,21 @@ const LoginForm = () => {
       setShowPassword(!showPassword);
     };
 
-    const onSubmit = () =>{
-        console.log("done");
-    }
+  const onSubmit = () => {
+    console.log("done");
+  }
   return (
 
-    <div className='mt-5 ml-5'>
-    <div className='mt-4 ml-4 mb-8'>
-        <p className='text-xl mb-3'>welcome to login page</p>
-         <p className='font-normal font-["Zen Kaku Gothic Antique"] text-3xl'>
-          login to you account
-         </p>
-    </div>
+    <div className='w-full'>
+      <div className='mb-8'>
+        <p className='text-[13px] mb-2'>WELCOME BACK</p>
+        <p className='font-bold text-[25px]'>
+          Log in to your Account
+        </p>
+      </div>
 
-      <div className='ml-4 mt-2'>
-
-       
-
-<form className="flex flex-col w-full max-w-md" onSubmit={handleSubmit(onSubmit)} noValidate>
+      <div className='mt-2'>
+        <form className="flex flex-col w-full max-w-md" onSubmit={handleSubmit(onSubmit)} noValidate>
 
   {/* Email */}
   <div className="mb-8 relative">
@@ -130,7 +127,7 @@ const LoginForm = () => {
         </div>
       </div>
 
-    
+
   )
 }
 

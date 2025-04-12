@@ -8,19 +8,17 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { get } from 'http';
 interface FormValues {
-    fullName: string;
-    email: string;
-    password: string;
-
-  }
-  
+  fullName: string;
+  email: string;
+  password: string;
+}
 
 const SignupForm = () => {
-    const form = useForm<FormValues>();
-    const [loading, setLoading] = useState(false);
+  const form = useForm<FormValues>();
+//   const [loading, setLoading] = useState(false);
       const [showPassword, setShowPassword] = useState(false);
-    const { register, handleSubmit, formState, reset } = form;
-    const { errors, isSubmitSuccessful } = formState;
+  const { register, handleSubmit, formState } = form;
+  const { errors } = formState;
 
 
     const onSubmit = (data:FormValues) =>{
@@ -141,10 +139,8 @@ const SignupForm = () => {
 </form>
         </div>
       </div>
-
-    
     </>
-  )
-}
+  );
+};
 
-export default SignupForm
+export default SignupForm;

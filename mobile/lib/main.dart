@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'features/auth/presentation/blocs/login_cubit.dart';
+import 'features/auth/presentation/pages/login_page.dart';
+import 'injection_container.dart' as di;
 
 void main() {
-  runApp(const MainApp());
+  di.init();
+  runApp(MyApp());
 }
 
-class MainApp extends StatelessWidget {
-  const MainApp({super.key});
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
+    return MaterialApp(
+      title: 'PassMe',
+      home: BlocProvider<LoginCubit>(
+        create: (_) => di.sl<LoginCubit>(),
+        child: LoginPage(),
       ),
     );
   }
