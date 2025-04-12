@@ -22,15 +22,15 @@ const SignupForm = () => {
   };
   return (
     <>
-      <div className="mt-5 ml-5">
-        <div className="mt-4 ml-4 mb-8">
-          <p className="text-xl mb-3">let&apos;s get started</p>
-          <p className='font-normal font-["Zen Kaku Gothic Antique"] text-3xl'>
-            Createan account
+      <div className="w-full">
+        <div className="mb-8">
+          <p className="text-[13px] mb-2">LET&apos;S GET STARTED</p>
+          <p className='font-bold text-[25px]'>
+            Create an Account
           </p>
         </div>
 
-        <div className="ml-4 mt-2">
+        <div className="mt-2">
           <form
             className="flex flex-col w-full max-w-md"
             onSubmit={handleSubmit(onSubmit)}
@@ -43,13 +43,13 @@ const SignupForm = () => {
                 id="name"
                 {...register("fullName", { required: true })}
                 placeholder="Enter your full name"
-                className="w-full   h-14 px-3 py-2 border border-violet-100 rounded-md opacity-70 placeholder:text-sm focus:outline-none"
+                className="w-full h-14 px-3 py-2 border border-violet-100 rounded-md opacity-70 placeholder:text-sm focus:outline-none"
               />
               <label
                 htmlFor="name"
                 className="absolute -top-3 left-3 bg-white px-2 text-gray-600 text-sm"
               >
-                Full name
+                Your Name
               </label>
               {errors.fullName && (
                 <p className="text-red-500 text-xs absolute top-full right-0 mt-1">
@@ -65,11 +65,11 @@ const SignupForm = () => {
                 id="email"
                 {...register("email", { required: true, pattern: /.../ })}
                 placeholder="Enter your email"
-                className="w-full h-14 px-3 py-2 border border-[#424242] rounded-md opacity-70 placeholder:text-sm focus:outline-none"
+                className="w-full h-12 px-3 py-2 border border-[#424242] rounded-md opacity-70 placeholder:text-sm focus:outline-none"
               />
               <label
                 htmlFor="email"
-                className="absolute -top-3 left-3 bg-white text-[#424242] px-2 text-gray-600 text-sm"
+                className="absolute -top-3 left-3 bg-white text-[#424242] px-2 text-sm"
               >
                 Email
               </label>
@@ -87,7 +87,7 @@ const SignupForm = () => {
                 id="password"
                 {...register("password", { required: true })}
                 placeholder="Enter your password"
-                className="w-full h-14 px-3 py-2 border border-violet-200 rounded-md opacity-70 placeholder:text-sm focus:outline-none"
+                className="w-full h-12 px-3 py-2 border border-violet-200 rounded-md opacity-70 placeholder:text-sm focus:outline-none"
               />
               <label
                 htmlFor="password"
@@ -104,9 +104,9 @@ const SignupForm = () => {
 
             <button
               type="submit"
-              className="w-full h-14 bg-blue-600 text-white rounded-md shadow-md hover:bg-blue-700 transition"
+              className="w-full text-[13px] h-12 shadow-[0px_4px_12px_0px_#3972FF] bg-blue-500 text-white rounded-md hover:bg-blue-700 transition"
             >
-              Continue
+              GET STARTED
             </button>
           </form>
         </div>

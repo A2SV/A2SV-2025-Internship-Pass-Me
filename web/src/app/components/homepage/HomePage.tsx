@@ -1,13 +1,16 @@
 'use client';
 import Image from 'next/image';
 import { useState, useEffect } from 'react';
+import FormContainer from '../auth/FormContainer';
 import { zenKaku } from '@/app/libs/font';
 
 export default function HomePage() {
   return (
-    <div className="bg-[linear-gradient(46deg,rgba(33,33,33,0.84)_0%,rgba(66,66,66,0.24)_178.98%),url('/background.jpg')] bg-cover bg-center w-full h-screen flex justify-around">
+    <div className="bg-[linear-gradient(46deg,rgba(33,33,33,0.84)_0%,rgba(66,66,66,0.24)_178.98%),url('/background.jpg')] bg-cover bg-center w-full h-screen flex justify-center item-center gap-20">
       <Banner />
-      <Form />
+      <div className='bg-zinc-50 w-90 h-90% mt-auto mb-2 rounded-t-2xl'>
+        <FormContainer />
+      </div>
     </div>
   );
 }
@@ -16,7 +19,7 @@ function Banner() {
   const messages = [
     {
       title: 'Building the Future...',
-      msg: 'Translate anything, anytime, with ease.\nA2SV Translator breaks language barriers. Making communication smooth, fast, and accessible for everyone.',
+      msg: 'Translate anything, anytime, with ease. A2SV Translator breaks language barriers. Making communication smooth, fast, and accessible for everyone.',
     },
     {
       title: 'Building the Future...',
@@ -54,7 +57,7 @@ function Banner() {
         priority
       />
 
-      <div className={`${zenKaku.className} w-150 relative z-10 flex flex-col items-center text-center px-4`}>
+      <div className={`w-150 relative z-10 flex flex-col items-center text-center px-4`}>
         <div className={`w-[70%] m-auto text-lg md:text-2xl transition-opacity duration-500 ${fade ? 'opacity-100' : 'opacity-0'}`}>
           <div className='min-h-40'>
             <h1 className="text-md md:text-4xl font-bold mb-6 text-left">
