@@ -130,7 +130,7 @@ class LoginPage extends StatelessWidget {
                               ? const CircularProgressIndicator(
                                   color: Colors.white)
                               : const Text('Login',
-                                  style: TextStyle(fontSize: 18)),
+                                  style: TextStyle(fontSize: 18, color: Colors.white)),
                         ),
                       ),
                       const SizedBox(height: 20),
