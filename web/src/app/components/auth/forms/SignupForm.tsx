@@ -105,7 +105,7 @@ const SignupForm = () => {
           },
         })}
         placeholder="123"
-        className="w-70 md:w-full h-14 px-3 py-2 border border-violet-200 rounded-md opacity-70 placeholder:text-sm focus:outline-none"
+        className="w-70  md:w-full relative h-14 px-3 py-2 border border-violet-200 rounded-md opacity-70 placeholder:text-sm focus:outline-none"
       />
       <button
         type="button"
