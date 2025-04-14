@@ -41,7 +41,7 @@ const SignupForm = () => {
                   }
                 })}
                 placeholder="johnsone Doe"
-                className="w-70 md:w-full h-12 px-3 py-2 border border-violet-200 hover:border-[#424242] rounded-md opacity-70 placeholder:text-sm focus:outline-none"
+                className="w-full h-12 px-3 py-2 border border-violet-200 hover:border-[#424242] rounded-md opacity-70 placeholder:text-sm focus:outline-none"
               />
               <label htmlFor="name" className="absolute -top-3 left-3 bg-white px-2 text-sm text-[#BDBDBD] group-hover:text-[#424242]">
                 Your Name
@@ -71,7 +71,7 @@ const SignupForm = () => {
                   }
                 })}
                 placeholder="jhonsenedoe@gmail.com"
-                className="w-70 md:w-full h-12 px-3 py-2 border border-[#BDBDBD] hover:border-[#424242] rounded-md opacity-70 placeholder:text-sm focus:outline-none"
+                className="w-full h-12 px-3 py-2 border border-[#BDBDBD] hover:border-[#424242] rounded-md opacity-70 placeholder:text-sm focus:outline-none"
               />
               <label htmlFor="email" className="absolute -top-3 left-3 group-hover:text-[#424242] text-[#BDBDBD] bg-white px-2  text-sm">
                 Email
@@ -84,7 +84,7 @@ const SignupForm = () => {
             </div>
 
             {/* Password */}
-            <div className="mb-5 group relative">
+            <div className="mb-5 group w-full relative">
 
               <input
                 type={showPassword ? "text" : "password"}
@@ -96,7 +96,7 @@ const SignupForm = () => {
                   },
                 })}
                 placeholder="123"
-                className="w-70  md:w-full hover:border-[#424242] relative h-12 px-3 py-2 border border-violet-200 rounded-md opacity-70 placeholder:text-sm focus:outline-none"
+                className="w-full hover:border-[#424242] relative h-12 px-3 py-2 border border-violet-200 rounded-md opacity-70 placeholder:text-sm focus:outline-none"
               />
                 <label htmlFor="password" className="absolute -top-3 left-3 group-hover:text-[#424242] bg-white px-2 text-sm text-[#BDBDBD]">
                   password
@@ -126,7 +126,7 @@ const SignupForm = () => {
 
             <button
               type="submit"
-              className="text-[13px] h-12 shadow-[0px_4px_12px_0px_#3972FF] w-70 md:w-full bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+              className="text-[13px] h-12 shadow-[0px_4px_12px_0px_#3972FF] w-full bg-blue-600 text-white rounded-md hover:bg-blue-700 transition self-center"
             >
               GET STARTED
             </button>

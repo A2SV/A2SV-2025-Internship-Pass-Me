@@ -1,6 +1,6 @@
 'use client'
 import React from 'react';
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 interface FormValues {
@@ -51,7 +51,7 @@ const LoginForm = () => {
                 }
               })}
               placeholder="Enter your email"
-              className="w-70 group md:w-full h-12 px-3 py-2 border border-[#BDBDBD]  hover:border-[#424242] text-[#424242] rounded-md opacity-70 placeholder:text-sm focus:outline-none"
+              className="group w-full h-12 px-3 py-2 border border-[#BDBDBD]  hover:border-[#424242] text-[#424242] rounded-md opacity-70 placeholder:text-sm focus:outline-none"
             />
             <label htmlFor="email" className="absolute -top-3 left-3 bg-white px-2  text-sm text-[#BDBDBD] group-hover:text-[#424242] ">
               Email
@@ -64,7 +64,7 @@ const LoginForm = () => {
           </div>
 
           {/* Password */}
-          <div className="mb-5 relative group">
+          <div className="mb-5 relative w-full group">
 
             <input
               type={showPassword ? "text" : "password"}
@@ -76,8 +76,8 @@ const LoginForm = () => {
                 },
               })}
       
-              placeholder="johnsondoe@gmail.com"
-              className="w-70 md:w-full relative h-12 px-3 py-2 border  border-violet-200 hover:border-[#424242] rounded-md opacity-70 placeholder:text-sm focus:outline-none"
+              placeholder="123"
+              className="w-full relative h-12 px-3 py-2 border  border-violet-200 hover:border-[#424242] rounded-md opacity-70 placeholder:text-sm focus:outline-none"
             />
               <label htmlFor="password" className="absolute -top-3 px-2 left-3 text-[#BDBDBD] group-hover:text-[#424242] bg-white  text-sm">
                 Password
@@ -85,7 +85,7 @@ const LoginForm = () => {
             <button
               type="button"
               onClick={() => setShowPassword(!showPassword)}
-              className=" md:absolute right-3 top-1/2 transform -translate-y-1/2 text-[#BDBDBD] group-hover:text-[#424242]"
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-[#BDBDBD] group-hover:text-[#424242]"
             >
               {showPassword ? (
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -105,7 +105,7 @@ const LoginForm = () => {
               </p>
             )}
           </div>
-          <div className="mb-8 relative text-[13px] flex justify-between">
+          <div className="mb-8 text-[13px] flex justify-between">
             <div className='flex gap-2'>
               <input type="checkbox" className='text-4xl' />
               <p>Remeber me</p>
@@ -116,7 +116,7 @@ const LoginForm = () => {
           </div>
           <button
             type="submit"
-            className="w-70 text-[13px] h-12 shadow-[0px_4px_12px_0px_#3972FF] md:w-full bg-blue-600 text-white rounded-md hover:bg-blue-700 transition"
+            className="text-[13px] h-12 shadow-[0px_4px_12px_0px_#3972FF] w-full bg-blue-600 text-white rounded-md hover:bg-blue-700 transition self-center"
           >
             CONTINUE
           </button>
