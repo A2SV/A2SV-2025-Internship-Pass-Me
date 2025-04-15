@@ -1,7 +1,14 @@
 "use client";
-
-import type { Flight } from "../../../types/flight";
 import FlightHistoryItem from "./flight-history-item";
+
+// Define the Flight type directly here to avoid import issues
+interface Flight {
+  id: string;
+  title: string;
+  origin: string;
+  destination: string;
+  date: string;
+}
 
 interface FlightHistoryListProps {
   flights: Flight[];

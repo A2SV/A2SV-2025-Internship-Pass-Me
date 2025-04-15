@@ -1,7 +1,5 @@
 "use client";
 
-import { Smartphone, User, LogOut } from "lucide-react";
-
 interface BottomNavigationProps {
   onGetAppClick: () => void;
   onMyAccountClick: () => void;
@@ -19,7 +17,7 @@ export default function BottomNavigation({
         onClick={onGetAppClick}
         className="flex items-center w-full px-4 py-3 hover:bg-[#2A2A2A] transition-colors"
       >
-        <Smartphone className="w-5 h-5 mr-3" />
+        <span className="mr-3">📱</span>
         <span>Get the App</span>
       </button>
 
@@ -27,7 +25,7 @@ export default function BottomNavigation({
         onClick={onMyAccountClick}
         className="flex items-center w-full px-4 py-3 hover:bg-[#2A2A2A] transition-colors"
       >
-        <User className="w-5 h-5 mr-3" />
+        <span className="mr-3">👤</span>
         <span>My account</span>
       </button>
 
@@ -35,7 +33,7 @@ export default function BottomNavigation({
         onClick={onLogoutClick}
         className="flex items-center w-full px-4 py-3 hover:bg-[#2A2A2A] transition-colors"
       >
-        <LogOut className="w-5 h-5 mr-3" />
+        <span className="mr-3">🚪</span>
         <span>Log out</span>
       </button>
     </div>

@@ -6,10 +6,43 @@ import FlightHistoryList from "./flight-history/flight-history-list";
 import NoFlightDetails from "./flight-history/no-flight-details";
 import BottomNavigation from "./bottom-navigation";
 import AccountModal from "./account-modal";
-import type { Flight } from "../../types/flight";
+
+// Define the Flight type directly here to avoid import issues
+interface Flight {
+  id: string;
+  title: string;
+  origin: string;
+  destination: string;
+  date: string;
+}
+
+// Mock data for demonstration
+const mockFlights: Flight[] = [
+  {
+    id: "1",
+    title: "My First Trip to USA",
+    origin: "Ethiopia",
+    destination: "USA",
+    date: "Mar 28, 2025",
+  },
+  {
+    id: "2",
+    title: "Family Trip",
+    origin: "Dubai",
+    destination: "France",
+    date: "Jan 20, 2025",
+  },
+  {
+    id: "3",
+    title: "Pick up the package ordered online",
+    origin: "Ethiopia",
+    destination: "China",
+    date: "Jun 9, 2024",
+  },
+];
 
 export default function Sidebar() {
-  const [flights, setFlights] = useState<Flight[]>([]);
+  const [flights, setFlights] = useState<Flight[]>(mockFlights);
   const [selectedFlightId, setSelectedFlightId] = useState<string | null>(null);
   const [showAccountModal, setShowAccountModal] = useState(false);
 

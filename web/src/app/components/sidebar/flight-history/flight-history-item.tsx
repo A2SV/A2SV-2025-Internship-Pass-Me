@@ -2,8 +2,14 @@
 
 import type React from "react";
 
-import { MessageSquare, Trash2 } from "lucide-react";
-import type { Flight } from "../../../types/flight";
+// Define the Flight type directly here to avoid import issues
+interface Flight {
+  id: string;
+  title: string;
+  origin: string;
+  destination: string;
+  date: string;
+}
 
 interface FlightHistoryItemProps {
   flight: Flight;
@@ -32,7 +38,12 @@ export default function FlightHistoryItem({
     >
       <div className="flex-1">
         <div className="flex items-start">
-          <MessageSquare className="w-5 h-5 mr-2 mt-1" />
+          <div className="mr-2 mt-1">
+            {/* Simple message icon replacement */}
+            <span className="inline-block w-5 h-5 border border-gray-500 rounded-sm flex items-center justify-center text-xs">
+              💬
+            </span>
+          </div>
           <div className="flex-1">
             <h3 className="font-medium">{flight.title}</h3>
             <p className="text-sm text-gray-400">
@@ -45,7 +56,8 @@ export default function FlightHistoryItem({
             className="text-red-500 hover:text-red-400 p-1"
             aria-label="Delete flight"
           >
-            <Trash2 className="w-4 h-4" />
+            {/* Simple trash icon replacement */}
+            <span className="inline-block">🗑️</span>
           </button>
         </div>
       </div>
