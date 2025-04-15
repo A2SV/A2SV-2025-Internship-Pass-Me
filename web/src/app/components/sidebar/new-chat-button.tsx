@@ -8,9 +8,9 @@ export default function NewChatButton({ onClick }: NewChatButtonProps) {
   return (
     <button
       onClick={onClick}
-      className="w-full bg-[#1A1A1A] hover:bg-[#2A2A2A] text-white border border-gray-700 rounded-md py-2 px-4 flex items-center justify-center transition-colors"
+      className="w-[271px] h-[40px] px-20 py-2 flex items-center justify-center gap-2 aspect-[271/40] rounded-[12px] bg-white hover:bg-neutral-200 text-black mx-auto transition-colors"
     >
-      <span className="mr-2">+</span>
+      <span className="text-xl">+</span>
       <span>New chat</span>
     </button>
   );

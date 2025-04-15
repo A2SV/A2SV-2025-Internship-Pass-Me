@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 interface AccountModalProps {
   onClose: () => void;
   onLogout: () => void;
@@ -8,37 +10,72 @@ interface AccountModalProps {
 export default function AccountModal({ onClose, onLogout }: AccountModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div className="bg-[#222222] text-white rounded-lg w-full max-w-md p-6 relative">
+      <div className="inline-flex flex-col items-start gap-[10px] p-[40px] rounded-[12px] bg-[#202020] text-white w-full max-w-md relative">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-400 hover:text-white"
+          className="absolute top-4 right-4 text-white"
           aria-label="Close"
         >
           ✕
         </button>
 
+        {/* User section */}
         <div className="flex items-center mb-6">
           <div className="relative">
-            <div className="w-12 h-12 rounded-full bg-gray-600 flex items-center justify-center overflow-hidden">
-              👤
-            </div>
-            <div className="absolute bottom-0 right-0 bg-gray-800 rounded-full p-1">
-              ✏️
+            {/* Photo with edit button container */}
+            <div
+              className="w-[70px] h-[70px] rounded-full bg-gray-500 overflow-hidden"
+              style={{
+                backgroundImage: `url("/photo.png")`,
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+                backgroundRepeat: "no-repeat",
+              }}
+            >
+              {/* Edit button box */}
+              <div
+                className="w-[25px] h-[25px] absolute right-0 bottom-0 bg-gray-600 rounded-full flex justify-center items-center"
+                style={{
+                  filter: "drop-shadow(0px 1px 4px rgba(26, 15, 1, 0.12))",
+                }}
+              >
+                {/* Edit icon */}
+                <Image
+                  src="/edit.png"
+                  alt="Edit"
+                  width={16}
+                  height={16}
+                  className="absolute right-[5px] bottom-[4px] filter invert brightness-0"
+                />
+              </div>
             </div>
           </div>
           <div className="ml-4">
             <div className="flex items-center">
               <h3 className="font-medium">Your name</h3>
-              <span className="ml-2 text-gray-400">✏️</span>
+              <Image
+                src="/edit.png"
+                alt="Edit Name"
+                width={14}
+                height={14}
+                className="ml-2 filter invert brightness-0"
+              />
             </div>
             <p className="text-sm text-gray-400">yourname@gmail.com</p>
           </div>
         </div>
 
-        <div className="space-y-4">
+        {/* Settings section */}
+        <div className="w-full space-y-4">
           <div className="py-3 border-b border-gray-700 flex justify-between items-center">
             <div className="font-medium">Change Password</div>
-            <span className="text-gray-400">✏️</span>
+            <Image
+              src="/edit.png"
+              alt="Edit"
+              width={21}
+              height={21}
+              className="filter invert brightness-0"
+            />
           </div>
 
           <div className="py-3 border-b border-gray-700 flex justify-between items-center">
@@ -55,19 +92,21 @@ export default function AccountModal({ onClose, onLogout }: AccountModalProps) {
 
           <div className="py-3 border-b border-gray-700 flex justify-between items-center">
             <div className="font-medium">About</div>
-            <span className="text-gray-400">ℹ️</span>
+            <Image src="/about.png" alt="About" width={24} height={24} />
           </div>
         </div>
 
-        <div className="mt-6 flex justify-between">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded">
-            <span className="inline mr-2">📤</span>
+        {/* Bottom buttons */}
+        <div className="mt-6 flex justify-between w-full gap-4">
+          {/* Share Button */}
+          <button className="flex h-[36px] px-6 py-3 justify-center items-center gap-2 rounded-[6px] bg-[#3972FF] text-white text-sm font-medium">
             Share
           </button>
 
+          {/* Log Out Button */}
           <button
             onClick={onLogout}
-            className="border border-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded"
+            className="flex h-[36px] px-6 py-3 justify-center items-center gap-2 rounded-[10px] border border-white bg-transparent text-white text-sm font-medium"
           >
             Log Out
           </button>

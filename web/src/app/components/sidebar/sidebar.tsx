@@ -55,13 +55,10 @@ export default function Sidebar() {
 
   const handleSelectFlight = (id: string) => {
     setSelectedFlightId(id);
-    // Here you would typically notify the parent component about the selected flight
-    // so that the main form can be updated with the selected flight's data
   };
 
   const handleNewChat = () => {
     setSelectedFlightId(null);
-    // Additional logic for starting a new chat would go here
   };
 
   const toggleAccountModal = () => {
@@ -69,12 +66,11 @@ export default function Sidebar() {
   };
 
   const handleLogout = () => {
-    // Redirect to home page
     window.location.href = "/home";
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#1A1A1A] text-white w-[360px] border-r border-gray-800">
+    <div className="flex flex-col h-full bg-[#1A1A1A] text-white w-[422px] border-r border-gray-800">
       <div className="flex-1 flex flex-col overflow-hidden">
         <div className="p-4">
           <NewChatButton onClick={handleNewChat} />
