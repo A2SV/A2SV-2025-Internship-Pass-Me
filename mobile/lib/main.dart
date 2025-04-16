@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/features/auth/presentation/blocs/sign_up_bloc.dart';
 import 'package:mobile/features/auth/presentation/pages/signup_pages.dart';
+import 'package:mobile/features/profile/presentation/pages/profile_page.dart';
 
 import 'features/auth/presentation/blocs/login_cubit.dart';
 import 'features/auth/presentation/pages/login_page.dart';
@@ -37,8 +38,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark().copyWith(
           textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
-          primaryTextTheme:
-              GoogleFonts.interTextTheme(ThemeData.dark().primaryTextTheme),
+          primaryTextTheme: GoogleFonts.interTextTheme(ThemeData.dark().primaryTextTheme),
           colorScheme: const ColorScheme.dark(
             primary: Color(0xFF2196F3),
           ),
@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
           '/flights/empty': (_) => const FlightEmptyPage(),
           '/flights/list': (_) => const FlightListPage(),
           '/flights/detail': (_) => const FlightDetailPage(),
+          '/profile': (_) => const ProfilePage(),
         },
       ),
     );
