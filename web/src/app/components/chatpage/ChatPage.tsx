@@ -1,28 +1,32 @@
 'use client'
 import { useState } from 'react'
 import LanguageSelector from '@/app/components/chatpage/LanguageSelector'
-import ChatBubble from '@/app/components/chatpage/ChatBubble'
+import ChatBubble, { ChatItem } from '@/app/components/chatpage/ChatBubble'
 import Image from 'next/image'
+import AudioRecorder from '@/app/components/chatpage/AudioRecorder'
 
 export default function ChatPage() {
-  // Mock chat data
-  const [chatData, setChatData] = useState([
+  const [chatData, setChatData] = useState<ChatItem[]>([
     {
+      id: 1,
       role: 'question',
       text: 'What is the purpose of your visit?',
       translation: 'እንተ ምን ተግባር ነው የእርስዎ ጉብኝት?',
     },
     {
+      id: 2,
       role: 'answer',
       text: 'I am here for a medical conference.',
       transliteration: 'እኔ እዚህ ለህክምና ስብሰባ ነኝ.',
     },
     {
+      id: 3,
       role: 'question',
       text: 'How long do you plan to stay?',
       translation: 'እንደው ዝግጅት ነው ልቆይ?',
     },
     {
+      id: 4,
       role: 'answer',
       text: 'I plan to stay for 15 days.',
       transliteration: 'እባክህ 15 ቀናት ነው የምቆይው.',
@@ -47,19 +51,16 @@ export default function ChatPage() {
           <LanguageSelector label="To" initialLanguage="Amharic" />
         </div>
         <div className="max-w-3xl mx-auto flex flex-col space-y-4">
-          {chatData.map((chatItem, index) => (
-            <ChatBubble key={index} chatItem={chatItem} />
+          {chatData.map((chatItem) => (
+            <ChatBubble key={chatItem.id} chatItem={chatItem}
+              isLatest={chatItem.id === 4}
+            />
           ))}
+
         </div>
       </main>
 
-      <footer className="fixed bottom-5 p-4 flex justify-center items-center w-full">
-        <button
-          className="flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 py-2 focus:outline-none transition"
-        >
-          <Image src="/mic.svg" alt="Mic" height={30} width={30} />
-        </button>
-      </footer>
+      <AudioRecorder />
     </div>
   )
 }
