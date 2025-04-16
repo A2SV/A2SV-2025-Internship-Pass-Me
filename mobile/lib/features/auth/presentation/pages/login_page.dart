@@ -1,6 +1,8 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:mobile/core/theme/app_colors.dart';
 import '../blocs/login_cubit.dart';
 
 class LoginPage extends StatelessWidget {
@@ -10,7 +12,7 @@ class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF1F1F1F),
+      backgroundColor: AppColors.backgroundColor,
       body: Center(
         child: SingleChildScrollView(
           child: Padding(
@@ -43,7 +45,7 @@ class LoginPage extends StatelessWidget {
                             fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 8),
-                      const Text.rich(
+                      Text.rich(
                         TextSpan(
                           text:
                               "If you don't have an account register\nYou can ",
@@ -52,6 +54,11 @@ class LoginPage extends StatelessWidget {
                             TextSpan(
                               text: 'Register Here!',
                               style: TextStyle(color: Colors.blue),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.pushNamed(context,
+                                      '/signup'); // Navigate to signup page
+                                },
                             ),
                           ],
                         ),
@@ -119,18 +126,25 @@ class LoginPage extends StatelessWidget {
                                   emailController.text,
                                   passwordController.text,
                                 );
+
+                            // Navigate to flights/detail after login
+                            Navigator.pushNamed(context, '/flights/detail');
                           },
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 14),
                             backgroundColor: const Color(0xFF3A86FF),
                             shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10)),
+                              borderRadius: BorderRadius.circular(10),
+                            ),
                           ),
                           child: state.isLoading
                               ? const CircularProgressIndicator(
                                   color: Colors.white)
-                              : const Text('Login',
-                                  style: TextStyle(fontSize: 18, color: Colors.white)),
+                              : const Text(
+                                  'Login',
+                                  style: TextStyle(
+                                      fontSize: 18, color: Colors.white),
+                                ),
                         ),
                       ),
                       const SizedBox(height: 20),
