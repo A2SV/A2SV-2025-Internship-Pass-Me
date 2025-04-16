@@ -70,7 +70,7 @@ export default function Sidebar() {
   };
 
   return (
-    <div className="flex flex-col h-full bg-[#1A1A1A] text-white w-[422px] border-r border-gray-800">
+    <div className="flex flex-col h-full bg-[#1A1A1A] text-white sm:w-[422px] w-full border-r border-gray-800">
       <div className="flex-1 flex flex-col overflow-hidden">
         <div className="p-4">
           <NewChatButton onClick={handleNewChat} />
