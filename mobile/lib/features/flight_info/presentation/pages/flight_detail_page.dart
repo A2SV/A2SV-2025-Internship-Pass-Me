@@ -42,8 +42,9 @@ class FlightDetailPage extends StatelessWidget {
     List<Card> buildQuestionCards() {
       return questionData.map((question) {
         return Card(
+          elevation: 0.0,
           clipBehavior: Clip.antiAlias,
-          color: Color(0xFF1E1E1E),
+          color: Color(0xFF26252A),
           child: Padding(
             padding: const EdgeInsets.only(
               left: 4.0,
@@ -174,7 +175,7 @@ class FlightDetailPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: Color(0xFF1E1E1E),
+      backgroundColor: Color(0xFF26252A),
       appBar: AppBar(
           leading: IconButton(
             onPressed: () {},
