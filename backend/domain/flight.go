@@ -6,6 +6,8 @@ import (
 
 type Flight struct {
 	ID          string    `bson:"_id,omitempty" json:"id"`
+	Title       string    `bson:"title" json:"title" binding:"required"`
+	Source      string    `bson:"source" json:"source" binding:"required"`
 	Destination string    `bson:"destination" json:"destination" binding:"required"`
 	Date        time.Time `bson:"date" json:"date"`
 	UserID      string    `bson:"user_id" json:"user_id"`

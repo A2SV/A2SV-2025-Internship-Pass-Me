@@ -29,6 +29,14 @@ func (fc *FlightController) CreateFlight(c *gin.Context) {
 	}
 
 	// Validate required fields
+	if flight.Title == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Title is required"})
+		return
+	}
+	if flight.Source == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Source is required"})
+		return
+	}
 	if flight.Destination == "" {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Destination is required"})
 		return
@@ -58,6 +66,8 @@ func (fc *FlightController) CreateFlight(c *gin.Context) {
 		"message": "Flight created successfully",
 		"flight": gin.H{
 			"id":          flight.ID,
+			"title":       flight.Title,
+			"source":      flight.Source,
 			"destination": flight.Destination,
 			"date":        flight.Date,
 			"user_id":     flight.UserID,
@@ -90,6 +100,8 @@ func (fc *FlightController) GetFlightByID(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"id":          flight.ID,
+		"title":       flight.Title,
+		"source":      flight.Source,
 		"destination": flight.Destination,
 		"date":        flight.Date,
 		"user_id":     flight.UserID,
