@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
           '/signup': (_) => SignUpPage(),
           '/flights/empty': (_) => const FlightEmptyPage(),
           '/flights/list': (_) => const FlightListPage(),
-          '/flights/detail': (_) => const FlightDetailPage(),
+          '/flights/detail': (_) => FlightDetailPage(),
         },
       ),
     );

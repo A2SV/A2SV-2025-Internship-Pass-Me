@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:mobile/core/theme/app_colors.dart';
 import '../../domain/entities/onboarding_screen_data.dart';
 import '../bloc/onboarding_bloc.dart';
 import '../bloc/onboarding_event.dart';
@@ -19,17 +20,20 @@ class _OnboardingPageState extends State<OnboardingPage> {
   final List<OnboardingScreenData> screens = [
     OnboardingScreenData(
       title: 'A2SV TRANSLATOR',
-      description: 'Easily input your travel details — origin, destination, length of stay, and purpose — all in your preferred language',
+      description:
+          'Easily input your travel details — origin, destination, length of stay, and purpose — all in your preferred language',
       imagePath: 'assets/images/logo.png',
     ),
     OnboardingScreenData(
       title: 'Smart Translation',
-      description: 'Your travel info is translated to your destination\'s language and stored safely for smooth communication during arrival',
+      description:
+          'Your travel info is translated to your destination\'s language and stored safely for smooth communication during arrival',
       imagePath: 'assets/images/translation.png',
     ),
     OnboardingScreenData(
       title: 'Instant Translation',
-      description: 'Speak in your native language and hear instant translations perfect for travel, conversation, or learning',
+      description:
+          'Speak in your native language and hear instant translations perfect for travel, conversation, or learning',
       imagePath: 'assets/images/language.png',
     ),
   ];
@@ -37,7 +41,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF26252A),
+      backgroundColor: AppColors.backgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -65,14 +69,17 @@ class _OnboardingPageState extends State<OnboardingPage> {
             ),
             const SizedBox(height: 40),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40.0, vertical: 30.0),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 40.0, vertical: 30.0),
               child: Column(
                 children: [
                   SizedBox(
                     width: double.infinity,
                     child: ElevatedButton(
                       onPressed: () {
-                        context.read<OnboardingBloc>().add(const CompleteOnboarding());
+                        context
+                            .read<OnboardingBloc>()
+                            .add(const CompleteOnboarding());
                         Navigator.of(context).pushReplacementNamed('/login');
                       },
                       style: ElevatedButton.styleFrom(
@@ -84,12 +91,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       ),
                       child: Text(
                         'Start Translating',
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                          color: Colors.white,
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          letterSpacing: 0.1,
-                        ),
+                        style:
+                            Theme.of(context).textTheme.titleMedium?.copyWith(
+                                  color: Colors.white,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  letterSpacing: 0.1,
+                                ),
                       ),
                     ),
                   ),
@@ -121,4 +129,4 @@ class _OnboardingPageState extends State<OnboardingPage> {
     _pageController.dispose();
     super.dispose();
   }
-} 
+}
