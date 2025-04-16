@@ -15,6 +15,8 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -33,7 +35,7 @@ class MyApp extends StatelessWidget {
           '/': (_) => LoginPage(),
           '/flights/empty': (_) => const FlightEmptyPage(),
           '/flights/list': (_) => const FlightListPage(),
-          '/flights/detail': (_) => const FlightDetailPage(),
+          '/flights/detail': (_) => FlightDetailPage(),
         },
       ),
     );
