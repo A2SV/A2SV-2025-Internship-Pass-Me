@@ -45,7 +45,11 @@ class FlightDetailPage extends StatelessWidget {
           clipBehavior: Clip.antiAlias,
           color: Color(0xFF1E1E1E),
           child: Padding(
-            padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 2.0),
+            padding: const EdgeInsets.only(
+              left: 4.0,
+              top: 4.0,
+              bottom: 4.0,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -54,27 +58,47 @@ class FlightDetailPage extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text("Question:", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      Text(
+                        "Question:",
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 12,
+                        ),
+                      ),
                       Row(
                         children: [
                           SizedBox(width: 20),
                           Expanded(
                             child: Text(
                               question["englishQuestion"]!,
-                              style: TextStyle(color: Colors.white),
+                              style: GoogleFonts.inter(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12,
+                              ),
                             ),
                           ),
                         ],
                       ),
                       SizedBox(height: 4),
-                      Text("ጥያቄ:", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                      Text("ጥያቄ:",
+                          style: GoogleFonts.inter(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12,
+                          )),
                       Row(
                         children: [
                           SizedBox(width: 20),
                           Expanded(
                             child: Text(
                               question["amharicQuestion"]!,
-                              style: TextStyle(color: Colors.white70),
+                              style: GoogleFonts.inter(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12,
+                              ),
                             ),
                           ),
                         ],
@@ -94,27 +118,45 @@ class FlightDetailPage extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Answer:", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                          Text("Answer:",
+                              style: GoogleFonts.inter(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12,
+                              )),
                           Row(
                             children: [
                               SizedBox(width: 20),
                               Expanded(
                                 child: Text(
                                   question["englishAnswer"]!,
-                                  style: TextStyle(color: Colors.blue, fontWeight: FontWeight.bold),
+                                  style: GoogleFonts.inter(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12,
+                                  ),
                                 ),
                               ),
                             ],
                           ),
                           SizedBox(height: 4),
-                          Text("መልስ:", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                          Text("መልስ:",
+                              style: GoogleFonts.inter(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 12,
+                              )),
                           Row(
                             children: [
                               SizedBox(width: 20),
                               Expanded(
                                 child: Text(
                                   question["amharicAnswer"]!,
-                                  style: TextStyle(color: Colors.white70),
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 12,
+                                  ),
                                 ),
                               ),
                             ],
@@ -198,13 +240,17 @@ class FlightDetailPage extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: Container(
-        color: Color(0xFF1E1E1E),
-        padding: EdgeInsets.all(12),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(backgroundColor: Colors.blue),
-          onPressed: () {},
-          child: Text("Use Chat"),
+      floatingActionButton: FloatingActionButton.extended(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        backgroundColor: Color(0xFF3A86FF),
+        onPressed: () {},
+        label: Text(
+          "USE FLIGHT",
+          style: GoogleFonts.inter(
+            color: Colors.white,
+            fontWeight: FontWeight.w500,
+            fontSize: 16,
+          ),
         ),
       ),
     );
