@@ -78,7 +78,7 @@ export default function Sidebar() {
         <div className="p-4">
           <button
             onClick={handleNewChat}
-            className="w-[271px] h-[40px] px-20 py-2 flex items-center justify-center gap-2 aspect-[271/40] rounded-[12px] bg-white hover:bg-neutral-200 text-black mx-auto transition-colors"
+            className="w-[271px] h-[40px] px-20 py-2 flex items-center justify-center gap-2 aspect-[271/40] rounded-[12px] bg-white hover:bg-neutral-200 text-black mx-auto transition-colors cursor-pointer"
           >
             <span className="text-xl">+</span>
             <span>New chat</span>
