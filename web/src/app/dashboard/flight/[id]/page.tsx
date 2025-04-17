@@ -1,7 +1,6 @@
 "use client";
 
 import { useParams } from "next/navigation";
-import Sidebar from "../../../components/sidebar/sidebar";
 import FlightDetail from "../../../components/flight-detail/flight-detail";
 
 export default function FlightDetailPage() {
@@ -9,8 +8,7 @@ export default function FlightDetailPage() {
   const flightId = params.id as string;
 
   return (
-    <div className="flex h-screen bg-[#121212]">
-      <Sidebar />
+    <div className="h-screen bg-[#121212]">
       <FlightDetail flightId={flightId} />
     </div>
   );
