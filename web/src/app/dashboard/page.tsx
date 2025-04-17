@@ -1,4 +1,3 @@
-import Sidebar from "../components/sidebar/sidebar";
 import Frame from "../components/frame/frame";
 
 export default function dashboard() {
