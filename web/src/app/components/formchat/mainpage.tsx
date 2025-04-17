@@ -203,7 +203,7 @@ const Mainpage = () => {
               />
             </div>
           ))
-        )}
+        }
         <div className='flex justify-center items-center mr-60 mt-5'>
         <button
           type='button'
