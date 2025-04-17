@@ -1,9 +1,7 @@
-import React from 'react'
+import Mainpage from "@/app/components/formchat/mainpage";
 
-const page = () => {
+export default function Page() {
   return (
-    <div>page</div>
+    <Mainpage />      
   )
 }
-
-export default page
