@@ -152,7 +152,7 @@ export default function FlightDetail({ flightId }: { flightId: string }) {
             alt="A2SV Translator Banner"
             width={333}
             height={62}
-            className="md:w-152 md:h-25 object-cover"
+            className="md:w-100 md:h-20 object-fit"
             priority
           />
         </div>
