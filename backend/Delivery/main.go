@@ -47,20 +47,14 @@ func main() {
 	// Initialize repositories
 	flightRepo := repositories.NewFlightRepository(db)
 	userRepo := repositories.NewUserRepository(db)
-	vectorRepo, err := repositories.NewVectorRepository()
-	if err != nil {
-		log.Fatalf("Failed to initialize vector repository: %v", err)
-	}
 
 	// Initialize use cases
 	flightUC := usecases.NewFlightUseCase(flightRepo)
 	userUC := usecases.NewUserUseCase(userRepo)
-	vectorUC := usecases.NewVectorUsecase(vectorRepo)
 
 	// Initialize controllers
 	flightController := controllers.NewFlightController(flightUC)
 	userController := controllers.NewUserController(userUC)
-	vectorController := controllers.NewVectorController(vectorUC)
 
 	// Set up the Gin router
 	r := gin.Default()
@@ -69,7 +63,6 @@ func main() {
 	// Each router file handles its own route setup
 	routers.SetupUserRoutes(r, userController)
 	routers.SetupFlightRoutes(r, flightController)
-	routers.SetupVectorRoutes(r, vectorController)
 
 	// Start the server
 	log.Println("Server is running at :8080")
