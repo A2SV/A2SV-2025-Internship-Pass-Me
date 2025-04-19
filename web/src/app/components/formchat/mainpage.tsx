@@ -68,7 +68,7 @@ const Mainpage = () => {
               title="Select language"
               value={lanaguage}
               onChange={handleLangaugechange}
-              className="w-full h-full bg-[#676470] text-white text-base outline-none"
+              className="w-full h-full bg-transparent text-white text-base outline-none"
             >
               <option value="en">English</option>
               <option value="am">Amharic</option>
@@ -80,8 +80,13 @@ const Mainpage = () => {
           <p className="text-white text-[14px]">To:</p>
           <div className="w-[280px] h-[56px] bg-[#676470] rounded-lg px-4 flex items-center gap-4">
             <select
-              className="w-full h-full bg-[#676470] text-white text-base outline-none"
-              value={toLanguage} >
+              title="Select target language"
+              className="w-full h-full bg-transparent text-white text-base outline-none"
+              value={toLanguage}
+              onChange={() => {
+                handlethepopup();
+              }}
+            >
               <option value="am">Amharic</option>
               <option value="en">English</option>
             </select>
@@ -118,13 +123,15 @@ const Mainpage = () => {
       <form onSubmit={handleSubmit(onSubmit)} className="my-10 m-40">
         {lanaguage === "en" &&
           Object.keys(questions).map((key) => (
-            <div key={key} className="relative  overflow-visible
+            <div
+              key={key}
+              className="relative z-10 overflow-visible
     px-6 py-3
      rounded-2xl
-    transition-transform duration-200 ease-in-out  before:border-4 before:border-[#3927FF] hover:-translate-y-[2px]
+    transition-transform duration-200 ease-in-out hover:-translate-y-[2px]
     before:content-[''] before:absolute before:-inset-[2px]
-
-    before:bg-[radial-gradient(circle_at_center,_#386BF62E_0%,_#386BF62E_100%)]
+    before:rounded-2xl
+    before:bg-[radial-gradient(circle_at_center,_#6B7DF3_0%,_#3150E0_100%)]
     before:opacity-0 before:transition-opacity before:duration-200
     hover:before:opacity-100
     before:-z-10 before:pointer-events-none"
@@ -132,7 +139,7 @@ const Mainpage = () => {
               <p>
                 <span className="inline-block font-bold text-[19px] text-white font-inter mb-5">
                   <span className="text-[#3972FF] mr-2">{parseInt(key)}</span>
-                  {`${questions[parseInt(key)]},`}
+                  {questions[parseInt(key)]}
                 </span>
               </p>
               <Controller
@@ -149,7 +156,7 @@ const Mainpage = () => {
                   <>
                     <input
                       {...field}
-                      className="w-full h-[46px] rounded-[16px] px-[9px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none"
+                      className="w-[952px] h-[46px] rounded-[16px] px-[9px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none"
                     />
                     {error && (
                       <p className="text-red-500 mt-2">{error.message}</p>
@@ -162,16 +169,10 @@ const Mainpage = () => {
 
         {lanaguage === "am" &&
           Object.keys(questionsAmharic).map((key) => (
-            <div key={key} className="relative  overflow-visible
-    px-6 py-3
-     rounded-2xl
-    transition-transform duration-200 ease-in-out  before:border-4 before:border-[#3927FF] hover:-translate-y-[2px]
-    before:content-[''] before:absolute before:-inset-[2px]
-
-    before:bg-[radial-gradient(circle_at_center,_#386BF62E_0%,_#386BF62E_100%)]
-    before:opacity-0 before:transition-opacity before:duration-200
-    hover:before:opacity-100
-    before:-z-10 before:pointer-events-none ">
+            <div
+              key={key}
+              className="my-10 hover:border-4 border-transparent hover:border-[#3972FF] hover:rounded-2xl hover:bg-blue-500/10 transition-all duration-300"
+            >
               <p>
                 <span className="inline-block font-bold text-[19px] text-white font-inter mb-5">
                   <span className="text-[#3972FF] mr-2">{parseInt(key)}</span>
@@ -193,7 +194,7 @@ const Mainpage = () => {
                   <>
                     <input
                       {...field}
-                      className="w-full h-[67px] rounded-[16px] px-[9px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none"
+                      className="w-[767px] h-[67px] rounded-[16px] px-[9px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none"
                     />
                     {error && (
                       <p className="text-red-500 mt-2">{error.message}</p>
@@ -202,17 +203,13 @@ const Mainpage = () => {
                 )}
               />
             </div>
-          ))
-        }
-        <div className='flex justify-center items-center mr-60 mt-5'>
-        <button
-          type='button'
-          className="  ml-70 w-[141px] h-[40px] rounded-[10px]  bg-[#FFFFFF] hover:bg-[#F0F0F0] text-[#3972FF] border border-[#FFFFFF]"
-          onClick={
-           handlethepopup
-          } >
-        {(lanaguage==="am"?("አስገባው"):("Submit"))}
-        </button>
+          ))}
+
+        <div
+          className="ml-70 w-[141px] h-[40px] rounded-[10px] px-[39px] bg-[#FFFFFF] hover:bg-[#F0F0F0] text-[#3972FF] border border-[#FFFFFF]"
+          onClick={handlethepopup}
+        >
+          {lanaguage === "am" ? "አስገባው" : "Submit"}
         </div>
         {popup &&
           (lanaguage === "am" ? (
