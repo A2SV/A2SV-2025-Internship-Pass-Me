@@ -28,12 +28,6 @@ func main() {
 		log.Fatal("MONGO_URI is not set in the .env file")
 	}
 
-	// Get Flask URL from environment variables
-	flaskURL := os.Getenv("FLASK_URL")
-	if flaskURL == "" {
-		log.Fatal("FLASK_URL is not set in the .env file")
-	}
-
 	// Connect to MongoDB
 	client, err := mongo.Connect(context.Background(), options.Client().ApplyURI(mongoURI))
 	if err != nil {

@@ -29,30 +29,25 @@ func (fc *FlightController) CreateFlight(c *gin.Context) {
 	}
 
 	// Validate required fields
-	if flight.Title == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Title is required"})
-		return
-	}
-	if flight.Source == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Source is required"})
-		return
-	}
-	if flight.Destination == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Destination is required"})
+	if flight.Title == "" || flight.FromCountry == "" || flight.ToCountry == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing required flight fields"})
 		return
 	}
 
-	// Get user ID from the authenticated user
+	// Validate that we have the correct number of questions/answers
+	if len(flight.QA) != 5 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Exactly 5 question-answer pairs are required"})
+		return
+	}
+
 	userID, exists := c.Get("user_id")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
 		return
 	}
-
-	// Set the user ID for the flight
 	flight.UserID = userID.(string)
 
-	// Set default date if not provided
+	// Default to current time if no date provided
 	if flight.Date.IsZero() {
 		flight.Date = time.Now()
 	}
@@ -64,14 +59,7 @@ func (fc *FlightController) CreateFlight(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Flight created successfully",
-		"flight": gin.H{
-			"id":          flight.ID,
-			"title":       flight.Title,
-			"source":      flight.Source,
-			"destination": flight.Destination,
-			"date":        flight.Date,
-			"user_id":     flight.UserID,
-		},
+		"flight":  flight,
 	})
 }
 
@@ -99,12 +87,13 @@ func (fc *FlightController) GetFlightByID(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{
-		"id":          flight.ID,
-		"title":       flight.Title,
-		"source":      flight.Source,
-		"destination": flight.Destination,
-		"date":        flight.Date,
-		"user_id":     flight.UserID,
+		"id":           flight.ID,
+		"title":        flight.Title,
+		"from_country": flight.FromCountry,
+		"to_country":   flight.ToCountry,
+		"date":         flight.Date,
+		"user_id":      flight.UserID,
+		"qa":           flight.QA, 
 	})
 }
 

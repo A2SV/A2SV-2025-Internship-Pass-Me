@@ -26,8 +26,7 @@ func NewFlightRepository(db *mongo.Database) domain.FlightRepository {
 // CreateFlight stores a new flight into the MongoDB database
 func (r *flightRepository) CreateFlight(flight *domain.Flight) error {
 	flight.Date = flight.Date.UTC() // Ensure consistency
-	
-	// Generate a new ObjectID if one is not provided
+
 	if flight.ID == "" {
 		flight.ID = primitive.NewObjectID().Hex()
 	}
@@ -37,7 +36,6 @@ func (r *flightRepository) CreateFlight(flight *domain.Flight) error {
 		return err
 	}
 
-	// Update the ID in case MongoDB generated a new one
 	if insertedID, ok := result.InsertedID.(primitive.ObjectID); ok {
 		flight.ID = insertedID.Hex()
 	}
