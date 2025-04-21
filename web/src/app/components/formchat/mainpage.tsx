@@ -72,7 +72,7 @@ const Mainpage = () => {
               title="Select language"
               value={lanaguage}
               onChange={handleLangaugechange}
-              className="w-full h-full bg-[#676470] text-white text-base outline-none"
+              className="w-full h-full bg-transparent text-white text-base outline-none"
             >
               <option value="en">English</option>
               <option value="am">Amharic</option>

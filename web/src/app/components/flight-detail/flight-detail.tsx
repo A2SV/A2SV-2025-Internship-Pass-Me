@@ -144,112 +144,77 @@ export default function FlightDetail({ flightId }: { flightId: string }) {
   }
 
   return (
-    <div className="flex-1 flex flex-col h-screen max-h-screen overflow-hidden bg-[#1A1A1A] text-white">
-      <div className="flex justify-center items-center py-4">
-        <div>
-          <Image
-            src="/banner.png"
-            alt="A2SV Translator Banner"
-            width={333}
-            height={62}
-            className="md:w-100 md:h-20 object-fit"
-            priority
-          />
-        </div>
+    <div className="flex-1 flex flex-col h-full bg-[#1A1A1A] text-white overflow-y-auto">
+      {/* Banner at the top, horizontally centered */}
+      <div className="flex justify-center items-center py-4 sticky top-0 bg-[#1A1A1A] z-10">
+        <Image
+          src="/banner.png"
+          alt="A2SV Translator Banner"
+          width={333}
+          height={62}
+          className="md:w-[400px] md:h-auto object-contain"
+          priority
+        />
       </div>
 
-      <div className="flex flex-col h-full px-8 pb-4 relative overflow-hidden">
-        {/* Header with language selection */}
-        <div className="flex justify-between mb-6">
-          <div className="flex flex-col">
-            <span className="text-gray-400 text-sm mb-1">From</span>
-            <div className="bg-[#5D5D6D] text-white rounded-md p-3 w-[240px] flex justify-between items-center">
-              <span>English</span>
-              <span>▼</span>
-            </div>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-gray-400 text-sm mb-1">To:</span>
-            <div className="bg-[#5D5D6D] text-white rounded-md p-3 w-[240px] flex justify-between items-center">
-              <span>Amharic</span>
-              <span>▼</span>
-            </div>
-          </div>
-        </div>
-
+      <div className="px-8 pb-20 relative">
         {/* Date selection - as shown in the UI */}
-        <div className="mb-6">
+        <div className="mb-8">
           <span className="text-gray-400 text-sm block mb-1">
-            Choose your date of flight
+            Your date of flight
           </span>
           <div className="bg-[#5D5D6D] text-white rounded-md p-3 w-[240px] flex justify-between items-center">
             <span>Wednesday, 11th January</span>
-            <span>▼</span>
           </div>
         </div>
 
-        {/* Conversation messages - Only this part should be scrollable */}
-        <div className="flex-1 overflow-y-auto space-y-6 pr-4">
+        {/* Conversation messages */}
+        <div className="max-w-3xl mx-auto flex flex-col space-y-4">
           {selectedConversation.messages.map((message) => (
-            <div key={message.id} className="space-y-4">
-              {/* Question box - #26252A background - Left aligned */}
-              <div className="w-full flex justify-start">
-                <div className="w-[344px] h-[93px] rounded-[10px] p-[7px] bg-[#26252A] flex flex-col gap-[11px]">
-                  <div className="flex items-start">
-                    <span className="text-blue-400 mr-2">
-                      {message.questionNumber}.
-                    </span>
-                    <div className="flex-1">
-                      <div className="text-white font-medium">
-                        <span className="text-gray-300">Question:</span>
-                        <span className="ml-2">{message.question}</span>
-                      </div>
-                      {message.questionTranslated && (
-                        <div className="text-gray-400 text-sm mt-1">
-                          <span className="text-gray-500">ጥያቄ:</span>
-                          <span className="ml-2">
-                            {message.questionTranslated}
-                          </span>
-                        </div>
-                      )}
+            <div key={message.id} className="flex flex-col space-y-4">
+              {/* Question bubble */}
+              <div className="flex flex-col max-w-md self-start space-y-1">
+                <span className="text-sm text-gray-400">
+                  {message.questionNumber}. Question:
+                </span>
+                <div className="rounded-lg px-4 py-2 bg-[#26252A] text-sm whitespace-pre-wrap">
+                  <p>{message.question}</p>
+                  {message.questionTranslated && (
+                    <div className="mt-2 text-blue-50">
+                      <strong>ጥያቄ:</strong>
+                      <p>{message.questionTranslated}</p>
                     </div>
-                  </div>
+                  )}
                 </div>
               </div>
 
-              {/* Answer box - #323232 background - Right aligned */}
-              {message.answer && (
-                <div className="w-full flex justify-end">
-                  <div className="w-[344px] h-[93px] rounded-[10px] p-[7px] bg-[#323232] flex flex-col gap-[11px]">
-                    <div className="text-white">
-                      <span className="text-gray-300">Answer:</span>
-                      <span className="ml-2">{message.answer}</span>
-                    </div>
+              {/* Answer bubble */}
+              {message.answer ? (
+                <div className="flex flex-col max-w-md self-end space-y-1">
+                  <span className="text-sm text-green-100">Answer:</span>
+                  <div className="rounded-lg px-4 py-2 bg-[#323232] text-sm whitespace-pre-wrap">
+                    <p>{message.answer}</p>
                     {message.answerTranslated && (
-                      <div className="text-gray-400 text-sm mt-1">
-                        <span className="text-gray-500">መልስ:</span>
-                        <span className="ml-2">{message.answerTranslated}</span>
+                      <div className="mt-2 text-blue-50">
+                        <strong>መልስ:</strong>
+                        <p>{message.answerTranslated}</p>
                       </div>
                     )}
                   </div>
                 </div>
-              )}
-
-              {message.isActive && !message.answer && (
-                <div className="w-full flex justify-end">
-                  <div className="w-[344px] h-[93px] rounded-[10px] p-[7px] bg-[#323232] flex flex-col gap-[11px]">
-                    <div className="text-gray-400">
-                      Placeholder for active message
-                    </div>
+              ) : message.isActive ? (
+                <div className="flex flex-col max-w-md self-end space-y-1">
+                  <span className="text-sm text-gray-400">Answer:</span>
+                  <div className="rounded-lg px-4 py-2 bg-[#323232] text-sm">
+                    <div className="text-gray-400">Placeholder for active message</div>
                   </div>
                 </div>
-              )}
+              ) : null}
             </div>
           ))}
         </div>
-
         {/* Use Chat button with specified dimensions */}
-        <div className="absolute bottom-4 right-8">
+        <div className="fixed bottom-4 right-8">
           <button
             onClick={() => router.push("/dashboard/chat")}
             className="w-[227px] h-[61px] bg-[#3972FF] hover:bg-blue-600 text-white rounded-[10px] px-[65px] py-[8px] gap-[8px] flex items-center justify-center"
