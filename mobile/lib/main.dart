@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/features/auth/presentation/blocs/sign_up_bloc.dart';
 import 'package:mobile/features/auth/presentation/pages/signup_pages.dart';
+import 'package:mobile/features/form/presentation/blocs/form_bloc.dart';
+import 'package:mobile/features/form/presentation/pages/translator_page.dart';
 import 'package:mobile/features/onboarding/presentation/bloc/onboarding_bloc.dart';
 
 import 'features/auth/presentation/blocs/login_cubit.dart';
@@ -34,6 +36,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<OnboardingBloc>(
           create: (_) => di.sl<OnboardingBloc>(), // Add OnboardingBloc here
         ),
+        BlocProvider<FormBloc>(
+          create: (_) => di.sl<FormBloc>(),
+        )
       ],
       child: MaterialApp(
         title: 'PassMe',
@@ -54,6 +59,7 @@ class MyApp extends StatelessWidget {
           '/flights/empty': (_) => const FlightEmptyPage(),
           '/flights/list': (_) => const FlightListPage(),
           '/flights/detail': (_) => FlightDetailPage(),
+          '/form': (_) => TranslatorFormPage(),
         },
       ),
     );
