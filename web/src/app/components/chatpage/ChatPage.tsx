@@ -41,7 +41,7 @@ export default function ChatPage() {
           alt="A2SV Translator Banner"
           width={200}
           height={50}
-          className="min-w-70 md:w-83 h-16 object-fit"
+          className="w-65 h-12 md:w-83 md:h-16 object-fit"
           priority
         />
       </header>

@@ -129,7 +129,7 @@ export default function Sidebar() {
           aria-label="Open sidebar"
         >
           <Image
-            src="/closesidebar.png"
+            src="/image.png"
             alt="Open sidebar"
             width={24}
             height={24}
@@ -157,7 +157,7 @@ export default function Sidebar() {
             aria-label="Close sidebar"
           >
             <Image
-              src="/closesidebar.png"
+              src="/image.png"
               alt="Close sidebar"
               width={24}
               height={24}

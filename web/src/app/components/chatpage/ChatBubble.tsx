@@ -61,7 +61,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ chatItem, isLatest = false }) =
         {isQuestion ? 'Question:' : 'Answer:'}
       </span>
 
-      <div className={`rounded-lg px-4 py-2 ${isEditing ? 'bg-indigo-500 w-100' : (isQuestion ? 'bg-zinc-800' : 'bg-zinc-700')} text-sm relative`}>
+      <div className={`rounded-lg px-4 py-2 ${isEditing ? 'bg-indigo-500 w-100' : (isQuestion ? 'bg-[#26252A]' : 'bg-[#323232]')} text-sm relative`}>
         {isQuestion ? (
           <>
             <p className="whitespace-pre-wrap">{chatItem.text}</p>
