@@ -5,7 +5,7 @@ import (
 	"log" 
 	"time"
 
-	"github.com/A2SV/A2SV-2025-Internship-Pass-Me/Infrastructure"
+	"github.com/A2SV/A2SV-2025-Internship-Pass-Me/infrastructure"
 	"github.com/A2SV/A2SV-2025-Internship-Pass-Me/domain"
 )
 
@@ -34,7 +34,7 @@ func (uc *flightUseCase) AddFlight(inputData *domain.CreateFlightRequest, userID
 	}
 
 	log.Printf("Original Title: %s", inputData.Title)
-	translatedTitle, err := Infrastructure.TranslateText(inputData.Title, "am_to_en")
+	translatedTitle, err := infrastructure.TranslateText(inputData.Title, "am_to_en")
 	if err != nil {
 		log.Printf("Error translating Title: %v", err)
 		return nil, fmt.Errorf("failed to translate title: %w", err)
@@ -43,7 +43,7 @@ func (uc *flightUseCase) AddFlight(inputData *domain.CreateFlightRequest, userID
 	flight.Title = translatedTitle 
 
 	log.Printf("Original FromCountry: %s", inputData.FromCountry)
-	translatedFromCountry, err := Infrastructure.TranslateText(inputData.FromCountry, "am_to_en")
+	translatedFromCountry, err := infrastructure.TranslateText(inputData.FromCountry, "am_to_en")
 	if err != nil {
 		log.Printf("Error translating FromCountry: %v", err)
 		return nil, fmt.Errorf("failed to translate from_country: %w", err)
@@ -52,7 +52,7 @@ func (uc *flightUseCase) AddFlight(inputData *domain.CreateFlightRequest, userID
 	flight.FromCountry = translatedFromCountry 
 
 	log.Printf("Original ToCountry: %s", inputData.ToCountry)
-	translatedToCountry, err := Infrastructure.TranslateText(inputData.ToCountry, "am_to_en")
+	translatedToCountry, err := infrastructure.TranslateText(inputData.ToCountry, "am_to_en")
 	if err != nil {
 		log.Printf("Error translating ToCountry: %v", err)
 		return nil, fmt.Errorf("failed to translate to_country: %w", err)
@@ -73,7 +73,7 @@ func (uc *flightUseCase) AddFlight(inputData *domain.CreateFlightRequest, userID
 
 		// Translate Question
 		log.Printf("Original Question %d: %s", i, inputQA.Question)
-		translatedQuestion, err := Infrastructure.TranslateText(inputQA.Question, "am_to_en")
+		translatedQuestion, err := infrastructure.TranslateText(inputQA.Question, "am_to_en")
 		if err != nil {
 			log.Printf("Error translating Question %d: %v", i, err)
 			return nil, fmt.Errorf("failed to translate question %d: %w", i, err)
@@ -83,7 +83,7 @@ func (uc *flightUseCase) AddFlight(inputData *domain.CreateFlightRequest, userID
 
 		// Translate Answer
 		log.Printf("Original Answer %d: %s", i, inputQA.Answer)
-		translatedAnswer, err := Infrastructure.TranslateText(inputQA.Answer, "am_to_en")
+		translatedAnswer, err := infrastructure.TranslateText(inputQA.Answer, "am_to_en")
 		if err != nil {
 			log.Printf("Error translating Answer %d: %v", i, err)
 			return nil, fmt.Errorf("failed to translate answer %d: %w", i, err)

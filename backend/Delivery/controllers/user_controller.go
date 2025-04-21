@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	domain "github.com/A2SV/A2SV-2025-Internship-Pass-Me/domain"
-	"github.com/A2SV/A2SV-2025-Internship-Pass-Me/Infrastructure"
+	"github.com/A2SV/A2SV-2025-Internship-Pass-Me/infrastructure"
 	usecases "github.com/A2SV/A2SV-2025-Internship-Pass-Me/usecases"
 
 	"github.com/gin-gonic/gin"
@@ -84,7 +84,7 @@ func (uc *UserController) Login(c *gin.Context) {
 	}
 
 	// Generate JWT token with both email and user ID
-	token, err := Infrastructure.GenerateJWT(user.Email, user.ID.Hex())
+	token, err := infrastructure.GenerateJWT(user.Email, user.ID.Hex())
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to generate token"})
 		return

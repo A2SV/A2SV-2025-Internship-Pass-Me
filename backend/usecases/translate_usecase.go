@@ -1,7 +1,7 @@
 package usecases
 
 import (
-    "github.com/A2SV/A2SV-2025-Internship-Pass-Me/Infrastructure"
+    "github.com/A2SV/A2SV-2025-Internship-Pass-Me/infrastructure"
 )
 
 type TranslateUseCase interface {
@@ -15,5 +15,5 @@ func NewTranslateUseCase() TranslateUseCase {
 }
 
 func (uc *translateUseCase) TranslateText(text, direction string) (string, error) {
-    return Infrastructure.TranslateText(text, direction)
+    return infrastructure.TranslateText(text, direction)
 }

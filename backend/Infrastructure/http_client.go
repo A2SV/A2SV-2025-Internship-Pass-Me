@@ -1,13 +1,13 @@
-package Infrastructure
+package infrastructure
 
 import (
 	"bytes"
 	"encoding/json"
 	"errors"
-	"fmt" 
-	"io"   
-	"net/http"
+	"fmt"
+	"io"
 	"log"
+	"net/http"
 )
 
 type TranslationRequest struct {
@@ -47,11 +47,11 @@ func TranslateText(text, direction string) (string, error) {
 	}
 
 	if res.Error != "" {
-		return "", errors.New(res.Error) 
+		return "", errors.New(res.Error)
 	}
 
 	if res.TranslatedText == "" && res.Error == "" {
-	 log.Printf("Warning: Translation resulted in an empty string for input: %s", text)
+		log.Printf("Warning: Translation resulted in an empty string for input: %s", text)
 	}
 
 	return res.TranslatedText, nil
