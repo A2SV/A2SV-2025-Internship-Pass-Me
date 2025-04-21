@@ -6,22 +6,22 @@
     },
     {
       "id": 2,
-      "questionText": "ምን  ያህል ጊዜ ትቆያለህ?",
+      "questionText": "ምን  ያህል ጊዜ ትቆያለህ ?",
       "placeholder": "መልሶን እዚሀ ጋር ያስቀምጡ "
     },
     {
       "id": 3,
-      "questionText": "የት ትቀመጣለህ?",
+      "questionText": "የት ትቀመጣለህ ?",
       "placeholder": "መልሶን እዚሀ ጋር ያስቀምጡ "
     },
     {
       "id": 4,
-      "questionText": "መመለሻ ትኬት አለህ ",
+      "questionText": "መመለሻ ትኬት አለህ ?",
       "placeholder": "መልሶን እዚሀ ጋር ያስቀምጡ "
     },
     {
       "id": 5,
-      "questionText": "ማንን ለመጠየቅ ነው ወይም ማን ጋር ነው የምትቆየው ",
+      "questionText": "ማንን ለመጠየቅ ነው ወይም ማን ጋር ነው የምትቆየው ? ",
       "placeholder": "መልሶን እዚሀ ጋር ያስቀምጡ "
     }
   ]
