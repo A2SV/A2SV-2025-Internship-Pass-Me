@@ -34,7 +34,7 @@ export default function ChatPage() {
   ]);
 
   return (
-    <div className="realtive flex flex-col min-h-screen bg-[#1C1C1C] text-white">
+    <div className="relative flex flex-col min-h-screen bg-[#1C1C1C] text-white">
       <header className="flex items-center justify-center py-4 px-0">
         <Image
           src="/banner.png"
@@ -45,7 +45,7 @@ export default function ChatPage() {
           priority
         />
       </header>
-      <main className="flex-grow px-6 py-4 overflow-auto">
+      <main className="flex-grow px-6 py-4 overflow-auto pb-20">
         <div className="max-w-3xl mx-auto flex justify-between mb-10">
           <LanguageSelector label="From" initialLanguage="English" />
           <LanguageSelector label="To" initialLanguage="Amharic" />
