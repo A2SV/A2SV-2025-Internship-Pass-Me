@@ -1,5 +1,5 @@
 "use client";
-
+import { signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
@@ -111,8 +111,9 @@ export default function Sidebar() {
     setShowAccountModal(!showAccountModal);
   };
 
-  const handleLogout = () => {
-    window.location.href = "/home";
+  const handleLogout = async () => {
+    await signOut({ redirect: false });
+    router.push("/home");
   };
 
   const toggleSidebar = () => {
