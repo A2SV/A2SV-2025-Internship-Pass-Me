@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import questions from "../../../../question";
 import questionsAmharic from "../../../../amharic";
-import FormComponent from "./FormComponent";
+import FormComponent from "./FormComponent"
 import FlightDetails from "./FlightDetails";
 import {inter} from "@/app/libs/font";
 // import Link from 'next/link'
@@ -22,6 +22,16 @@ const Mainpage = () => {
     [key: string]: string; // Adjust the types based on your form fields
   }
 
+  const resetForm = () => {
+    
+    setTime("");
+    setPopup(false);
+    setFlightName("");
+    setFlightFrom("");
+    setFlightTo("");
+    setFlightDate("");
+  };
+
   const onSubmit = (data: FormData) => {
      const  flightDetails = {
       flightName: flightName, 
@@ -33,6 +43,7 @@ const Mainpage = () => {
     console.log("Form Data:", data);
 
     setPopup(false);
+    resetForm();
 
     console.log(data);
   };
@@ -108,7 +119,7 @@ const Mainpage = () => {
         </div>
       </div>
 
-      <FlightDetails
+      {/* <FlightDetails
         flightName={flightName}
         setFlightName={setFlightName}
         flightFrom={flightFrom}
@@ -118,20 +129,27 @@ const Mainpage = () => {
         time={time}
         setTime={setTime}
         langauage={lanaguage}
-        />
+        /> */}
 
       <h1 className="mt-10 text-white text-[24px] font-bold font-inter mx-20">
         {lanaguage === "en" ? "common airport questions " : "የአየር ማረፊያ የተደጋጉ ጥያቄዎች"}
         </h1>
-     <FormComponent
-    
-        questions={questions}
-        questionsAmharic={questionsAmharic}
-        lanaguage={lanaguage}
-        onSubmit={onSubmit}
-        popup={popup}
-        handlethepop={handlethepopup}
-        handleedit={handleedit}   
+<FormComponent
+lanaguage={lanaguage}
+flightName={flightName}
+setFlightName={setFlightName}
+flightFrom={flightFrom}
+setFlightFrom={setFlightFrom}
+flightTo={flightTo}
+setFlightTo={setFlightTo}
+time={time}
+setTime={setTime}
+questions={questions}
+questionsAmharic={questionsAmharic}
+ onSubmit={onSubmit}
+popup={popup}
+handlethepop={handlethepopup}
+handleedit={handleedit}   
       />
     </div>
   );

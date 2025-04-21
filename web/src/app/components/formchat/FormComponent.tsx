@@ -1,16 +1,26 @@
 import React from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, DefaultValues } from "react-hook-form";
+
+import ReactDatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 interface FormComponentProps {
-  lanaguage: string;
-  questions: { [key: string]: string };
-  questionsAmharic: { [key: string]: string };
+  questions:any;
+  questionsAmharic: any;
   onSubmit: (data: any) => void;
   handleedit: (data: any) => void;
  handlethepop: (data: any) => void;
   popup: boolean;
+  flightName: string;
+  setFlightName: (value: string) => void;
+  flightFrom: string;
+  setFlightFrom: (value: string) => void;
+  flightTo: string;
+  setFlightTo: (value: string) => void;
+  time: string;
+  setTime: (value: string) => void;
+  lanaguage: string;
 }
-
 const FormComponent: React.FC<FormComponentProps> = ({
   lanaguage,
   questions,
@@ -18,14 +28,193 @@ const FormComponent: React.FC<FormComponentProps> = ({
   popup,
   onSubmit,
   handleedit,
-  handlethepop
-
+  handlethepop,
+  flightName,
+  setFlightName,
+  flightFrom,
+  setFlightFrom,
+  flightTo,
+  setFlightTo,
+  time,
+  setTime,
+  
+  
 }) => {
-  const { control, handleSubmit } = useForm({ shouldUnregister: true });
+ 
+interface FormDefaultValues {
+  flightName: string;
+  flightOrigin: string;
+  flightDestination: string;
+  flightDate: null;
+  [key: string]: string | null; // For dynamic question fields
+}
 
+const { control, handleSubmit, reset } = useForm<FormDefaultValues>({
+  shouldUnregister: true,
+  defaultValues: {
+    flightName: "",
+    flightOrigin: "",
+    flightDestination: "",
+    flightDate: null,
+    ...(lanaguage === "en"
+      ? Object.keys(questions).reduce<Record<string, string>>((acc, key) => {
+          const questionKey = questions[parseInt(key)];
+          acc[questionKey] = "";
+          return acc;
+        }, {})
+      : Object.keys(questionsAmharic).reduce<Record<string, string>>((acc, key) => {
+          const questionKey = questionsAmharic[parseInt(key)];
+          acc[questionKey] = "";
+          return acc;
+        }, {}))
+  }
+});
+  const onSubmitForm = (data: any) => {
+    const flightDetails = {
+      flightName: flightName,
+      flightFrom: flightFrom,
+      flightTo: flightTo,
+      time: time,
+    };
+    console.log("Flight Details:", flightDetails);
+    console.log("Form Data:", data);
+    reset(); // Reset the form after submission
+    onSubmit(data); // Call the onSubmit function passed as a prop
+  }
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="mx-32 mt-10 mb-8">
-      {lanaguage === "en" &&
+    <form onSubmit={handleSubmit(onSubmitForm)} className="mx-32 mt-10 mb-8">
+
+<h1 className="text-white text-[25px] mb-6">
+        {lanaguage=== "en" ? "Flight Details" : "የበረራ ዝርዝሮች"}
+      </h1>
+
+<div className="relative py-4 my-8 before:rounded-[10px] transition-transform duration-200 ease-in-out before:border-[2px] before:border-[#3927FF] hover:-translate-y-[2px] before:content-[''] before:absolute before:-inset-[2px] before:bg-[radial-gradient(circle_at_center,_#386BF62E_0%,_#386BF62E_100%)] before:opacity-0 before:transition-opacity before:duration-200 hover:before:opacity-100 before:-z-10 before:pointer-events-none">
+    <div className="relative px-2 py-4">
+      <p className="text-white text-[19px] font-bold font-inter m-2">
+        {lanaguage === "en" ? "Flight name" : "የበረራ  �ም"}
+      </p>
+      <Controller
+        name="flightName"
+        control={control}
+        rules={{
+          required: lanaguage === "en" ? "Flight name is required" : "የበረራ ስም አስፈላጊ ነው።",
+          pattern: {
+            value: lanaguage === "en" ? /^[a-zA-Z\s]+$/ : /^[\u1200-\u137F\s]+$/,
+            message: lanaguage === "en" 
+              ? "Please use English letters only" 
+              : "እባኮትን የአማርኛ ፊደል ብቻ ያስገቡ።",
+          },
+        }}
+        render={({ field, fieldState: { error } }) => (
+          <div className="relative px-2 py-4">
+            <input
+              {...field}
+              className="w-[976px] h-[67px] px-2 py-4 rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none transition-all duration-200"
+            />
+            {error && <p className="text-red-500 mt-2">{error.message}</p>}
+          </div>
+        )}
+      />
+    </div>
+  </div>
+
+  {/* From/To Country */}
+  <div className="flex flex-wrap gap-6">
+    {/* From Country */}
+    <div className="flex-1 min-w-[300px] mr-32 relative my-8 before:rounded-[10px] transition-transform duration-200 ease-in-out before:border-[2px] before:border-[#3927FF] hover:-translate-y-[2px] before:content-[''] before:absolute before:-inset-[2px] before:bg-[radial-gradient(circle_at_center,_#386BF62E_0%,_#386BF62E_100%)] before:opacity-0 before:transition-opacity before:duration-200 hover:before:opacity-100 before:-z-10 before:pointer-events-none">
+      <p className="text-white text-[19px] font-bold font-inter m-2">
+        {lanaguage === "en" ? "From Country" : "መነሻ አገር"}
+      </p>
+      <Controller
+        name="flightOrigin"
+        control={control}
+        rules={{
+          required: lanaguage === "en" ? "Flight origin is required" : "መነሻ አገር አስፈላጊ ነው።",
+          pattern: {
+            value: lanaguage === "en" ? /^[a-zA-Z\s]+$/ : /^[\u1200-\u137F\s]+$/,
+            message: lanaguage === "en" 
+              ? "Please use English letters only" 
+              : "እባኮትን የአማርኛ ፊደል ብቻ ያስገቡ።",
+          },
+        }}
+        render={({ field, fieldState: { error } }) => (
+          <div className="relative px-2 py-4 mr-20">
+            <input
+              {...field}
+              placeholder={lanaguage === "en" ? "Your origin country" : "የመነሻ አገር"}
+              className="w-full h-[67px] px-2 py-4 rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none transition-all duration-200"
+            />
+            {error && <p className="text-red-500 mt-2">{error.message}</p>}
+          </div>
+        )}
+      />
+    </div>
+
+    {/* To Country */}
+    <div className="flex-1 min-w-[300px] mr-32 relative my-8 before:rounded-[10px] transition-transform duration-200 ease-in-out before:border-[2px] before:border-[#3927FF] hover:-translate-y-[2px] before:content-[''] before:absolute before:-inset-[2px] before:bg-[radial-gradient(circle_at_center,_#386BF62E_0%,_#386BF62E_100%)] before:opacity-0 before:transition-opacity before:duration-200 hover:before:opacity-100 before:-z-10 before:pointer-events-none">
+      <p className="text-white text-[19px] font-bold font-inter m-2">
+        {lanaguage === "en" ? "To Country" : "መድረሻ አገር"}
+      </p>
+      <Controller
+        name="flightDestination"
+        control={control}
+        rules={{
+          required: lanaguage === "en" ? "Flight destination is required" : "መድረሻ አገር አስፈላጊ ነው።",
+          pattern: {
+            value: lanaguage === "en" ? /^[a-zA-Z\s]+$/ : /^[\u1200-\u137F\s]+$/,
+            message: lanaguage === "en" 
+              ? "Please use English letters only" 
+              : "እባኮትን የአማርኛ ፊደል ብቻ ያስገቡ።",
+          },
+        }}
+        render={({ field, fieldState: { error } }) => (
+          <div className="px-2 py-4">
+            <input
+              {...field}
+              className="w-full h-[67px] px-2 py-4 rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none transition-all duration-200"
+            />
+            {error && <p className="text-red-500 mt-2">{error.message}</p>}
+          </div>
+        )}
+      />
+    </div>
+  </div>
+
+  {/* Flight Date */}
+  <div className="relative py-4 my-8 before:rounded-[10px] transition-transform duration-200 ease-in-out before:border-[2px] before:border-[#3927FF] hover:-translate-y-[2px] before:content-[''] before:absolute before:-inset-[2px] before:bg-[radial-gradient(circle_at_center,_#386BF62E_0%,_#386BF62E_100%)] before:opacity-0 before:transition-opacity before:duration-200 hover:before:opacity-100 before:-z-10 before:pointer-events-none">
+    <div className="relative px-2 py-4">
+      <p className="text-white text-[19px] font-bold font-inter m-2">
+        {lanaguage === "en" ? "Flight date" : "የበረራ ቀን"}
+      </p>
+      <Controller
+        name="flightDate"
+        control={control}
+        rules={{
+          required: lanaguage === "en" ? "Flight date is required" : "የበረራ ቀን አስፈላጊ ነው።"
+        }}
+        render={({ field }) => (
+          <div className="relative px-2 py-4">
+            <ReactDatePicker
+              selected={field.value ? new Date(field.value) : null}
+              onChange={(date) => field.onChange(date?.toISOString())}
+              showTimeSelect
+              dateFormat="Pp"
+              placeholderText={
+                lanaguage === "en" 
+                  ? "Set your flight time and date" 
+                  : "የበረራዎን ቀን እና ሰዓት ይመርጡ"
+              }
+              className="w-[976px] h-[67px] px-2 py-4 rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none transition-all duration-200"
+            />
+          </div>
+        )}
+      />
+    </div>
+  </div>
+
+       <h1 className="text-white text-[24px]">common air port questions</h1>
+      
+      {lanaguage === "en" && 
         Object.keys(questions).map((key) => (
           <div
             key={key}
@@ -51,6 +240,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
                 <div className="px-2 py-4">
                   <input
                     {...field}
+                    value={field.value || ''}
                     placeholder="enter your answer"
                     className="w-full px-2 py-4 h-[67px] rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none"
                   />
@@ -62,12 +252,11 @@ const FormComponent: React.FC<FormComponentProps> = ({
             />
           </div>
         ))}
-
       {lanaguage === "am" &&
         Object.keys(questionsAmharic).map((key) => (
           <div
-            key={key}
-            className="relative overflow-visible my-8 before:rounded-[10px] transition-transform duration-200 ease-in-out before:border-[2px] before:border-[#3927FF] hover:-translate-y-[2px] before:content-[''] before:absolute before:-inset-[2px] before:bg-[radial-gradient(circle_at_center,_#386BF62E_0%,_#386BF62E_100%)] before:opacity-0 before:transition-opacity before:duration-200 hover:before:opacity-100 before:-z-10 before:pointer-events-none"
+          key={key}
+          className="relative overflow-visible my-8 before:rounded-[10px] transition-transform duration-200 ease-in-out before:border-[2px] before:border-[#3927FF] hover:-translate-y-[2px] before:content-[''] before:absolute before:-inset-[2px] before:bg-[radial-gradient(circle_at_center,_#386BF62E_0%,_#386BF62E_100%)] before:opacity-0 before:transition-opacity before:duration-200 hover:before:opacity-100 before:-z-10 before:pointer-events-none"
           >
             <p>
               <span className="inline-block font-bold text-[19px] text-white font-inter m-2">
@@ -89,6 +278,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
                 <div className="px-2 py-4">
                   <input
                     {...field}
+                    value={field.value || ''}
                     placeholder="የአማርኛ ፊደል በመጠቀም ይሞሉ"
                     className="w-full  px-2 py-4 h-[67px] rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none"
                   />
@@ -135,6 +325,8 @@ const FormComponent: React.FC<FormComponentProps> = ({
                 </button>
                 <button
                   type="submit"
+                  onChange={() => reset()}
+              
                   className="bg-[#3972FF] border-[#3972FF] hover:bg-[#5C8BFF] text-white w-40 h-10 px-4 rounded-[12px] border border-solid mr-4 font-bold text-[20px] leading-[24px] text-center align-middle"
                 >
                   አዎ
@@ -162,11 +354,200 @@ const FormComponent: React.FC<FormComponentProps> = ({
               </div>
             </div>
           ))}
-
+  
     </form>
   );
 };
 
 export default FormComponent;
+
+// import React from "react";
+// import { useForm, Controller } from "react-hook-form";
+
+// interface FormComponentProps {
+//   lanaguage: string;
+//   questions: { [key: string]: string };
+//   questionsAmharic: { [key: string]: string };
+//   onSubmit: (data: any) => void;
+//   handleedit: (data: any) => void;
+//   handlethepop: (data: any) => void;
+//   popup: boolean;
+//   flightName: string;
+//   setFlightName: (value: string) => void;
+//   flightFrom: string;
+//   setFlightFrom: (value: string) => void;
+//   flightTo: string;
+//   setFlightTo: (value: string) => void;
+//   time: string;
+//   setTime: (value: string) => void;
+//   langauage: string;
+// }
+
+// const FormComponent: React.FC<FormComponentProps> = ({
+//   lanaguage,
+//   questions,
+//   questionsAmharic,
+//   popup,
+//   onSubmit,
+//   handleedit,
+//   handlethepop,
+//   flightName,
+//   setFlightName,
+//   flightFrom,
+//   setFlightFrom,
+//   flightTo,
+//   setFlightTo,
+//   time,
+//   setTime,
+//   langauage,
+// }) => {
+//   const { control, handleSubmit, reset } = useForm({ shouldUnregister: true });
+
+//   const onSubmitForm = (data: any) => {
+//     const flightDetails = {
+//       flightName: flightName,
+//       flightFrom: flightFrom,
+//       flightTo: flightTo,
+//       time: time,
+//     };
+//     console.log("Flight Details:", flightDetails);
+//     console.log("Form Data:", data);
+//     reset(); // Reset the form after submission
+//     onSubmit(data); // Call the onSubmit function passed as a prop
+//   };
+
+//   return (
+//     <form onSubmit={handleSubmit(onSubmitForm)} className="mx-32 mt-10 mb-8">
+//       <h1 className="text-white text-[25px] mb-6">
+//         {lanaguage === "en" ? "Flight Details" : "የበረራ ዝርዝሮች"}
+//       </h1>
+
+//       {/* Flight Name */}
+//       <div className="relative mr-32 py-4 my-8">
+//         <p className="text-white text-[19px] font-bold font-inter m-2">
+//           {lanaguage === "en" ? "Flight Name" : "የበረራ ስም"}
+//         </p>
+//         <Controller
+//           name="flightName"
+//           control={control}
+//           rules={{
+//             required: lanaguage === "en" ? "Flight name is required" : "የበረራ ስም አስፈላጊ ነው።",
+//             pattern: {
+//               value: lanaguage === "en" ? /^[a-zA-Z\s]+$/ : /^[\u1200-\u137F\s]+$/,
+//               message:
+//                 lanaguage === "en"
+//                   ? "Please use English letters only"
+//                   : "እባኮትን የአማርኛ ፊደል ብቻ ያስገቡ።",
+//             },
+//           }}
+//           render={({ field, fieldState: { error } }) => (
+//             <div className="relative px-2 py-4">
+//               <input
+//                 {...field}
+//                 placeholder={
+//                   lanaguage === "en"
+//                     ? "Set your flight name"
+//                     : "የበረራዎን ስም ይመርጡ"
+//                 }
+//                 className="w-full h-[67px] px-2 py-4 rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none transition-all duration-200"
+//               />
+//               {error && (
+//                 <p className="text-red-500 mt-2">{error.message}</p>
+//               )}
+//             </div>
+//           )}
+//         />
+//       </div>
+
+//       {/* From Country */}
+//       <div className="relative mr-32 py-4 my-8">
+//         <p className="text-white text-[19px] font-bold font-inter m-2">
+//           {lanaguage === "en" ? "From Country" : "መነሻ አገር"}
+//         </p>
+//         <Controller
+//           name="flightFrom"
+//           control={control}
+//           rules={{
+//             required: lanaguage === "en" ? "Origin country is required" : "የመነሻ አገር አስፈላጊ ነው።",
+//             pattern: {
+//               value: lanaguage === "en" ? /^[a-zA-Z\s]+$/ : /^[\u1200-\u137F\s]+$/,
+//               message:
+//                 lanaguage === "en"
+//                   ? "Please use English letters only"
+//                   : "እባኮትን የአማርኛ ፊደል ብቻ ያስገቡ።",
+//             },
+//           }}
+//           render={({ field, fieldState: { error } }) => (
+//             <div className="relative px-2 py-4">
+//               <input
+//                 {...field}
+//                 placeholder={
+//                   lanaguage === "en"
+//                     ? "Your origin country"
+//                     : "የመነሻ አገር"
+//                 }
+//                 className="w-full h-[67px] px-2 py-4 rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none transition-all duration-200"
+//               />
+//               {error && (
+//                 <p className="text-red-500 mt-2">{error.message}</p>
+//               )}
+//             </div>
+//           )}
+//         />
+//       </div>
+
+//       {/* To Country */}
+//       <div className="relative mr-32 py-4 my-8">
+//         <p className="text-white text-[19px] font-bold font-inter m-2">
+//           {lanaguage === "en" ? "To Country" : "መድረሻ አገር"}
+//         </p>
+//         <Controller
+//           name="flightTo"
+//           control={control}
+//           rules={{
+//             required: lanaguage === "en" ? "Destination country is required" : "የመድረሻ አገር አስፈላጊ ነው።",
+//             pattern: {
+//               value: lanaguage === "en" ? /^[a-zA-Z\s]+$/ : /^[\u1200-\u137F\s]+$/,
+//               message:
+//                 lanaguage === "en"
+//                   ? "Please use English letters only"
+//                   : "እባኮትን የአማርኛ ፊደል ብቻ ያስገቡ።",
+//             },
+//           }}
+//           render={({ field, fieldState: { error } }) => (
+//             <div className="relative px-2 py-4">
+//               <input
+//                 {...field}
+//                 placeholder={
+//                   lanaguage === "en"
+//                     ? "Your destination country"
+//                     : "የመድረሻ አገር"
+//                 }
+//                 className="w-full h-[67px] px-2 py-4 rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none transition-all duration-200"
+//               />
+//               {error && (
+//                 <p className="text-red-500 mt-2">{error.message}</p>
+//               )}
+//             </div>
+//           )}
+//         />
+//       </div>
+
+//       {/* Submit Button */}
+//       <div className="flex justify-center items-center mt-5">
+//         <button
+//           type="submit"
+//           className="mt-10 w-[141px] h-[40px] pt-[4px] pr-[39px] pb-[4px] pl-[39px] gap-[8px] rounded-[10px] flex items-center justify-center cursor-pointer border-none font-sans text-[14px] bg-[#FFFFFF] hover:bg-[#F0F0F0] text-[#3972FF] border border-[#FFFFFF]"
+//         >
+//           <p className="font-inter font-bold text-[18px] leading-[32px] tracking-normal text-center align-middle">
+//             {lanaguage === "am" ? "አስገባው" : "Submit"}
+//           </p>
+//         </button>
+//       </div>
+//     </form>
+//   );
+// };
+
+// export default FormComponent;
 
 
