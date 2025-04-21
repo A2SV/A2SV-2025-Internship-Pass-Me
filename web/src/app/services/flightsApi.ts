@@ -1,10 +1,9 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { getSession } from 'next-auth/react';
 
 export interface QAItem {
-  questionEng: string;
-  questionAmh: string;
-  answerEng: string;
-  answerAmh: string;
+  question: string,
+  answer: string,
 }
 
 export interface FlightRequest {
@@ -25,11 +24,16 @@ export const flightsApi = createApi({
   reducerPath: 'flightsApi',
   baseQuery: fetchBaseQuery({
     baseUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
-    credentials: 'include',
-    prepareHeaders: (headers) => {
-      headers.set('Content-Type', 'application/json');
+    prepareHeaders: async (headers) => {
+      const session = await getSession();
+      // @ts-ignore
+      if (session?.accessToken) {
+        // @ts-ignore
+        headers.set('Authorization', `Bearer ${session.accessToken}`);
+      }
       return headers;
     },
+
   }),
   endpoints: (builder) => ({
     createFlight: builder.mutation<FlightResponse, FlightRequest>({
@@ -42,8 +46,11 @@ export const flightsApi = createApi({
     getFlights: builder.query<FlightResponse[], void>({
       query: () => ({
         url: '/flights',
-        method: 'POST',
+        method: 'GET',
       }),
+    }),
+    getFlight: builder.query<FlightResponse, string>({
+      query: (id) => `/flights/${id}`,
     }),
   }),
 });
@@ -51,4 +58,5 @@ export const flightsApi = createApi({
 export const {
   useCreateFlightMutation,
   useGetFlightsQuery,
+  useGetFlightQuery,
 } = flightsApi;

@@ -4,7 +4,7 @@ import Image from "next/image";
 import questions from "../../../../question";
 import questionsAmharic from "../../../../amharic";
 import FormComponent from "./FormComponent"
-import {inter} from "@/app/libs/font";
+// import {inter} from "@/app/libs/font";
 // import Link from 'next/link'
 
 const Mainpage = () => {
@@ -44,7 +44,7 @@ const Mainpage = () => {
   };
 
   return (
-    <div className={`w-full h-full bg-[#1C1C1C] overflow-scroll ${inter.className}`}>
+    <div className={`w-full h-full bg-[#1C1C1C] overflow-scroll`}>
       <div className="w-full ">
         <div>
                 {/* Banner at the top, horizontally centered */}

@@ -3,45 +3,30 @@ import { signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import { useGetFlightsQuery } from "@/app/services/flightsApi";
 
 // Types
 interface Flight {
   id: string;
   title: string;
-  origin: string;
-  destination: string;
+  from_country: string;
+  to_country: string;
   date: string;
 }
 
-// Mock data
-const mockFlights: Flight[] = [
-  {
-    id: "1",
-    title: "My First Trip to USA",
-    origin: "Ethiopia",
-    destination: "USA",
-    date: "Mar 28, 2025",
-  },
-  {
-    id: "2",
-    title: "Family Trip",
-    origin: "Dubai",
-    destination: "France",
-    date: "Jan 20, 2025",
-  },
-  {
-    id: "3",
-    title: "Pick up the package ordered online",
-    origin: "Ethiopia",
-    destination: "China",
-    date: "Jun 9, 2024",
-  },
-];
-
 // Main Sidebar Component
 export default function Sidebar() {
+  const {data, isLoading} = useGetFlightsQuery();
+
+  const flights: Flight[] = (data ?? []).map(({ id, title, from_country, to_country, date }: Flight) => ({
+      id,
+      title,
+      from_country,
+      to_country,
+      date,
+    }));
   const router = useRouter();
-  const [flights, setFlights] = useState<Flight[]>(mockFlights);
+  // const [flights, setFlights] = useState<Flight[]>(flights);
   const [selectedFlightId, setSelectedFlightId] = useState<string | null>(null);
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -87,7 +72,7 @@ export default function Sidebar() {
   }, [isSidebarOpen]);
 
   const handleDeleteFlight = (id: string) => {
-    setFlights(flights.filter((flight) => flight.id !== id));
+    // setFlights(flights.filter((flight) => flight.id !== id));
     if (selectedFlightId === id) {
       setSelectedFlightId(null);
       router.push("/dashboard");
@@ -178,7 +163,7 @@ export default function Sidebar() {
         <div className="flex-1 flex flex-col overflow-hidden relative">
           {/* Flight History List */}
           <div className="flex-1 overflow-y-auto">
-            {flights.length === 0 ? (
+            {flights.length === 0 ? ( !isLoading ? (
               <div className="flex flex-col items-center justify-center p-8 text-center h-full text-white">
                 <div
                   className="mb-4"
@@ -234,7 +219,7 @@ export default function Sidebar() {
                   your destination
                 </p>
               </div>
-            ) : (
+            ): null) : (
               <div className="flex flex-col py-4 gap-4">
                 {flights.map((flight) => (
                   <div
@@ -267,12 +252,12 @@ export default function Sidebar() {
 
                           {/* Origin - Destination */}
                           <p className="text-[12px] leading-[20px] font-normal text-white/75 font-['Inter']">
-                            {flight.origin} - {flight.destination}
+                            {flight.from_country} - {flight.to_country}
                           </p>
 
                           {/* Date */}
                           <p className="text-[11px] leading-[20px] font-normal text-white/75 font-['Inter']">
-                            {flight.date}
+                            {new Date(flight.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
                           </p>
                         </div>
                       </div>

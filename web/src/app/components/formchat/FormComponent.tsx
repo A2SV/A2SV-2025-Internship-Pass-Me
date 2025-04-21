@@ -3,6 +3,8 @@ import { useForm, Controller, DefaultValues } from "react-hook-form";
 
 import ReactDatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import { useSession } from "next-auth/react";
+import { useCreateFlightMutation } from "@/app/services/flightsApi";
 
 interface FormComponentProps {
   questions:any;
@@ -40,7 +42,7 @@ setPopup,
   
   
 }) => {
- 
+ const {data: session, status } = useSession()
 interface FormDefaultValues {
   flightName: string;
   flightOrigin: string;
@@ -69,18 +71,42 @@ const { control, handleSubmit, reset } = useForm<FormDefaultValues>({
         }, {}))
   }
 });
-const flightDetails = {
-  flightName: flightName,
-  flightFrom: flightFrom,
-  flightTo: flightTo,
-  time: time,
-};
-  const onSubmitForm = (data: any) => {
-    console.log("Flight Details:", flightDetails);
-    console.log("Form Data:", data);
-    setPopup(false); // Close the popup after submission
-    reset(); // Reset the form after submission// Call the onSubmit function passed as a prop
+
+const [createFlight, { isLoading: isCreating }] = useCreateFlightMutation();
+const onSubmitForm = async (data: any) => {
+  const {
+    flightName,
+    flightOrigin,
+    flightDestination,
+    flightDate,
+    ...qaFields
+  } = data;
+
+  const qa = Object.entries(qaFields).map(([question, answer]) => ({
+    question,
+    answer: (answer as string)
+  }));
+
+  try {
+    await createFlight({
+      title:        flightName,
+      from_country: flightOrigin,
+      to_country:   flightDestination,
+      date:         flightDate,
+      // @ts-ignore
+      user_id:      session?.user?.id ?? '',
+      language:     lanaguage,
+      qa,
+    }
+    ).unwrap();
+
+    setPopup(false);
+    reset();
+  } catch (err) {
+    console.error('Failed to create flight', err);
   }
+};
+
   return (
     <form onSubmit={handleSubmit(onSubmitForm)} className="mx-auto w-[85%] mt-10 mb-8">
 
@@ -334,7 +360,7 @@ const flightDetails = {
               </div>
             </div>
           ) : (
-            <div className="absolute md:w-[550px] w-[250px] sm:bottom-[100px]:bottom-[300px] md:top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-center text-center bg-black bg-opacity-60 w-[550px] h-[300px]">
+            <div className="absolute md:w-[550px] sm:bottom-[100px]:bottom-[300px] md:top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-center text-center bg-black bg-opacity-60 w-[550px] h-[300px]">
               <div className=" flex  h-[40px]   w-[550px] justify-center align-middle mt-20 text-white font-inter font-normal md:text-[23px] text-[15px] sm:px-5 leading-[100%] tracking-[0] text-center">
                 <p>are you sure you want to continue with this information?</p>
               </div>
