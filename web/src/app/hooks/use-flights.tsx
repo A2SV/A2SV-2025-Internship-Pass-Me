@@ -40,7 +40,7 @@ export function useFlights() {
         // In a real app, this would be an API call
         await new Promise((resolve) => setTimeout(resolve, 500));
         setFlights(mockFlights);
-      } catch (error) {
+      } catch (error) {  
         console.error("Failed to fetch flights:", error);
       } finally {
         setLoading(false);

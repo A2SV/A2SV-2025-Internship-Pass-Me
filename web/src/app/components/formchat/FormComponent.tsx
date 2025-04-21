@@ -7,7 +7,6 @@ import "react-datepicker/dist/react-datepicker.css";
 interface FormComponentProps {
   questions:any;
   questionsAmharic: any;
-  onSubmit: (data: any) => void;
   handleedit: (data: any) => void;
  handlethepop: (data: any) => void;
   popup: boolean;
@@ -20,13 +19,14 @@ interface FormComponentProps {
   time: string;
   setTime: (value: string) => void;
   lanaguage: string;
+  setPopup: (value: boolean) => void;
 }
 const FormComponent: React.FC<FormComponentProps> = ({
   lanaguage,
   questions,
   questionsAmharic,
   popup,
-  onSubmit,
+setPopup,
   handleedit,
   handlethepop,
   flightName,
@@ -69,29 +69,29 @@ const { control, handleSubmit, reset } = useForm<FormDefaultValues>({
         }, {}))
   }
 });
+const flightDetails = {
+  flightName: flightName,
+  flightFrom: flightFrom,
+  flightTo: flightTo,
+  time: time,
+};
   const onSubmitForm = (data: any) => {
-    const flightDetails = {
-      flightName: flightName,
-      flightFrom: flightFrom,
-      flightTo: flightTo,
-      time: time,
-    };
     console.log("Flight Details:", flightDetails);
     console.log("Form Data:", data);
-    reset(); // Reset the form after submission
-    onSubmit(data); // Call the onSubmit function passed as a prop
+    setPopup(false); // Close the popup after submission
+    reset(); // Reset the form after submission// Call the onSubmit function passed as a prop
   }
   return (
     <form onSubmit={handleSubmit(onSubmitForm)} className="mx-32 mt-10 mb-8">
 
-<h1 className="text-white text-[25px] mb-6">
+<h1 className="text-white text-[25px] md:mb-6 sm:m-0">
         {lanaguage=== "en" ? "Flight Details" : "የበረራ ዝርዝሮች"}
       </h1>
 
 <div className="relative py-4 my-8 before:rounded-[10px] transition-transform duration-200 ease-in-out before:border-[2px] before:border-[#3927FF] hover:-translate-y-[2px] before:content-[''] before:absolute before:-inset-[2px] before:bg-[radial-gradient(circle_at_center,_#386BF62E_0%,_#386BF62E_100%)] before:opacity-0 before:transition-opacity before:duration-200 hover:before:opacity-100 before:-z-10 before:pointer-events-none">
     <div className="relative px-2 py-4">
       <p className="text-white text-[19px] font-bold font-inter m-2">
-        {lanaguage === "en" ? "Flight name" : "የበረራ  �ም"}
+        {lanaguage === "en" ? "Flight name" : "የበረራ  ስም"}
       </p>
       <Controller
         name="flightName"
@@ -101,15 +101,16 @@ const { control, handleSubmit, reset } = useForm<FormDefaultValues>({
           pattern: {
             value: lanaguage === "en" ? /^[a-zA-Z\s]+$/ : /^[\u1200-\u137F\s]+$/,
             message: lanaguage === "en" 
-              ? "Please use English letters only" 
-              : "እባኮትን የአማርኛ ፊደል ብቻ ያስገቡ።",
+            ? "Please use English letters only" 
+            : "እባኮትን የአማርኛ ፊደል ብቻ ያስገቡ።",
           },
         }}
         render={({ field, fieldState: { error } }) => (
           <div className="relative px-2 py-4">
             <input
+              placeholder={lanaguage === "en" ? "Your flight name" : "የበረራ ስም"}
               {...field}
-              className="w-[976px] h-[67px] px-2 py-4 rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none transition-all duration-200"
+              className="sm:min-w-[320px] md:w-full h-[67px] px-2 py-4 rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none transition-all duration-200"
             />
             {error && <p className="text-red-500 mt-2">{error.message}</p>}
           </div>
@@ -119,9 +120,9 @@ const { control, handleSubmit, reset } = useForm<FormDefaultValues>({
   </div>
 
   {/* From/To Country */}
-  <div className="flex flex-wrap gap-6">
+  <div className=" md:flex  md:gap-6">
     {/* From Country */}
-    <div className="flex-1 min-w-[300px] mr-32 relative my-8 before:rounded-[10px] transition-transform duration-200 ease-in-out before:border-[2px] before:border-[#3927FF] hover:-translate-y-[2px] before:content-[''] before:absolute before:-inset-[2px] before:bg-[radial-gradient(circle_at_center,_#386BF62E_0%,_#386BF62E_100%)] before:opacity-0 before:transition-opacity before:duration-200 hover:before:opacity-100 before:-z-10 before:pointer-events-none">
+    <div className=" w-full  min-w-[250px] mr-32 relative my-8 before:rounded-[10px] transition-transform duration-200 ease-in-out before:border-[2px] before:border-[#3927FF] hover:-translate-y-[2px] before:content-[''] before:absolute before:-inset-[2px] before:bg-[radial-gradient(circle_at_center,_#386BF62E_0%,_#386BF62E_100%)] before:opacity-0 before:transition-opacity before:duration-200 hover:before:opacity-100 before:-z-10 before:pointer-events-none">
       <p className="text-white text-[19px] font-bold font-inter m-2">
         {lanaguage === "en" ? "From Country" : "መነሻ አገር"}
       </p>
@@ -138,7 +139,7 @@ const { control, handleSubmit, reset } = useForm<FormDefaultValues>({
           },
         }}
         render={({ field, fieldState: { error } }) => (
-          <div className="relative px-2 py-4 mr-20">
+          <div className=" w-full relative px-2 py-4 ">
             <input
               {...field}
               placeholder={lanaguage === "en" ? "Your origin country" : "የመነሻ አገር"}
@@ -151,7 +152,7 @@ const { control, handleSubmit, reset } = useForm<FormDefaultValues>({
     </div>
 
     {/* To Country */}
-    <div className="flex-1 min-w-[300px] mr-32 relative my-8 before:rounded-[10px] transition-transform duration-200 ease-in-out before:border-[2px] before:border-[#3927FF] hover:-translate-y-[2px] before:content-[''] before:absolute before:-inset-[2px] before:bg-[radial-gradient(circle_at_center,_#386BF62E_0%,_#386BF62E_100%)] before:opacity-0 before:transition-opacity before:duration-200 hover:before:opacity-100 before:-z-10 before:pointer-events-none">
+    <div className="w-full min-w-[250px]  mr-32 relative my-8 before:rounded-[10px] transition-transform duration-200 ease-in-out before:border-[2px] before:border-[#3927FF] hover:-translate-y-[2px] before:content-[''] before:absolute before:-inset-[2px] before:bg-[radial-gradient(circle_at_center,_#386BF62E_0%,_#386BF62E_100%)] before:opacity-0 before:transition-opacity before:duration-200 hover:before:opacity-100 before:-z-10 before:pointer-events-none">
       <p className="text-white text-[19px] font-bold font-inter m-2">
         {lanaguage === "en" ? "To Country" : "መድረሻ አገር"}
       </p>
@@ -168,9 +169,10 @@ const { control, handleSubmit, reset } = useForm<FormDefaultValues>({
           },
         }}
         render={({ field, fieldState: { error } }) => (
-          <div className="px-2 py-4">
+          <div className="w-full px-2 py-4">
             <input
               {...field}
+              placeholder={lanaguage === "en" ? "Your destination country" : "የመድረሻ አገር"}
               className="w-full h-[67px] px-2 py-4 rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none transition-all duration-200"
             />
             {error && <p className="text-red-500 mt-2">{error.message}</p>}
@@ -181,7 +183,7 @@ const { control, handleSubmit, reset } = useForm<FormDefaultValues>({
   </div>
 
   {/* Flight Date */}
-  <div className="relative py-4 my-8 before:rounded-[10px] transition-transform duration-200 ease-in-out before:border-[2px] before:border-[#3927FF] hover:-translate-y-[2px] before:content-[''] before:absolute before:-inset-[2px] before:bg-[radial-gradient(circle_at_center,_#386BF62E_0%,_#386BF62E_100%)] before:opacity-0 before:transition-opacity before:duration-200 hover:before:opacity-100 before:-z-10 before:pointer-events-none">
+  <div className="relative sm:w-70 md:w-full  py-4 my-8 before:rounded-[10px] transition-transform duration-200 ease-in-out before:border-[2px] before:border-[#3927FF] hover:-translate-y-[2px] before:content-[''] before:absolute before:-inset-[2px] before:bg-[radial-gradient(circle_at_center,_#386BF62E_0%,_#386BF62E_100%)] before:opacity-0 before:transition-opacity before:duration-200 hover:before:opacity-100 before:-z-10 before:pointer-events-none">
     <div className="relative px-2 py-4">
       <p className="text-white text-[19px] font-bold font-inter m-2">
         {lanaguage === "en" ? "Flight date" : "የበረራ ቀን"}
@@ -204,7 +206,7 @@ const { control, handleSubmit, reset } = useForm<FormDefaultValues>({
                   ? "Set your flight time and date" 
                   : "የበረራዎን ቀን እና ሰዓት ይመርጡ"
               }
-              className="w-[976px] h-[67px] px-2 py-4 rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none transition-all duration-200"
+              className=" sm:w-[300px] md:w-[976px] max-w-[976px]  h-[67px] px-2 py-4 rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none transition-all duration-200"
             />
           </div>
         )}
@@ -212,7 +214,7 @@ const { control, handleSubmit, reset } = useForm<FormDefaultValues>({
     </div>
   </div>
 
-       <h1 className="text-white text-[24px]">common air port questions</h1>
+       <h1 className="text-white text-[24px]">{(lanaguage==="en"?("common air port questions"):("በአየር ማረፊያ በተደጋጋሚ የሚጠየቁ ጥያቄዎች"))}</h1>
       
       {lanaguage === "en" && 
         Object.keys(questions).map((key) => (
@@ -242,7 +244,7 @@ const { control, handleSubmit, reset } = useForm<FormDefaultValues>({
                     {...field}
                     value={field.value || ''}
                     placeholder="enter your answer"
-                    className="w-full px-2 py-4 h-[67px] rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none"
+                    className=" w-full min-w-[240px] px-2 py-4 h-[67px] rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none"
                   />
                   {error && (
                     <p className="text-red-500 mt-2">{error.message}</p>
@@ -280,7 +282,7 @@ const { control, handleSubmit, reset } = useForm<FormDefaultValues>({
                     {...field}
                     value={field.value || ''}
                     placeholder="የአማርኛ ፊደል በመጠቀም ይሞሉ"
-                    className="w-full  px-2 py-4 h-[67px] rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none"
+                    className="w-full min-w-[240px] px-2 py-4 h-[67px] rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none"
                   />
                   {error && (
                     <p className="text-red-500 mt-2">{error.message}</p>
@@ -310,7 +312,7 @@ const { control, handleSubmit, reset } = useForm<FormDefaultValues>({
 "> {lanaguage === "am" ? "አስገባው" : "Submit"} </p>
         </button>
       </div>
-      {popup &&
+    {popup &&
           (lanaguage === "am" ? (
             <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-center text-center bg-black bg-opacity-60 w-[550px] h-[300px]">
               <div className=" flex  h-[40px]  w-[550px] justify-center align-middle mt-20 text-white font-inter font-normal text-[23px] leading-[100%] tracking-[0] text-center">
@@ -325,8 +327,6 @@ const { control, handleSubmit, reset } = useForm<FormDefaultValues>({
                 </button>
                 <button
                   type="submit"
-                  onChange={() => reset()}
-              
                   className="bg-[#3972FF] border-[#3972FF] hover:bg-[#5C8BFF] text-white w-40 h-10 px-4 rounded-[12px] border border-solid mr-4 font-bold text-[20px] leading-[24px] text-center align-middle"
                 >
                   አዎ

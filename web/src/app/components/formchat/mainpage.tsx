@@ -21,31 +21,7 @@ const Mainpage = () => {
     [key: string]: string; // Adjust the types based on your form fields
   }
 
-  const resetForm = () => {
-    
-    setTime("");
-    setPopup(false);
-    setFlightName("");
-    setFlightFrom("");
-    setFlightTo("");
-    setFlightDate("");
-  };
-
-  const onSubmit = (data: FormData) => {
-     const  flightDetails = {
-      flightName: flightName, 
-      flightFrom: flightFrom,
-      flightTo: flightTo,
-      time: time,
-    };
-    console.log("Flight Details:", flightDetails);
-    console.log("Form Data:", data);
-
-    setPopup(false);
-    resetForm();
-
-    console.log(data);
-  };
+  
   const handleLangaugechange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -88,7 +64,7 @@ const Mainpage = () => {
         </div>
       </div>
 
-      <div className="flex mx-20 justify-between mt-10">
+      <div className="flex flex-col gap-6 md:flex-row mx-20 justify-between mt-10">
         <div>
           <p className="text-white text-[14px]">From:</p>
           <div className="w-[280px] h-[56px] bg-[#676470] rounded-lg px-4 flex items-center gap-4">
@@ -117,23 +93,9 @@ const Mainpage = () => {
           </div>
         </div>
       </div>
-
-      {/* <FlightDetails
-        flightName={flightName}
-        setFlightName={setFlightName}
-        flightFrom={flightFrom}
-        setFlightFrom={setFlightFrom}
-        flightTo={flightTo}
-        setFlightTo={setFlightTo}
-        time={time}
-        setTime={setTime}
-        langauage={lanaguage}
-        /> */}
-
-      <h1 className="mt-10 text-white text-[24px] font-bold font-inter mx-20">
-        {lanaguage === "en" ? "common airport questions " : "የአየር ማረፊያ የተደጋጉ ጥያቄዎች"}
-        </h1>
+    
 <FormComponent
+setPopup={setPopup}
 lanaguage={lanaguage}
 flightName={flightName}
 setFlightName={setFlightName}
@@ -145,7 +107,6 @@ time={time}
 setTime={setTime}
 questions={questions}
 questionsAmharic={questionsAmharic}
- onSubmit={onSubmit}
 popup={popup}
 handlethepop={handlethepopup}
 handleedit={handleedit}   
