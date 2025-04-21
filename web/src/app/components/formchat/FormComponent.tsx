@@ -82,7 +82,7 @@ const flightDetails = {
     reset(); // Reset the form after submission// Call the onSubmit function passed as a prop
   }
   return (
-    <form onSubmit={handleSubmit(onSubmitForm)} className="mx-32 mt-10 mb-8">
+    <form onSubmit={handleSubmit(onSubmitForm)} className="mx-auto w-[85%] mt-10 mb-8">
 
 <h1 className="text-white text-[25px] md:mb-6 sm:m-0">
         {lanaguage=== "en" ? "Flight Details" : "የበረራ ዝርዝሮች"}
@@ -110,7 +110,7 @@ const flightDetails = {
             <input
               placeholder={lanaguage === "en" ? "Your flight name" : "የበረራ ስም"}
               {...field}
-              className="sm:min-w-[320px] md:w-full h-[67px] px-2 py-4 rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none transition-all duration-200"
+              className="w-full h-[67px] px-2 py-4 rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none transition-all duration-200"
             />
             {error && <p className="text-red-500 mt-2">{error.message}</p>}
           </div>
@@ -206,7 +206,7 @@ const flightDetails = {
                   ? "Set your flight time and date" 
                   : "የበረራዎን ቀን እና ሰዓት ይመርጡ"
               }
-              className=" sm:w-[300px] md:w-[976px] max-w-[976px]  h-[67px] px-2 py-4 rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none transition-all duration-200"
+              className="min-w-[300px] md:w-[976px] max-w-[976px]  h-[67px] px-2 py-4 rounded-[16px] bg-[#FFFFFF0D] border border-[#FFFFFF33] text-white focus:outline-none transition-all duration-200"
             />
           </div>
         )}
@@ -314,7 +314,7 @@ const flightDetails = {
       </div>
     {popup &&
           (lanaguage === "am" ? (
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-center text-center bg-black bg-opacity-60 w-[550px] h-[300px]">
+            <div className="absolute sm:bottom-[100px]:bottom-[300px]   top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2  w-[90vw] max-w-[550px] h-[300px] justify-center text-center bg-black bg-opacity-60 z-50">
               <div className=" flex  h-[40px]  w-[550px] justify-center align-middle mt-20 text-white font-inter font-normal text-[23px] leading-[100%] tracking-[0] text-center">
                 <p>እርግጠኛ ነህ/ነሽ ይህን መረጃ ማስቀመጥ ይፈልጋሉ?</p>
               </div>
@@ -334,8 +334,8 @@ const flightDetails = {
               </div>
             </div>
           ) : (
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-center text-center bg-black bg-opacity-60 w-[550px] h-[300px]">
-              <div className=" flex  h-[40px]  w-[550px] justify-center align-middle mt-20 text-white font-inter font-normal text-[23px] leading-[100%] tracking-[0] text-center">
+            <div className="absolute md:w-[550px] w-[250px] sm:bottom-[100px]:bottom-[300px] md:top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-center text-center bg-black bg-opacity-60 w-[550px] h-[300px]">
+              <div className=" flex  h-[40px]   w-[550px] justify-center align-middle mt-20 text-white font-inter font-normal md:text-[23px] text-[15px] sm:px-5 leading-[100%] tracking-[0] text-center">
                 <p>are you sure you want to continue with this information?</p>
               </div>
               <div className="flex justify-center gap-4  mt-15">
