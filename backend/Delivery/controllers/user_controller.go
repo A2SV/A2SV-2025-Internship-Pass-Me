@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	domain "github.com/A2SV/A2SV-2025-Internship-Pass-Me/domain"
-	Infrastructure "github.com/A2SV/A2SV-2025-Internship-Pass-Me/infrastructure"
+	"github.com/A2SV/A2SV-2025-Internship-Pass-Me/Infrastructure"
 	usecases "github.com/A2SV/A2SV-2025-Internship-Pass-Me/usecases"
 
 	"github.com/gin-gonic/gin"
@@ -20,7 +20,6 @@ func NewUserController(uc usecases.UserUseCase) *UserController {
 	}
 }
 
-// Register handles user registration
 func (uc *UserController) Register(c *gin.Context) {
 	var user domain.User
 	if err := c.ShouldBindJSON(&user); err != nil {
@@ -57,7 +56,6 @@ func (uc *UserController) Register(c *gin.Context) {
 	})
 }
 
-// Login handles user login
 func (uc *UserController) Login(c *gin.Context) {
 	var loginData struct {
 		Email    string `json:"email" binding:"required"`

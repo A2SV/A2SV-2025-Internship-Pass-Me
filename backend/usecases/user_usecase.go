@@ -7,25 +7,23 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-// UserUseCase interface defines the business logic methods
 type UserUseCase interface {
 	RegisterUser(user *domain.User) error
 	LoginUser(email, password string) (*domain.User, error)
 }
 
-// userUseCase implements the UserUseCase interface
 type userUseCase struct {
 	userRepo domain.UserRepository
 }
 
-// NewUserUseCase creates a new instance of user use case
+// creates a new instance of user use case
 func NewUserUseCase(repo domain.UserRepository) UserUseCase {
 	return &userUseCase{
 		userRepo: repo,
 	}
 }
 
-// RegisterUser creates a new user
+// creates a new user
 func (uc *userUseCase) RegisterUser(user *domain.User) error {
 	// Check if user with same email already exists
 	existingUser, _ := uc.userRepo.FindUserByEmail(user.Email)

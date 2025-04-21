@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	"github.com/A2SV/A2SV-2025-Internship-Pass-Me/delivery/controllers"
-	"github.com/A2SV/A2SV-2025-Internship-Pass-Me/delivery/routers"
+	"github.com/A2SV/A2SV-2025-Internship-Pass-Me/Delivery/controllers"
+	"github.com/A2SV/A2SV-2025-Internship-Pass-Me/Delivery/routers"
 	repositories "github.com/A2SV/A2SV-2025-Internship-Pass-Me/repositories"
 	usecases "github.com/A2SV/A2SV-2025-Internship-Pass-Me/usecases"
 	"github.com/gin-gonic/gin"
@@ -38,27 +38,21 @@ func main() {
 	// Select the database
 	db := client.Database("passme")
 
-	// Initialize repositories
 	flightRepo := repositories.NewFlightRepository(db)
 	userRepo := repositories.NewUserRepository(db)
 
-	// Initialize use cases
 	flightUC := usecases.NewFlightUseCase(flightRepo)
 	userUC := usecases.NewUserUseCase(userRepo)
 
-	// Initialize controllers
 	flightController := controllers.NewFlightController(flightUC)
 	userController := controllers.NewUserController(userUC)
 
 	// Set up the Gin router
 	r := gin.Default()
 
-	// Set up the routes
-	// Each router file handles its own route setup
 	routers.SetupUserRoutes(r, userController)
 	routers.SetupFlightRoutes(r, flightController)
 
-	// Start the server
 	log.Println("Server is running at :8080")
 	if err := r.Run(":8080"); err != nil {
 		log.Fatalf("Failed to start server: %v", err)

@@ -11,19 +11,18 @@ import (
 	domain "github.com/A2SV/A2SV-2025-Internship-Pass-Me/domain"
 )
 
-// userRepository is the implementation of the UserRepository interface
 type userRepository struct {
 	collection *mongo.Collection
 }
 
-// NewUserRepository initializes a new user repository
+// initialize a new user repository
 func NewUserRepository(db *mongo.Database) domain.UserRepository {
 	return &userRepository{
 		collection: db.Collection("users"),
 	}
 }
 
-// CreateUser stores a new user into the MongoDB database
+// store a new user into the MongoDB database
 func (r *userRepository) CreateUser(user *domain.User) error {
 	result, err := r.collection.InsertOne(context.Background(), user)
 	if err != nil {
@@ -38,7 +37,7 @@ func (r *userRepository) CreateUser(user *domain.User) error {
 	return nil
 }
 
-// FindUserByEmail retrieves a user by their email from MongoDB
+// retrieve a user by their email from MongoDB
 func (r *userRepository) FindUserByEmail(email string) (*domain.User, error) {
 	var user domain.User
 	err := r.collection.FindOne(context.Background(), bson.M{"email": email}).Decode(&user)
@@ -51,7 +50,7 @@ func (r *userRepository) FindUserByEmail(email string) (*domain.User, error) {
 	return &user, nil
 }
 
-// FindUserByUsername retrieves a user by their username from MongoDB
+// retrieve a user by their username from MongoDB
 func (r *userRepository) FindUserByUsername(username string) (*domain.User, error) {
 	var user domain.User
 	err := r.collection.FindOne(context.Background(), bson.M{"username": username}).Decode(&user)
