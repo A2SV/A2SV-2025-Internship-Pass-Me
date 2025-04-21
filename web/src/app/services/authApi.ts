@@ -15,7 +15,7 @@ export interface AuthResponse {
 export const authApi = createApi({
   reducerPath: 'authApi',
   baseQuery: fetchBaseQuery({
-    baseUrl: "https://passme-translator.onrender.com",
+    baseUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
   }),
   endpoints: (builder) => ({
     register: builder.mutation<AuthResponse, { username: string; email: string; password: string }>({
