@@ -4,7 +4,6 @@ import Image from "next/image";
 import questions from "../../../../question";
 import questionsAmharic from "../../../../amharic";
 import FormComponent from "./FormComponent"
-import FlightDetails from "./FlightDetails";
 import {inter} from "@/app/libs/font";
 // import Link from 'next/link'
 
