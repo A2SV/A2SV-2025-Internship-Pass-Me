@@ -34,18 +34,18 @@ export default function ChatPage() {
   ]);
 
   return (
-    <div className="realtive flex flex-col min-h-screen bg-gray-950 text-white">
+    <div className="relative flex flex-col min-h-screen bg-[#1C1C1C] text-white">
       <header className="flex items-center justify-center py-4 px-0">
         <Image
           src="/banner.png"
           alt="A2SV Translator Banner"
           width={200}
           height={50}
-          className="min-w-70 md:w-83 h-16 object-fit"
+          className="w-65 h-12 md:w-83 md:h-16 object-fit"
           priority
         />
       </header>
-      <main className="flex-grow px-6 py-4 overflow-auto">
+      <main className="flex-grow px-6 py-4 overflow-auto pb-20">
         <div className="max-w-3xl mx-auto flex justify-between mb-10">
           <LanguageSelector label="From" initialLanguage="English" />
           <LanguageSelector label="To" initialLanguage="Amharic" />
