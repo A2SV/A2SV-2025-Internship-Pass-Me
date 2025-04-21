@@ -1,12 +1,15 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export interface QAItem {
-  question: string;
-  answer: string;
+  questionEng: string;
+  questionAmh: string;
+  answerEng: string;
+  answerAmh: string;
 }
 
 export interface FlightRequest {
   title: string;
+  language: string;
   from_country: string;
   to_country: string;
   date: string;
@@ -36,7 +39,16 @@ export const flightsApi = createApi({
         body: flight,
       }),
     }),
+    getFlights: builder.query<FlightResponse[], void>({
+      query: () => ({
+        url: '/flights',
+        method: 'POST',
+      }),
+    }),
   }),
 });
 
-export const { useCreateFlightMutation } = flightsApi;
+export const {
+  useCreateFlightMutation,
+  useGetFlightsQuery,
+} = flightsApi;
