@@ -34,7 +34,7 @@ export default function ChatPage() {
   ]);
 
   return (
-    <div className="realtive flex flex-col min-h-screen bg-gray-950 text-white">
+    <div className="realtive flex flex-col min-h-screen bg-[#1C1C1C] text-white">
       <header className="flex items-center justify-center py-4 px-0">
         <Image
           src="/banner.png"

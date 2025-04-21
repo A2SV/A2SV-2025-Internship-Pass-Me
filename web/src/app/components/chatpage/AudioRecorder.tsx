@@ -59,11 +59,11 @@ const AudioRecorder: React.FC = () => {
       <footer className="fixed inset-x-50 bottom-5 p-4 flex flex-col items-center justify-center w-full">
         <button
           onClick={handleRecordButton}
-          className={`flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 py-2 focus:outline-none transition 
+          className={`flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 py-4 focus:outline-none transition 
             ${recording ? 'animate-pulse border-4' : ''}`}
         >
           <Image src="/mic.svg" alt="Mic" height={30} width={30} />
-          <span className="ml-2">{recording ? 'Stop' : 'Record'}</span>
+          {/* <span className="ml-2">{recording ? 'Stop' : 'Record'}</span> */}
         </button>
 
         {audioURL && (

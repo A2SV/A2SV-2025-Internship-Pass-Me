@@ -61,7 +61,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ chatItem, isLatest = false }) =
         {isQuestion ? 'Question:' : 'Answer:'}
       </span>
 
-      <div className={`rounded-lg px-4 py-2 ${isEditing ? 'bg-indigo-500 w-100' : (isQuestion ?'bg-zinc-800': 'bg-zinc-700')} text-sm relative`}>
+      <div className={`rounded-lg px-4 py-2 ${isEditing ? 'bg-indigo-500 w-100' : (isQuestion ? 'bg-zinc-800' : 'bg-zinc-700')} text-sm relative`}>
         {isQuestion ? (
           <>
             <p className="whitespace-pre-wrap">{chatItem.text}</p>
@@ -103,19 +103,28 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ chatItem, isLatest = false }) =
         )}
       </div>
       {isLatest && !approved && !isEditing && (
-        <div className="flex justify-end">
-          <div className='w-md cursor-pointer'>
-            <button onClick={handleApprove} title="Approve Answer" className="bg-green-500 rounded-bl-lg w-full text-lg">
+        <div className="flex flex-col sm:flex-row sm:justify-end space-y-2 sm:space-y-0 sm:space-x-2 z-10">
+          <div className="w-full sm:w-md cursor-pointer">
+            <button
+              onClick={handleApprove}
+              title="Approve Answer"
+              className="w-full px-4 py-2 bg-green-500 text-lg rounded-md"
+            >
               &#10003;
             </button>
           </div>
-          <div className='w-md cursor-pointer'>
-            <button onClick={handleReject} title="Reject & Edit Answer" className="bg-red-500 rounded-br-lg w-full text-lg">
+          <div className="w-full sm:w-md cursor-pointer">
+            <button
+              onClick={handleReject}
+              title="Reject & Edit Answer"
+              className="w-full px-4 py-2 bg-red-500 text-lg rounded-md"
+            >
               &#10005;
             </button>
           </div>
         </div>
       )}
+
     </div>
   )
 }
