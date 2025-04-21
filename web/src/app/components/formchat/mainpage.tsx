@@ -23,6 +23,14 @@ const Mainpage = () => {
   }
 
   const onSubmit = (data: FormData) => {
+     const  flightDetails = {
+      flightName: flightName, 
+      flightFrom: flightFrom,
+      flightTo: flightTo,
+      time: time,
+    };
+    console.log("Flight Details:", flightDetails);
+    console.log("Form Data:", data);
 
     setPopup(false);
 
@@ -51,16 +59,22 @@ const Mainpage = () => {
 
   return (
     <div className={`w-full h-full bg-[#1C1C1C] overflow-scroll ${inter.className}`}>
-      <div className="flex">
+      <div className="w-full ">
         <div>
-          <Image
-            src="/banner.png"
-            alt="A2SV Translator Banner"
-            width={200}
-            height={100}
-            className="md:w-152 md:h-25 object-fit"
-            priority
-          />
+                {/* Banner at the top, horizontally centered */}
+                <div className=" flex justify-center items-center   py-4">
+                  <div>
+                  <Image
+                    src="/banner.png"
+                    alt="A2SV Translator Banner"
+                    width={333}
+                    height={62}
+                    className="md:w-[400px] md:h-auto object-contain"
+                    priority
+                  />
+                </div>
+                </div>
+          
         </div>
       </div>
 
