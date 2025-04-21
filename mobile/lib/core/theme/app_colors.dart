@@ -9,5 +9,12 @@ class AppColors {
   static const Color textColor = Colors.white; // Regular text
   static const Color hintTextColor = Color(0xFF9E9E9E); // Placeholder/hint
   static const Color borderColor = Color(0xFF2E2E2E); // Divider/borders
-  static const Color iconColor = Colors.grey; // Icon default color
+  static const Color iconColor = Colors.grey;
+  static const primary = Color(0xFF1E88E5); // Blue glow
+  static const text = Colors.white;
+  static const card = Color(0xFF121212);
+  static const placeholder = Colors.grey;
+  static const glowBorder = Colors.blueAccent;
+  static const buttonColor = Colors.blueAccent;
+  static const glowCard = Color(0xFF252A38);
 }
