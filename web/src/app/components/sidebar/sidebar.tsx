@@ -3,7 +3,7 @@ import { signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { useGetFlightsQuery } from "@/app/services/flightsApi";
+import { useGetFlightsQuery, useDeleteFlightMutation } from "@/app/services/flightsApi";
 
 // Types
 interface Flight {
@@ -17,6 +17,8 @@ interface Flight {
 // Main Sidebar Component
 export default function Sidebar() {
   const {data, isLoading} = useGetFlightsQuery();
+  const [deleteFlight, { isLoading: isDeleting }] = useDeleteFlightMutation();
+
 
   const flights: Flight[] = (data ?? []).map(({ id, title, from_country, to_country, date }: Flight) => ({
       id,
@@ -25,6 +27,7 @@ export default function Sidebar() {
       to_country,
       date,
     }));
+  flights.reverse()
   const router = useRouter();
   // const [flights, setFlights] = useState<Flight[]>(flights);
   const [selectedFlightId, setSelectedFlightId] = useState<string | null>(null);
@@ -71,11 +74,15 @@ export default function Sidebar() {
     }
   }, [isSidebarOpen]);
 
-  const handleDeleteFlight = (id: string) => {
-    // setFlights(flights.filter((flight) => flight.id !== id));
-    if (selectedFlightId === id) {
-      setSelectedFlightId(null);
-      router.push("/dashboard");
+  const handleDeleteFlight = async (id: string) => {
+    try {
+      await deleteFlight(id).unwrap();
+      if (selectedFlightId === id) {
+        setSelectedFlightId(null);
+        router.push('/dashboard');
+      }
+    } catch (err) {
+      console.error('Failed to delete flight', err);
     }
   };
 

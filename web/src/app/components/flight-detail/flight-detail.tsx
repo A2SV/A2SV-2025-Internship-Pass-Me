@@ -12,11 +12,21 @@ export default function FlightDetail({ flightId }: { flightId: string }) {
   // Find the selected conversation based on the flightId
   const selectedConversation = data?.qa
 
-  if (!selectedConversation) {
+  if (!selectedConversation && isLoading) {
     return (
-      <div className="flex-1 flex items-center justify-center bg-[#1A1A1A] text-white">
+      <div className="flex-1 flex flex-col items-center h-full relative bg-[#1A1A1A] text-white">
+        <div className="flex justify-center items-center py-4 sticky top-0 bg-[#1A1A1A] z-10">
+        <Image
+          src="/banner.png"
+          alt="A2SV Translator Banner"
+          width={333}
+          height={62}
+          className="md:w-[400px] md:h-auto object-contain"
+          priority
+        />
+      </div>
         <p className="text-gray-400">
-          Flight not found or no conversation history available
+          Loading ...
         </p>
       </div>
     );
@@ -49,7 +59,7 @@ export default function FlightDetail({ flightId }: { flightId: string }) {
 
         {/* Conversation messages */}
         <div className="max-w-3xl mx-auto flex flex-col space-y-4">
-          {selectedConversation.map((message, idx) => (
+          {selectedConversation?.map((message, idx) => (
             <div key={idx} className="flex flex-col space-y-4">
               {/* Question bubble */}
               <div className="flex flex-col max-w-md self-start space-y-1">

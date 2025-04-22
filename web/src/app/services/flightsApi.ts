@@ -2,8 +2,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import { getSession } from 'next-auth/react';
 
 export interface QAItem {
-  question: string,
-  answer: string,
+  question: string;
+  answer: string;
 }
 
 export interface FlightRequest {
@@ -31,32 +31,83 @@ export const flightsApi = createApi({
         // @ts-ignore
         headers.set('Authorization', `Bearer ${session.accessToken}`);
       }
+      headers.set('Content-Type', 'application/json');
       return headers;
     },
-
   }),
+  tagTypes: ['Flight'],
   endpoints: (builder) => ({
+    getFlights: builder.query<FlightResponse[], void>({
+      query: () => '/flights',
+      providesTags: (result) =>
+        result
+          ? [
+              ...result.map(({ id }) => ({ type: 'Flight' as const, id })),
+              { type: 'Flight' as const, id: 'LIST' },
+            ]
+          : [{ type: 'Flight' as const, id: 'LIST' }],
+    }),
+
+    getFlight: builder.query<FlightResponse, string>({
+      query: (id) => `/flights/${id}`,
+      providesTags: (_result, _error, id) => [{ type: 'Flight' as const, id }],
+    }),
+
     createFlight: builder.mutation<FlightResponse, FlightRequest>({
       query: (flight) => ({
         url: '/flights',
         method: 'POST',
         body: flight,
       }),
+      async onQueryStarted(arg, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          flightsApi.util.updateQueryData('getFlights', undefined, (draft) => {
+            draft.push({ id: 'temp-id', ...arg });
+          })
+        );
+        try {
+          const { data } = await queryFulfilled;
+          dispatch(
+            flightsApi.util.updateQueryData('getFlights', undefined, (draft) => {
+              const index = draft.findIndex((f) => f.id === 'temp-id');
+              if (index !== -1) draft[index] = data;
+            })
+          );
+        } catch {
+          patchResult.undo();
+        }
+      },
+      invalidatesTags: [{ type: 'Flight' as const, id: 'LIST' }],
     }),
-    getFlights: builder.query<FlightResponse[], void>({
-      query: () => ({
-        url: '/flights',
-        method: 'GET',
+
+    deleteFlight: builder.mutation<{ success: boolean }, string>({
+      query: (id) => ({
+        url: `/flights/${id}`,
+        method: 'DELETE',
       }),
-    }),
-    getFlight: builder.query<FlightResponse, string>({
-      query: (id) => `/flights/${id}`,
+      async onQueryStarted(id, { dispatch, queryFulfilled }) {
+        const patchResult = dispatch(
+          flightsApi.util.updateQueryData('getFlights', undefined, (draft) => {
+            return draft.filter((f) => f.id !== id);
+          })
+        );
+        try {
+          await queryFulfilled;
+        } catch {
+          patchResult.undo();
+        }
+      },
+      invalidatesTags: (result, error, id) => [
+        { type: 'Flight' as const, id },
+        { type: 'Flight' as const, id: 'LIST' },
+      ],
     }),
   }),
 });
 
 export const {
-  useCreateFlightMutation,
   useGetFlightsQuery,
   useGetFlightQuery,
+  useCreateFlightMutation,
+  useDeleteFlightMutation,
 } = flightsApi;
