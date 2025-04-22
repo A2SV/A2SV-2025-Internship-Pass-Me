@@ -3,7 +3,7 @@ package usecases
 import (
 	"errors"
 
-	domain "github.com/A2SV/A2SV-2025-Internship-Pass-Me/domain"
+	domain "github.com/shaloms4/Pass-Me-Core-Functionality/domain"
 	"golang.org/x/crypto/bcrypt"
 )
 

@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	domain "github.com/A2SV/A2SV-2025-Internship-Pass-Me/domain"
+	domain "github.com/shaloms4/Pass-Me-Core-Functionality/domain"
 )
 
 // flightRepository is the implementation of the FlightRepository interface
@@ -26,10 +26,14 @@ func NewFlightRepository(db *mongo.Database) domain.FlightRepository {
 // CreateFlight stores a new flight into the MongoDB database
 func (r *flightRepository) CreateFlight(flight *domain.Flight) error {
 	flight.Date = flight.Date.UTC() // Ensure consistency
-	
-	// Generate a new ObjectID if one is not provided
+
 	if flight.ID == "" {
 		flight.ID = primitive.NewObjectID().Hex()
+	}
+
+	// Make sure the 'Language' field is set (can be validated earlier in the controller if needed)
+	if flight.Language == "" {
+		flight.Language = "English" // Set a default language if not provided
 	}
 
 	result, err := r.collection.InsertOne(context.Background(), flight)
@@ -37,7 +41,6 @@ func (r *flightRepository) CreateFlight(flight *domain.Flight) error {
 		return err
 	}
 
-	// Update the ID in case MongoDB generated a new one
 	if insertedID, ok := result.InsertedID.(primitive.ObjectID); ok {
 		flight.ID = insertedID.Hex()
 	}
