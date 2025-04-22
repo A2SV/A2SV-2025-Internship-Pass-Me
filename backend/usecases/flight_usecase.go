@@ -1,6 +1,6 @@
 package usecases
 
-import "github.com/shaloms4/Pass-Me-Core-Functionality/domain"
+import "github.com/A2SV/A2SV-2025-Internship-Pass-Me/domain"
 
 // FlightUseCase interface defines the business logic methods
 type FlightUseCase interface {

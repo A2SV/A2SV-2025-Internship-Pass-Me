@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
-	domain "github.com/shaloms4/Pass-Me-Core-Functionality/domain"
-	usecases "github.com/shaloms4/Pass-Me-Core-Functionality/usecases"
+	domain "github.com/A2SV/A2SV-2025-Internship-Pass-Me/domain"
+	usecases "github.com/A2SV/A2SV-2025-Internship-Pass-Me/usecases"
 
 	"github.com/gin-gonic/gin"
 )
@@ -123,7 +123,7 @@ func (fc *FlightController) GetUserFlights(c *gin.Context) {
 			"to_country":   flight.ToCountry,
 			"date":         flight.Date,
 			"user_id":      flight.UserID,
-			"language":     flight.Language, 
+			"language":     flight.Language,
 			"qa":           flight.QA,
 		})
 	}

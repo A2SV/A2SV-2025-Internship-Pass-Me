@@ -2,7 +2,7 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/shaloms4/Pass-Me-Core-Functionality/delivery/controllers"
+	"github.com/A2SV/A2SV-2025-Internship-Pass-Me/delivery/controllers"
 )
 
 func SetupUserRoutes(router *gin.Engine, controller *controllers.UserController) {

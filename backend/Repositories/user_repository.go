@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 
-	domain "github.com/shaloms4/Pass-Me-Core-Functionality/domain"
+	domain "github.com/A2SV/A2SV-2025-Internship-Pass-Me/domain"
 )
 
 // userRepository is the implementation of the UserRepository interface

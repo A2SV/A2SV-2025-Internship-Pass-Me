@@ -2,8 +2,8 @@ package routers
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/shaloms4/Pass-Me-Core-Functionality/delivery/controllers"
-	Infrastructure "github.com/shaloms4/Pass-Me-Core-Functionality/infrastructure"
+	"github.com/A2SV/A2SV-2025-Internship-Pass-Me/delivery/controllers"
+	Infrastructure "github.com/A2SV/A2SV-2025-Internship-Pass-Me/infrastructure"
 )
 
 func SetupFlightRoutes(router *gin.Engine, controller *controllers.FlightController) {

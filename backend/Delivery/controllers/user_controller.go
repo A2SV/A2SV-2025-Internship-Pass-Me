@@ -3,9 +3,9 @@ package controllers
 import (
 	"net/http"
 
-	domain "github.com/shaloms4/Pass-Me-Core-Functionality/domain"
-	Infrastructure "github.com/shaloms4/Pass-Me-Core-Functionality/infrastructure"
-	usecases "github.com/shaloms4/Pass-Me-Core-Functionality/usecases"
+	domain "github.com/A2SV/A2SV-2025-Internship-Pass-Me/domain"
+	Infrastructure "github.com/A2SV/A2SV-2025-Internship-Pass-Me/infrastructure"
+	usecases "github.com/A2SV/A2SV-2025-Internship-Pass-Me/usecases"
 
 	"github.com/gin-gonic/gin"
 )
