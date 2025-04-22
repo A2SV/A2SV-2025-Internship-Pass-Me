@@ -3,7 +3,8 @@ import React, { useState } from "react";
 import Image from "next/image";
 import questions from "../../../../question";
 import questionsAmharic from "../../../../amharic";
-import FormComponent from "./FormComponent"
+import FormComponent from "./FormComponent";
+import turkishquestions from "../../../../turkish";
 // import {inter} from "@/app/libs/font";
 // import Link from 'next/link'
 
@@ -76,6 +77,7 @@ const Mainpage = () => {
             >
               <option value="en">English</option>
               <option value="am">Amharic</option>
+              <option value="tr">Turkish</option>
             </select>
           </div>
         </div>
