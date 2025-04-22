@@ -67,7 +67,7 @@ const Mainpage = () => {
       <div className="flex flex-col gap-6 md:flex-row mx-20 justify-between mt-10">
         <div>
           <p className="text-white text-[14px]">From:</p>
-          <div className="w-[280px] h-[56px] bg-[#676470] rounded-lg px-4 flex items-center gap-4">
+          <div className="w-full md:w-[280px] h-[56px] bg-[#676470] rounded-lg px-4 flex items-center gap-4">
             <select
               title="Select language"
               value={lanaguage}
@@ -82,7 +82,7 @@ const Mainpage = () => {
 
         <div>
           <p className="text-white text-[14px]">To:</p>
-          <div className="w-[280px] h-[56px] bg-[#676470] rounded-lg px-4 flex items-center gap-4">
+          <div className="w-full md:w-[280px] h-[56px] bg-[#676470] rounded-lg px-4 flex items-center gap-4">
             <select
               className="w-full h-full bg-[#676470] text-white text-base outline-none"
               value={toLanguage}
