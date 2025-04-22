@@ -23,7 +23,7 @@ class ProfilePage extends StatelessWidget {
         child: ListView(
           children: [
             PersonalDetails(
-              imageUrl: 'assets/images/profile_picture(hat).jpg',
+              imageUrl: 'assets/images/profile_picture(puppy).jpg',
               name: "John Doe",
               email: "john.doe@gmail.com",
             ),
@@ -36,7 +36,7 @@ class ProfilePage extends StatelessWidget {
               title: "Change Password",
               onTap: () {},
               leadingIcon: Icon(Icons.lock_outline_rounded, size: 30),
-              // trailingIcon: Icon(Icons.edit_outlined),
+              trailingIcon: Icon(Icons.edit_outlined),
             ),
             const SizedBox(height: 20),
             ProfileOption(
@@ -57,24 +57,24 @@ class ProfilePage extends StatelessWidget {
               title: "Clear History",
               onTap: () {},
               leadingIcon: Icon(Icons.history_rounded, size: 30),
-              // trailingIcon: ElevatedButton(
-              //   onPressed: () {},
-              //   style: ElevatedButton.styleFrom(
-              //     backgroundColor: Color(0xFFFF2A3C),
-              //     shape: RoundedRectangleBorder(
-              //       borderRadius: BorderRadius.circular(4.0),
-              //     ),
-              //     padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
-              //   ),
-              //   child: Text(
-              //     "Clear All",
-              //     style: GoogleFonts.poppins(
-              //       color: Colors.white,
-              //       fontSize: 14,
-              //       fontWeight: FontWeight.w500,
-              //     ),
-              //   ),
-              // ),
+              trailingIcon: ElevatedButton(
+                onPressed: () {},
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Color(0xFFFF2A3C),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(4.0),
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                ),
+                child: Text(
+                  "Clear All",
+                  style: GoogleFonts.poppins(
+                    color: Colors.white,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ),
             ),
             const SizedBox(height: 20),
             ProfileOption(
