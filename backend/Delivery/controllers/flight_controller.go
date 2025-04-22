@@ -1,17 +1,17 @@
 package controllers
 
 import (
-	"log"
 	"net/http"
+	"time"
 
-	domain "github.com/A2SV/A2SV-2025-Internship-Pass-Me/domain"
-	usecases "github.com/A2SV/A2SV-2025-Internship-Pass-Me/usecases"
-	"fmt"
+	domain "github.com/shaloms4/Pass-Me-Core-Functionality/domain"
+	usecases "github.com/shaloms4/Pass-Me-Core-Functionality/usecases"
+
 	"github.com/gin-gonic/gin"
 )
 
 type FlightController struct {
-	flightUseCase usecases.FlightUseCase 
+	flightUseCase usecases.FlightUseCase
 }
 
 func NewFlightController(uc usecases.FlightUseCase) *FlightController {
@@ -20,68 +20,59 @@ func NewFlightController(uc usecases.FlightUseCase) *FlightController {
 	}
 }
 
-// CreateFlight handles creating a new flight with bilingual QA
+// CreateFlight handles creating a new flight
 func (fc *FlightController) CreateFlight(c *gin.Context) {
-	var inputData domain.CreateFlightRequest
-	if err := c.ShouldBindJSON(&inputData); err != nil {
-		log.Printf("Error binding JSON: %v", err)
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request body: " + err.Error()})
+	var flight domain.Flight
+	if err := c.ShouldBindJSON(&flight); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
-	if inputData.Title == "" || inputData.FromCountry == "" || inputData.ToCountry == "" {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing required flight fields (title, from_country, to_country)"})
+	// Validate required fields
+	if flight.Title == "" || flight.FromCountry == "" || flight.ToCountry == "" || flight.Language == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Missing required flight fields"})
 		return
 	}
 
-	if len(inputData.QA) == 0 {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "At least one question-answer pair is required"})
-	}
-    
-	for i, qa := range inputData.QA {
-		if qa.Question == "" || qa.Answer == "" {
-			c.JSON(http.StatusBadRequest, gin.H{"error": fmt.Sprintf("Question and Answer cannot be empty for pair %d", i+1)})
-			return
-		}
+	// Validate that we have the correct number of questions/answers
+	if len(flight.QA) != 5 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Exactly 5 question-answer pairs are required"})
+		return
 	}
 
-
-	userIDAny, exists := c.Get("user_id")
+	userID, exists := c.Get("user_id")
 	if !exists {
-		log.Println("Authentication error: user_id not found in context")
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
 		return
 	}
-	userID, ok := userIDAny.(string)
-	if !ok {
-		log.Println("Type assertion error: user_id in context is not a string")
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal server error processing user identity"})
-		return
+	flight.UserID = userID.(string)
+
+	// Default to current time if no date provided
+	if flight.Date.IsZero() {
+		flight.Date = time.Now()
 	}
 
-	// Pass the validated input data and user ID to the use case
-	createdFlight, err := fc.flightUseCase.AddFlight(&inputData, userID)
-	if err != nil {
-		log.Printf("Error calling AddFlight use case: %v", err)
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to create flight: " + err.Error()})
+	if err := fc.flightUseCase.AddFlight(&flight); err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{
 		"message": "Flight created successfully",
-		"flight":  createdFlight, 
+		"flight":  flight,
 	})
 }
 
+// GetFlightByID retrieves a flight by its ID and sends the response
 func (fc *FlightController) GetFlightByID(c *gin.Context) {
 	id := c.Param("id")
 
-	userIDAny, exists := c.Get("user_id")
+	// Get user ID from the authenticated user
+	userID, exists := c.Get("user_id")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
 		return
 	}
-	userID := userIDAny.(string) 
 
 	flight, err := fc.flightUseCase.FetchFlightByID(id)
 	if err != nil {
@@ -89,54 +80,83 @@ func (fc *FlightController) GetFlightByID(c *gin.Context) {
 		return
 	}
 
-	if flight.UserID != userID {
+	// Check if the flight belongs to the authenticated user
+	if flight.UserID != userID.(string) {
 		c.JSON(http.StatusForbidden, gin.H{"error": "You don't have permission to access this flight"})
 		return
 	}
 
-	c.JSON(http.StatusOK, flight) 
+	c.JSON(http.StatusOK, gin.H{
+		"id":           flight.ID,
+		"title":        flight.Title,
+		"from_country": flight.FromCountry,
+		"to_country":   flight.ToCountry,
+		"date":         flight.Date,
+		"user_id":      flight.UserID,
+		"language":     flight.Language, // <- Added language field in the response
+		"qa":           flight.QA,
+	})
 }
 
+// GetUserFlights retrieves all flights for the authenticated user
 func (fc *FlightController) GetUserFlights(c *gin.Context) {
-	userIDAny, exists := c.Get("user_id")
+	// Get user ID from the authenticated user
+	userID, exists := c.Get("user_id")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
 		return
 	}
-	userID := userIDAny.(string) 
 
-	flights, err := fc.flightUseCase.FetchFlightsByUserID(userID)
+	flights, err := fc.flightUseCase.FetchFlightsByUserID(userID.(string))
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to fetch user flights: " + err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, flights)
+	// Send the language field as part of each flight
+	var flightResponses []gin.H
+	for _, flight := range flights {
+		flightResponses = append(flightResponses, gin.H{
+			"id":           flight.ID,
+			"title":        flight.Title,
+			"from_country": flight.FromCountry,
+			"to_country":   flight.ToCountry,
+			"date":         flight.Date,
+			"user_id":      flight.UserID,
+			"language":     flight.Language, 
+			"qa":           flight.QA,
+		})
+	}
+
+	c.JSON(http.StatusOK, flightResponses)
 }
 
+// DeleteFlight handles the deletion of a flight by its ID
 func (fc *FlightController) DeleteFlight(c *gin.Context) {
 	id := c.Param("id")
 
-	userIDAny, exists := c.Get("user_id")
+	// Get user ID from the authenticated user
+	userID, exists := c.Get("user_id")
 	if !exists {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": "User not authenticated"})
 		return
 	}
-	userID := userIDAny.(string) 
 
+	// Check if the flight belongs to the authenticated user
 	flight, err := fc.flightUseCase.FetchFlightByID(id)
 	if err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "Flight not found"})
 		return
 	}
 
-	if flight.UserID != userID {
+	if flight.UserID != userID.(string) {
 		c.JSON(http.StatusForbidden, gin.H{"error": "You don't have permission to delete this flight"})
 		return
 	}
 
+	// Delete the flight
 	if err := fc.flightUseCase.DeleteFlight(id); err != nil {
-		c.JSON(http.StatusInternalServerError, gin.H{"error": "Failed to delete flight: " + err.Error()})
+		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
 

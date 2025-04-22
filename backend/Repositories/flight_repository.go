@@ -8,13 +8,15 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 
-	domain "github.com/A2SV/A2SV-2025-Internship-Pass-Me/domain"
+	domain "github.com/shaloms4/Pass-Me-Core-Functionality/domain"
 )
 
+// flightRepository is the implementation of the FlightRepository interface
 type flightRepository struct {
 	collection *mongo.Collection
 }
 
+// NewFlightRepository initializes a new flight repository
 func NewFlightRepository(db *mongo.Database) domain.FlightRepository {
 	return &flightRepository{
 		collection: db.Collection("flights"),
@@ -23,10 +25,15 @@ func NewFlightRepository(db *mongo.Database) domain.FlightRepository {
 
 // CreateFlight stores a new flight into the MongoDB database
 func (r *flightRepository) CreateFlight(flight *domain.Flight) error {
-	flight.Date = flight.Date.UTC() 
+	flight.Date = flight.Date.UTC() // Ensure consistency
 
 	if flight.ID == "" {
 		flight.ID = primitive.NewObjectID().Hex()
+	}
+
+	// Make sure the 'Language' field is set (can be validated earlier in the controller if needed)
+	if flight.Language == "" {
+		flight.Language = "English" // Set a default language if not provided
 	}
 
 	result, err := r.collection.InsertOne(context.Background(), flight)
@@ -41,7 +48,7 @@ func (r *flightRepository) CreateFlight(flight *domain.Flight) error {
 	return nil
 }
 
-// retrieves a flight by its ID from MongoDB
+// GetFlightByID retrieves a flight by its ID from MongoDB
 func (r *flightRepository) GetFlightByID(id string) (*domain.Flight, error) {
 	var flight domain.Flight
 	err := r.collection.FindOne(context.Background(), bson.M{"_id": id}).Decode(&flight)
@@ -54,7 +61,7 @@ func (r *flightRepository) GetFlightByID(id string) (*domain.Flight, error) {
 	return &flight, nil
 }
 
-// removes a flight from MongoDB by its ID
+// DeleteFlight removes a flight from MongoDB by its ID
 func (r *flightRepository) DeleteFlight(id string) error {
 	result, err := r.collection.DeleteOne(context.Background(), bson.M{"_id": id})
 	if err != nil {
@@ -66,7 +73,7 @@ func (r *flightRepository) DeleteFlight(id string) error {
 	return nil
 }
 
-// retrieves all flights for a specific user from MongoDB
+// GetFlightsByUserID retrieves all flights for a specific user from MongoDB
 func (r *flightRepository) GetFlightsByUserID(userID string) ([]domain.Flight, error) {
 	cursor, err := r.collection.Find(context.Background(), bson.M{"user_id": userID})
 	if err != nil {

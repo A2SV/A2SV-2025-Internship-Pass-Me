@@ -3,27 +3,29 @@ package usecases
 import (
 	"errors"
 
-	domain "github.com/A2SV/A2SV-2025-Internship-Pass-Me/domain"
+	domain "github.com/shaloms4/Pass-Me-Core-Functionality/domain"
 	"golang.org/x/crypto/bcrypt"
 )
 
+// UserUseCase interface defines the business logic methods
 type UserUseCase interface {
 	RegisterUser(user *domain.User) error
 	LoginUser(email, password string) (*domain.User, error)
 }
 
+// userUseCase implements the UserUseCase interface
 type userUseCase struct {
 	userRepo domain.UserRepository
 }
 
-// creates a new instance of user use case
+// NewUserUseCase creates a new instance of user use case
 func NewUserUseCase(repo domain.UserRepository) UserUseCase {
 	return &userUseCase{
 		userRepo: repo,
 	}
 }
 
-// creates a new user
+// RegisterUser creates a new user
 func (uc *userUseCase) RegisterUser(user *domain.User) error {
 	// Check if user with same email already exists
 	existingUser, _ := uc.userRepo.FindUserByEmail(user.Email)
