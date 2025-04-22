@@ -46,7 +46,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark().copyWith(
           textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
-          primaryTextTheme: GoogleFonts.interTextTheme(ThemeData.dark().primaryTextTheme),
+          primaryTextTheme:
+              GoogleFonts.interTextTheme(ThemeData.dark().primaryTextTheme),
           colorScheme: const ColorScheme.dark(
             primary: Color(0xFF2196F3),
           ),
@@ -58,9 +59,8 @@ class MyApp extends StatelessWidget {
           '/signup': (_) => SignUpPage(),
           '/flights/empty': (_) => const FlightEmptyPage(),
           '/flights/list': (_) => const FlightListPage(),
-          '/flights/detail': (_) => const FlightDetailPage(),
-          '/profile': (_) => const ProfilePage(),
           '/flights/detail': (_) => FlightDetailPage(),
+          '/profile': (_) => const ProfilePage(),
           '/form': (_) => TranslatorFormPage(),
         },
       ),

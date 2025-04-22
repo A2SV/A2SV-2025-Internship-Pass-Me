@@ -7,6 +7,7 @@ import 'package:mobile/features/form/domain/repositories/question_repository.dar
 import 'package:mobile/features/form/domain/usecases/get_questions.dart';
 import 'package:mobile/features/form/domain/usecases/submit_Answer.dart';
 import 'package:mobile/features/form/presentation/blocs/form_bloc.dart';
+import 'package:mobile/features/onboarding/presentation/bloc/onboarding_bloc.dart';
 import 'features/auth/domain/usecases/login_user.dart';
 import 'features/auth/data/repositories/auth_repository_impl.dart';
 import 'features/auth/data/datasources/auth_remote_datasource_impl.dart';
@@ -42,6 +43,7 @@ void _initAuth() {
   // Auth BLoCs/Cubits
   sl.registerFactory(() => LoginCubit(sl()));
   sl.registerFactory(() => SignUpBloc(sl()));
+  sl.registerFactory(() => OnboardingBloc());
 }
 
 void _initForm() {
