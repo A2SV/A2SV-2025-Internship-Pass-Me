@@ -13,4 +13,7 @@ type UserRepository interface {
     CreateUser(user *User) error
     FindUserByEmail(email string) (*User, error)
     FindUserByUsername(username string) (*User, error)
+    FindUserByID(id string) (*User, error)
+    UpdateUsername(id, newUsername string) error
+    UpdatePassword(id, hashedPassword string) error
 } 
