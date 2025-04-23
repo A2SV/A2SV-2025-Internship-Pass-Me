@@ -42,6 +42,13 @@ export const chatApi = createApi({
         return result;
       },
     }),
+    sendManualAnswer: builder.mutation<ChatResponse, string>({
+      query: (text) => ({
+        url: '/manual-answer',
+        method: 'POST',
+        body: { text },
+      }),
+    }),
   }),
 });
 
