@@ -9,8 +9,15 @@ export default function FlightDetail({ flightId }: { flightId: string }) {
   const router = useRouter();
   const {data, isLoading} = useGetFlightQuery(flightId)
 
-  // Find the selected conversation based on the flightId
   const selectedConversation = data?.qa
+
+  const handleUseChat = (flightId: {flightId: string}) => {
+    const params = new URLSearchParams({
+      flightId: flightId.flightId
+    })
+
+    router.push(`/dashboard/chat?${params.toString()}`)
+  }
 
   if (!selectedConversation && isLoading) {
     return (
@@ -98,7 +105,7 @@ export default function FlightDetail({ flightId }: { flightId: string }) {
         {/* Use Chat button with specified dimensions */}
         <div className="fixed bottom-4 right-8">
           <button
-            onClick={() => router.push("/dashboard/chat")}
+            onClick={() => handleUseChat({flightId})}
             className="w-[227px] h-[61px] bg-[#3972FF] hover:bg-blue-600 text-white rounded-[10px] px-[65px] py-[8px] gap-[8px] flex items-center justify-center"
           >
             Use Chat
