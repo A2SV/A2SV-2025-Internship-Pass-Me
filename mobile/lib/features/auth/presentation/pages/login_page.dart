@@ -128,7 +128,7 @@ class LoginPage extends StatelessWidget {
                                 );
 
                             // Navigate to flights/detail after login
-                            Navigator.pushNamed(context, '/flights/detail');
+                            Navigator.pushNamed(context, '/profile');
                           },
                           style: ElevatedButton.styleFrom(
                             padding: const EdgeInsets.symmetric(vertical: 14),
