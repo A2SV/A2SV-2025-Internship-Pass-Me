@@ -51,7 +51,7 @@ class FormBloc extends Bloc<FormEvent, FormsSates> {
     Emitter<FormsSates> emit,
   ) async {
     // Validate before submission
-    if (event.submission.questions.any((q) => q.answer?.isEmpty ?? true)) {
+    if (event.submission.qa.any((q) => q.answer?.isEmpty ?? true)) {
       emit(SubmissionFailure('All questions must be answered'));
       return;
     }

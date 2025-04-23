@@ -12,7 +12,20 @@ class QuestionRepositoryImpl implements QuestionRepository {
 
   @override
   Future<List<QuestionEntity>> getQuestions(Language language) async {
-    final languageCode = language == Language.english ? 'en' : 'am';
+    late final String languageCode;
+
+    switch (language) {
+      case Language.english:
+        languageCode = 'en';
+        break;
+      case Language.amharic:
+        languageCode = 'am';
+        break;
+      case Language.turkish:
+        languageCode = 'tur';
+        break;
+    }
+
     return await remoteDataSource.getQuestions(languageCode);
   }
 
@@ -20,11 +33,13 @@ class QuestionRepositoryImpl implements QuestionRepository {
   Future<void> submitAnswers(SubmissionEntity submission) async {
     // Convert SubmissionEntity to SubmissionModel before passing to data source
     final submissionModel = SubmissionModel(
-        questions: submission.questions,
-        flightDate: submission.flightDate,
-        flightName: submission.flightName,
-        destinationName: submission.destinationName,
-        startName: submission.startName);
+        qa: submission.qa,
+        date: submission.date,
+        title: submission.title,
+        to_country: submission.to_country,
+        from_country: submission.from_country,
+        //user_id: submission.user_id,
+        language: submission.language);
     await remoteDataSource.submitAnswers(submissionModel.toJson());
   }
 }

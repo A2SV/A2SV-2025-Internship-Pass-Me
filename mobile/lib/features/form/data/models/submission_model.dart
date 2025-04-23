@@ -1,38 +1,41 @@
 import 'package:mobile/features/form/domain/entites/Submission_entity.dart';
 
 class SubmissionModel extends SubmissionEntity {
-  const SubmissionModel({
-    required super.questions,
-    required super.flightDate,
-    required super.flightName,
-    required super.startName,
-    required super.destinationName,
-  });
+  const SubmissionModel(
+      {required super.qa,
+      required super.date,
+      required super.title,
+      required super.from_country,
+      required super.to_country,
+      //required super.user_id,
+      required super.language});
 
   factory SubmissionModel.fromEntity(SubmissionEntity entity) {
     return SubmissionModel(
-      questions: entity.questions,
-      flightDate: entity.flightDate,
-      flightName: entity.flightName,
-      startName: entity.startName,
-      destinationName: entity.destinationName,
+      qa: entity.qa,
+      date: entity.date,
+      title: entity.title,
+      from_country: entity.from_country,
+      to_country: entity.to_country,
+      //user_id: entity.user_id,
+      language: entity.language,
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'questions': questions
+      'qa': qa
           .map((q) => {
-                'id': q.id,
-                'questionText': q.questionText,
+                'question': q.questionText,
                 'answer': q.answer,
-                // Include any other question fields you need to serialize
               })
           .toList(),
-      'flightDate': flightDate.toIso8601String(),
-      'flightName': flightName,
-      'startName': startName,
-      'destinationName': destinationName,
+      'date': date.toIso8601String(),
+      'title': title,
+      'from_country': from_country,
+      'to_country': to_country,
+      //'user_id': user_id,
+      'language': language,
     };
   }
 }

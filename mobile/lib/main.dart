@@ -18,8 +18,9 @@ import 'features/onboarding/presentation/pages/onboarding_page.dart';
 
 import 'injection_container.dart' as di;
 
-void main() {
-  di.init();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await di.init();
   runApp(MyApp());
 }
 

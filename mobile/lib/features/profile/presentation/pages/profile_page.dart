@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:mobile/features/profile/presentation/pages/update_profile_page.dart';
 import 'package:mobile/features/profile/presentation/widgets/personal_details.dart';
 import 'package:mobile/features/profile/presentation/widgets/profile_option.dart';
 

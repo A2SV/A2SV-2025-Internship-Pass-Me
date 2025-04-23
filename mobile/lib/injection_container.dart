@@ -53,7 +53,7 @@ Future<void> _initCore() async {
 void _initAuth() {
   // Auth Data Source
   sl.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSourceImpl(),
+    () => AuthRemoteDataSourceImpl(sl(), sl()),
   );
 
   // Auth Repository
@@ -74,7 +74,7 @@ void _initAuth() {
 void _initForm() {
   // Form Data Source
   sl.registerLazySingleton<QuestionRemoteDataSource>(
-    () => QuestionRemoteDataSourceImpl(),
+    () => QuestionRemoteDataSourceImpl(sl(), sl()),
   );
 
   // Form Repository
