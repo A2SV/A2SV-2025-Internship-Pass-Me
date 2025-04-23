@@ -80,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
                   await _saveAuthToken(state.token!);
                   // Only save email if remember me is checked
                   await _saveRememberedEmail(emailController.text);
-                  Navigator.pushReplacementNamed(context, '/flights/empty');
+                  Navigator.pushReplacementNamed(context, '/flights');
                 } else if (state.error != null) {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text(state.error!)),

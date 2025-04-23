@@ -2,9 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/features/profile/presentation/widgets/personal_details.dart';
 import 'package:mobile/features/profile/presentation/widgets/profile_option.dart';
+import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
+
+  Future<void> _logout(BuildContext context) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    Navigator.pushNamedAndRemoveUntil(context, '/login', (route) => false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -12,6 +20,16 @@ class ProfilePage extends StatelessWidget {
       backgroundColor: Color(0xFF26252A),
       appBar: AppBar(
         backgroundColor: Color(0xFF26252A),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new, color: Colors.white),
+          onPressed: () {
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context); 
+            } else {
+              Navigator.pushNamed(context, '/flights');
+            }
+          },
+        ),
         title: SizedBox(
           height: 36,
           child: Image.asset("assets/images/logo.png"),
@@ -84,18 +102,19 @@ class ProfilePage extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             ProfileOption(
-                title: "Log Out",
-                titleStyle: GoogleFonts.poppins(
-                  color: Color(0xFFF63C3C),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w400,
-                ),
-                onTap: () {},
-                leadingIcon: Icon(
-                  Icons.logout_outlined,
-                  size: 30,
-                  color: Color(0xFFF63C3C),
-                )),
+              title: "Log Out",
+              titleStyle: GoogleFonts.poppins(
+                color: Color(0xFFF63C3C),
+                fontSize: 16,
+                fontWeight: FontWeight.w400,
+              ),
+              onTap: () => _logout(context), // Call the logout function
+              leadingIcon: Icon(
+                Icons.logout_outlined,
+                size: 30,
+                color: Color(0xFFF63C3C),
+              ),
+            ),
           ],
         ),
       ),

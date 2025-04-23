@@ -7,6 +7,11 @@ class FlightListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: Image.asset('assets/images/logo.png', height: 40),
+        backgroundColor: AppColors.backgroundColor,
+        centerTitle: true,
+      ),
       backgroundColor: AppColors.backgroundColor,
       body: Padding(
         padding: const EdgeInsets.all(16.0),
