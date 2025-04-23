@@ -16,7 +16,10 @@ dependencies:
   equatable: ^2.0.5
   dartz: ^0.10.1
   intl: ^0.18.1
-
+  http: ^1.1.0
+  flutter_dotenv: ^5.1.0
+  cupertino_icons: ^1.0.8
+  shared_preferences: ^2.5.3
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -26,9 +29,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
-    - assets/images/logo.png
-    - assets/images/translation.png
-    - assets/images/language.png
     - assets/questions_am.json
     - assets/questions_en.json
-    - assets/images/google_icon.png
+    - assets/questions_tur.json
+    - .env
