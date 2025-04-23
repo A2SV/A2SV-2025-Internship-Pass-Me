@@ -1,9 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/core/theme/app_colors.dart';
 import 'package:mobile/features/form/presentation/pages/translator_page.dart';
+import 'package:mobile/features/profile/presentation/pages/profile_page.dart'; // Make sure this import is correct
 
-class FlightEmptyPage extends StatelessWidget {
+class FlightEmptyPage extends StatefulWidget {
   const FlightEmptyPage({super.key});
+
+  @override
+  State<FlightEmptyPage> createState() => _FlightEmptyPageState();
+}
+
+class _FlightEmptyPageState extends State<FlightEmptyPage> {
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    if (index == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => ProfilePage()),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -48,7 +69,11 @@ class FlightEmptyPage extends StatelessWidget {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
         backgroundColor: Colors.black,
+        selectedItemColor: Colors.blue,
+        unselectedItemColor: Colors.white,
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "Profile"),
