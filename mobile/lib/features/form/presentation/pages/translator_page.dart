@@ -3,9 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile/features/form/presentation/blocs/form_bloc.dart';
 import 'package:mobile/features/form/presentation/widgets/question_card.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../core/network/api_client.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/language_selector.dart';
+import '../../../../injection_container.dart';
 import '../../data/datasource/question_remote_datasource.dart'
     show QuestionRemoteDataSourceImpl;
 import '../../data/repositories/question_repository_impl.dart';
@@ -14,15 +17,10 @@ import '../../domain/entites/question.dart';
 
 class TranslatorFormPage extends StatelessWidget {
   const TranslatorFormPage({super.key});
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => FormBloc(
-        questionRepository: QuestionRepositoryImpl(
-            QuestionRemoteDataSourceImpl() // Pass the required data source
-            ),
-      ),
+      create: (context) => sl<FormBloc>(), // Get instance from GetIt
       child: const _TranslatorFormView(),
     );
   }
@@ -45,11 +43,32 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
   final TextEditingController _destinationNameController =
       TextEditingController();
   final Map<String, TextEditingController> _answerControllers = {};
-  String get _submitText =>
-      _selectedLanguage == Language.english ? "Submit" : "አስገባ";
+  String _getLanguage() {
+    switch (_selectedLanguage) {
+      case Language.english:
+        return "english";
+      case Language.amharic:
+        return "amharic";
+      case Language.turkish:
+        return "turkish";
+      default:
+        return "amharic"; // fallback
+    }
+  }
 
-  String _getLocalizedText(String english, String amharic) =>
-      _selectedLanguage == Language.english ? english : amharic;
+  String _getLocalizedText(String english, String amharic, String turkish) {
+    switch (_selectedLanguage) {
+      case Language.english:
+        return english;
+      case Language.amharic:
+        return amharic;
+      case Language.turkish:
+        return turkish;
+      default:
+        return english; // fallback
+    }
+  }
+
   @override
   void dispose() {
     _flightNameController.dispose();
@@ -60,6 +79,8 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
     }
     super.dispose();
   }
+
+  String get _submitText => _getLocalizedText("submit", "አስገባ", "Gönder");
 
   @override
   Widget build(BuildContext context) {
@@ -100,7 +121,7 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
               children: [
                 // Language Selector
                 Text(
-                  _getLocalizedText("Choose language", "ቋንቋ ይምረጡ"),
+                  _getLocalizedText("Choose language", "ቋንቋ ይምረጡ", "Dil seçin"),
                   style: const TextStyle(color: Colors.white),
                 ),
                 const SizedBox(height: 5),
@@ -108,14 +129,17 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
                 const SizedBox(height: 5),
                 _buildCountryInputColumn(
                   controller: _flightNameController,
-                  hint: _getLocalizedText("Enter flight name", "የበረራ ስም አስገባ"),
-                  label: _getLocalizedText("Flight Name", "የበረራ ስም"),
+                  hint: _getLocalizedText(
+                      "Enter flight name", "የበረራ ስም አስገባ", "Uçuş adını girin"),
+                  label:
+                      _getLocalizedText("Flight Name", "የበረራ ስም", "Uçuş Adı"),
                 ),
                 const SizedBox(height: 10),
                 _buildStartandDestinationPlace(context),
                 const SizedBox(height: 5),
                 Text(
-                  _getLocalizedText("Choose date of flight", "የበረራ ቀን ይምረጡ"),
+                  _getLocalizedText("Choose date of flight", "የበረራ ቀን ይምረጡ",
+                      "Uçuş tarihini seçin"),
                   style: const TextStyle(color: Colors.grey),
                 ),
                 _buildDatePickerButton(context),
@@ -129,8 +153,10 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
                       color: Colors.white,
                     ),
                     Text(
-                      _getLocalizedText("Common Airport questions ",
-                          "በተለምዶ አየር መንገድ ላይ  የሚጠየቁ ጥያቄዎች"),
+                      _getLocalizedText(
+                          "Common Airport questions ",
+                          "በተለምዶ አየር መንገድ ላይ  የሚጠየቁ ጥያቄዎች",
+                          "Genel Havaalanı Soruları"),
                       style: TextStyle(color: Colors.white, fontSize: 16.0),
                     )
                   ],
@@ -156,8 +182,8 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
           Expanded(
             // Keep Expanded here
             child: _buildCountryInputColumn(
-              label: _getLocalizedText("From Country", "ከዚህ ሃገር"),
-              hint: _getLocalizedText("Country name", "የሃገር ስም"),
+              label: _getLocalizedText("From Country", "ከዚህ ሃገር", "Ülkeden"),
+              hint: _getLocalizedText("Country name", "የሃገር ስም", "Ülke adı"),
               controller: _startNameController,
             ),
           ),
@@ -165,8 +191,12 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
           Expanded(
             // Keep Expanded here
             child: _buildCountryInputColumn(
-              label: _getLocalizedText("To Country", "ወደዚህ ሃገር"),
-              hint: _getLocalizedText("Country name", "የሃገር ስም"),
+              label: _getLocalizedText("To Country", "ወደዚህ ሃገር", "Ülkeye"),
+              hint: _getLocalizedText(
+                "Country name",
+                "የሃገር ስም",
+                "Ülke adı",
+              ),
               controller: _destinationNameController,
             ),
           ),
@@ -245,7 +275,7 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
         icon: const Icon(Icons.calendar_today, color: Colors.white),
         label: Text(
           _selectedDate == null
-              ? _getLocalizedText("Select Date", "ቀን ይምረጡ")
+              ? _getLocalizedText("Select Date", "ቀን ይምረጡ", "Tarih Seçin")
               : DateFormat('EEEE, MMMM d, y').format(_selectedDate!),
           style: const TextStyle(color: Colors.white),
         ),
@@ -367,7 +397,8 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
     }
   }
 
-  void _handleSubmit(BuildContext context, List<QuestionEntity> questions) {
+  Future<void> _handleSubmit(
+      BuildContext context, List<QuestionEntity> questions) async {
     if (!_validateForm(questions, context)) return;
 
     // Get the bloc before showing dialog
@@ -379,13 +410,14 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
         return AlertDialog(
           backgroundColor: Colors.grey[900],
           title: Text(
-            _getLocalizedText("Confirmation", "ማረጋገጫ"),
+            _getLocalizedText("Confirmation", "ማረጋገጫ", "Onay"),
             style: const TextStyle(color: Colors.white),
           ),
           content: Text(
             _getLocalizedText(
               "Are you sure you want to save this information?",
               "ይህንን መረጃ ለማስቀመጥ እርግጠኛ ነዎት?",
+              "Bu bilgiyi kaydetmek istediğinizden emin misiniz?",
             ),
             style: const TextStyle(color: Colors.white),
           ),
@@ -393,7 +425,8 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: Text(
-                _getLocalizedText("Back to Edit", "ለማስተካከል ይመለሱ"),
+                _getLocalizedText(
+                    "Back to Edit", "ለማስተካከል ይመለሱ", "Düzenlemeye Dön"),
                 style: const TextStyle(color: Colors.blue),
               ),
             ),
@@ -403,17 +436,18 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
                 formBloc.add(
                   SubmitAnswers(
                     SubmissionEntity(
-                      questions: questions,
-                      flightDate: _selectedDate!,
-                      flightName: _flightNameController.text.trim(),
-                      startName: _startNameController.text.trim(),
-                      destinationName: _destinationNameController.text.trim(),
+                      qa: questions,
+                      date: _selectedDate!,
+                      title: _flightNameController.text.trim(),
+                      from_country: _startNameController.text.trim(),
+                      to_country: _destinationNameController.text.trim(),
+                      language: _getLanguage(),
                     ),
                   ),
                 );
               },
               child: Text(
-                _getLocalizedText("Yes", "አዎ"),
+                _getLocalizedText("Yes", "አዎ", "Evet"),
                 style: const TextStyle(color: Colors.green),
               ),
             ),
@@ -437,6 +471,7 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
         _getLocalizedText(
           "Please answer all questions",
           "እባክዎ ሁሉንም ጥያቄዎች ይመልሱ",
+          "Lütfen tüm soruları cevaplayın",
         ),
       );
       return false;
@@ -447,6 +482,7 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
         _getLocalizedText(
           "Please enter flight name",
           "እባክዎ የበረራ ስም ያስገቡ",
+          "Lütfen uçuş adını girin",
         ),
       );
       return false;
@@ -457,6 +493,7 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
         _getLocalizedText(
           "Please enter destination country",
           "እባክዎ የመድረሻ ሀገር ያስገቡ",
+          "Lütfen varış ülkesini girin",
         ),
       );
       return false;
@@ -466,9 +503,9 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
       _showValidationError(
         context,
         _getLocalizedText(
-          "Departure and destination cannot be the same",
-          "መነሻ እና መድረሻ ተመሳሳይ ሊሆኑ አይችሉም",
-        ),
+            "Departure and destination cannot be the same",
+            "መነሻ እና መድረሻ ተመሳሳይ ሊሆኑ አይችሉም",
+            "Kalkış ve varış noktaları aynı olamaz"),
       );
       return false;
     }
@@ -477,9 +514,9 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
       _showValidationError(
         context,
         _getLocalizedText(
-          "Source and target languages cannot be the same",
-          "የመነሻ እና የመዳረሻ ቋንቋዎች መመሳሰል �ይለበትም",
-        ),
+            "Source and target languages cannot be the same",
+            "የመነሻ እና የመዳረሻ ቋንቋዎች መመሳሰል �ይለበትም",
+            "Kaynak ve hedef diller aynı olamaz"),
       );
       return false;
     }
@@ -487,10 +524,8 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
     if (!dateSelected) {
       _showValidationError(
         context,
-        _getLocalizedText(
-          "Please select a flight date",
-          "እባክዎ የበረራ ቀን ይምረጡ",
-        ),
+        _getLocalizedText("Please select a flight date", "እባክዎ የበረራ ቀን ይምረጡ",
+            "Lütfen uçuş tarihini seçin"),
       );
       return false;
     }
@@ -515,9 +550,7 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
       SnackBar(
         content: Text(
           _getLocalizedText(
-            "Submission successful!",
-            "በትክክል ቀርቧል!",
-          ),
+              "Submission successful!", "በትክክል ቀርቧል!", "Gönderim başarılı!"),
         ),
         backgroundColor: Colors.green,
       ),
