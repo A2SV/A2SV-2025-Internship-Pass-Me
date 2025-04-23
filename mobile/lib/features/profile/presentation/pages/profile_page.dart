@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobile/features/auth/presentation/blocs/login_cubit.dart';
 import 'package:mobile/features/profile/presentation/widgets/personal_details.dart';
 import 'package:mobile/features/profile/presentation/widgets/profile_option.dart';
 
@@ -22,28 +24,21 @@ class ProfilePage extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            PersonalDetails(
-              imageUrl: 'assets/images/profile_picture(puppy).jpg',
-              name: "John Doe",
-              email: "john.doe@gmail.com",
+            BlocBuilder<LoginCubit, LoginState>(
+              builder: (context, state) {
+                final username = state.username ?? "johndoe";
+                final email = state.email ?? "john@example.com";
+
+                return PersonalDetails(
+                  imageUrl: 'assets/images/profile_picture(puppy).jpg',
+                  name: username,
+                  email: email,
+                );
+              },
             ),
             const SizedBox(height: 8),
             const Divider(color: Colors.white),
             const SizedBox(height: 20),
-            // ProfileOption(
-            //   title: "Change Password",
-            //   onTap: () {
-            //     Navigator.push(
-            //       context,
-            //       MaterialPageRoute(
-            //         builder: (_) => const UpdateProfilePage(),
-            //       ),
-            //     );
-            //   },
-            //   leadingIcon: const Icon(Icons.lock_outline_rounded, size: 30),
-            //   trailingIcon: const Icon(Icons.edit_outlined),
-            // ),
-            // const SizedBox(height: 20),
             ProfileOption(
               title: "Language Preference",
               onTap: () {},

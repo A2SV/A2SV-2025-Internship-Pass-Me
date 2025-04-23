@@ -23,12 +23,10 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
     final confirmPassword = confirmPasswordController.text.trim();
     final newUsername = newUsernameController.text.trim();
 
-    if (newPassword != confirmPassword) {
-      Fluttertoast.showToast(msg: "Passwords do not match");
-      return;
-    }
+    bool updated = false;
 
     try {
+      // Update username if provided
       if (newUsername.isNotEmpty) {
         final usernameRes = await http.put(
           Uri.parse(
@@ -38,26 +36,44 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
         );
         if (usernameRes.statusCode == 200) {
           Fluttertoast.showToast(msg: "Username updated");
+          updated = true;
         } else {
           Fluttertoast.showToast(msg: "Failed to update username");
         }
       }
 
-      final passwordRes = await http.put(
-        Uri.parse(
-            'https://a2sv-2025-internship-pass-me.onrender.com/profile/password'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'old_password': oldPassword,
-          'new_password': newPassword,
-          'confirm_password': confirmPassword,
-        }),
-      );
+      // If any password field is filled, validate and update
+      final isPasswordChanging = oldPassword.isNotEmpty ||
+          newPassword.isNotEmpty ||
+          confirmPassword.isNotEmpty;
 
-      if (passwordRes.statusCode == 200) {
-        Fluttertoast.showToast(msg: "Password updated successfully");
-      } else {
-        Fluttertoast.showToast(msg: "Failed to update password");
+      if (isPasswordChanging) {
+        if (newPassword != confirmPassword) {
+          Fluttertoast.showToast(msg: "New and confirm passwords do not match");
+          return;
+        }
+
+        final passwordRes = await http.put(
+          Uri.parse(
+              'https://a2sv-2025-internship-pass-me.onrender.com/profile/password'),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({
+            'old_password': oldPassword,
+            'new_password': newPassword,
+            'confirm_password': confirmPassword,
+          }),
+        );
+
+        if (passwordRes.statusCode == 200) {
+          Fluttertoast.showToast(msg: "Password updated successfully");
+          updated = true;
+        } else {
+          Fluttertoast.showToast(msg: "Failed to update password");
+        }
+      }
+
+      if (!updated) {
+        Fluttertoast.showToast(msg: "No changes detected");
       }
     } catch (e) {
       Fluttertoast.showToast(msg: "Error: $e");
@@ -88,7 +104,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
               onPressed: updateProfileDetails,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blueAccent,
-                foregroundColor: Colors.white, // Ensures text is visible
+                foregroundColor: Colors.white,
               ),
               child: const Text("Save Changes"),
             ),
