@@ -9,6 +9,7 @@ import turkishquestions from "../../../../turkish";
 import flight from "../../../../flight";
 import { Translations } from "../../../../flight";
 import path from "path";
+import { current } from "@reduxjs/toolkit";
 
 
 
@@ -117,15 +118,14 @@ const { control, handleSubmit, reset } = useForm<FormDefaultValues>({
 };
 
 
-const patterns: Record<string, RegExp> = {
-  en: /^[a-zA-Z\s]+$/,
-  am: /^[\u1200-\u137F\s]+$/u,
-  tr: /^[a-zA-ZçÇğĞıİöÖşŞüÜ\s]+$/u
-};
+
 const currentLang = (flight as Translations)[lanaguage as keyof Translations] || flight.en
 
+const triggerSubmit = handleSubmit(onSubmitForm);
+
+
   return (
-    <form onSubmit={handleSubmit(onSubmitForm)} className="mx-auto w-[85%] mt-10 mb-8">
+    <form onSubmit={(e) => e.preventDefault()} className="mx-auto w-[85%] mt-10 mb-8">
 
 <h1 className="text-white text-[25px] md:mb-6 sm:m-0">
         {currentLang.flightDetails}
@@ -142,7 +142,7 @@ const currentLang = (flight as Translations)[lanaguage as keyof Translations] ||
         rules={{
           required:currentLang.validation.Required,
           pattern: {
-            value:patterns[lanaguage],
+            value:currentLang.validation.pattern,
             message:currentLang.validation.Lettryonly
           },
         }}
@@ -174,7 +174,7 @@ const currentLang = (flight as Translations)[lanaguage as keyof Translations] ||
         rules={{
           required:currentLang.validation.Required,
           pattern: {
-            value: patterns[lanaguage],
+            value:currentLang.validation.pattern,
             message:currentLang.validation.Lettryonly
           },
         }}
@@ -202,7 +202,7 @@ const currentLang = (flight as Translations)[lanaguage as keyof Translations] ||
         rules={{
           required:currentLang.validation.Required,
           pattern: {
-            value:patterns[lanaguage],
+            value:currentLang.validation.pattern,
             message:currentLang.validation.Lettryonly
           },
         }}
@@ -233,7 +233,7 @@ const currentLang = (flight as Translations)[lanaguage as keyof Translations] ||
         rules={{
           required:currentLang.validation.Required,
           pattern: {
-            value:patterns[lanaguage],
+            value:currentLang.validation.pattern,
             message:currentLang.validation.Lettryonly
           },
         }}
@@ -409,7 +409,8 @@ const currentLang = (flight as Translations)[lanaguage as keyof Translations] ||
                 {currentLang.backToEdit}
                 </button>
                 <button
-                  type="submit"
+                  type="button" // Changed to "button"
+                  onClick={triggerSubmit} 
                   className="bg-[#3972FF] border-[#3972FF] hover:bg-[#5C8BFF] text-white w-40 h-10 px-4 rounded-[12px] border border-solid mr-4 font-bold text-[15px] leading-[24px] text-center align-middle"
                 >
   
