@@ -7,6 +7,7 @@ import 'package:mobile/features/profile/presentation/pages/profile_page.dart';
 import 'package:mobile/features/form/presentation/blocs/form_bloc.dart';
 import 'package:mobile/features/form/presentation/pages/translator_page.dart';
 import 'package:mobile/features/onboarding/presentation/bloc/onboarding_bloc.dart';
+import 'package:mobile/features/profile/presentation/pages/profile_page.dart';
 
 import 'features/auth/presentation/blocs/login_cubit.dart';
 import 'features/auth/presentation/pages/login_page.dart';
@@ -46,7 +47,8 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData.dark().copyWith(
           textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
-          primaryTextTheme: GoogleFonts.interTextTheme(ThemeData.dark().primaryTextTheme),
+          primaryTextTheme:
+              GoogleFonts.interTextTheme(ThemeData.dark().primaryTextTheme),
           colorScheme: const ColorScheme.dark(
             primary: Color(0xFF2196F3),
           ),
@@ -58,7 +60,6 @@ class MyApp extends StatelessWidget {
           '/signup': (_) => SignUpPage(),
           '/flights/empty': (_) => const FlightEmptyPage(),
           '/flights/list': (_) => const FlightListPage(),
-          '/flights/detail': (_) => const FlightDetailPage(),
           '/profile': (_) => const ProfilePage(),
           '/flights/detail': (_) => FlightDetailPage(),
           '/form': (_) => TranslatorFormPage(),
