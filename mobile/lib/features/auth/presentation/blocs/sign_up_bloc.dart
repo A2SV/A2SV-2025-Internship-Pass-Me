@@ -23,7 +23,7 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
 
     final result = await signUpUseCase(
       SignUpParams(
-        fullName: event.fullName,
+        username: event.username,
         email: event.email,
         password: event.password,
       ),
