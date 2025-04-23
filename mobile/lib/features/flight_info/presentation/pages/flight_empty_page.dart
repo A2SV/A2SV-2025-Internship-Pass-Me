@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/core/theme/app_colors.dart';
+import 'package:mobile/features/form/presentation/pages/translator_page.dart';
 
 class FlightEmptyPage extends StatelessWidget {
   const FlightEmptyPage({super.key});
@@ -32,7 +33,13 @@ class FlightEmptyPage extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: FloatingActionButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TranslatorFormPage()),
+                  );
+                },
                 backgroundColor: Colors.blue,
                 child: Icon(Icons.add),
               ),
