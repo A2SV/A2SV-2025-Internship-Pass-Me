@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-enum Language { english, amharic }
+enum Language { english, amharic, turkish }
 
 extension LanguageExtension on Language {
   String get code {
@@ -9,6 +9,8 @@ extension LanguageExtension on Language {
         return 'english';
       case Language.amharic:
         return 'amharic';
+      case Language.turkish:
+        return 'turkish';
     }
   }
 }
@@ -63,6 +65,8 @@ class LanguageSelector extends StatelessWidget {
         return 'English';
       case Language.amharic:
         return 'አማርኛ';
+      case Language.turkish:
+        return "Türkçe";
     }
   }
 }
