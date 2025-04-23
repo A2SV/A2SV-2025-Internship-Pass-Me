@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobile/features/profile/presentation/pages/update_profile_page.dart';
 
 class PersonalDetails extends StatelessWidget {
   final String imageUrl;
   final String name;
   final String email;
 
-  const PersonalDetails({super.key, required this.imageUrl, required this.name, required this.email});
+  const PersonalDetails(
+      {super.key,
+      required this.imageUrl,
+      required this.name,
+      required this.email});
 
   @override
   Widget build(BuildContext context) {
@@ -22,15 +27,28 @@ class PersonalDetails extends StatelessWidget {
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(name, style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.w400, color: Colors.white)),
-            Text(email, style: GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.w400, color: Color(0xFF6B7280)))
+            Text(name,
+                style: GoogleFonts.poppins(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
+                    color: Colors.white)),
+            Text(email,
+                style: GoogleFonts.roboto(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
+                    color: Color(0xFF6B7280)))
           ],
         ),
         const Spacer(),
         IconButton(
           icon: const Icon(Icons.edit_outlined, color: Colors.white),
           onPressed: () {
-            // Handle edit action here
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (_) => const UpdateProfilePage(),
+              ),
+            );
           },
         ),
       ],

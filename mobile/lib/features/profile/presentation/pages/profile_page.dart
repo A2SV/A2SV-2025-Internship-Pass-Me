@@ -31,20 +31,20 @@ class ProfilePage extends StatelessWidget {
             const SizedBox(height: 8),
             const Divider(color: Colors.white),
             const SizedBox(height: 20),
-            ProfileOption(
-              title: "Change Password",
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => const UpdateProfilePage(),
-                  ),
-                );
-              },
-              leadingIcon: const Icon(Icons.lock_outline_rounded, size: 30),
-              trailingIcon: const Icon(Icons.edit_outlined),
-            ),
-            const SizedBox(height: 20),
+            // ProfileOption(
+            //   title: "Change Password",
+            //   onTap: () {
+            //     Navigator.push(
+            //       context,
+            //       MaterialPageRoute(
+            //         builder: (_) => const UpdateProfilePage(),
+            //       ),
+            //     );
+            //   },
+            //   leadingIcon: const Icon(Icons.lock_outline_rounded, size: 30),
+            //   trailingIcon: const Icon(Icons.edit_outlined),
+            // ),
+            // const SizedBox(height: 20),
             ProfileOption(
               title: "Language Preference",
               onTap: () {},

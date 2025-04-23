@@ -88,6 +88,7 @@ class _UpdateProfilePageState extends State<UpdateProfilePage> {
               onPressed: updateProfileDetails,
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.blueAccent,
+                foregroundColor: Colors.white, // Ensures text is visible
               ),
               child: const Text("Save Changes"),
             ),
