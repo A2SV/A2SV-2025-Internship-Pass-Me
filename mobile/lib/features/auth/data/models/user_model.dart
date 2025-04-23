@@ -5,15 +5,15 @@ class UserModel extends User {
 
   UserModel({
     required String id,
-    required String fullName,
+    required String username,
     required String email,
     required this.token,
-  }) : super(id: id, fullName: fullName, email: email);
+  }) : super(id: id, username: username, email: email);
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
       id: json['id'] ?? '',
-      fullName: json['fullName'] ?? '',
+      username: json['username'] ?? '',
       email: json['email'] ?? '',
       token: json['token'] ?? '',
     );
@@ -22,7 +22,7 @@ class UserModel extends User {
   Map<String, dynamic> toJson() {
     return {
       'id': id,
-      'fullName': fullName,
+      'username': username,
       'email': email,
       'token': token,
     };

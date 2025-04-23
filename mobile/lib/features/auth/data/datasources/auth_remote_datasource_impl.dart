@@ -1,31 +1,132 @@
+import 'package:mobile/core/network/api_client.dart';
+import 'package:mobile/core/service/local_storage_service.dart';
 import 'auth_remote_datasource.dart';
 
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
+  final ApiClient _apiClient;
+  final LocalStorageService _localStorage;
+
+  AuthRemoteDataSourceImpl(this._apiClient, this._localStorage);
+
   @override
   Future<String> login(String email, String password) async {
-    // Simulate API call
-    await Future.delayed(const Duration(seconds: 2));
-    if (email == "test@example.com" && password == "password") {
-      return "token_123456";
-    } else {
-      throw Exception("Invalid credentials");
+    try {
+      final response = await _apiClient.post(
+        '/login',
+        {
+          'email': email,
+          'password': password,
+        },
+        requiresAuth: false,
+      );
+
+      final token = response['token'] as String;
+      final userData = response['user'] as Map<String, dynamic>;
+
+      // Save auth data using LocalStorageService
+      await _localStorage.saveAuthToken(token);
+      await _localStorage.saveUserId(userData['id'] as String);
+      await _localStorage.saveUserEmail(userData['email'] as String);
+
+      // If you have refresh token
+      if (response.containsKey('refresh_token')) {
+        await _localStorage
+            .saveRefreshToken(response['refresh_token'] as String);
+      }
+
+      return token;
+    } on ApiException catch (e) {
+      if (e.statusCode == 401) {
+        throw Exception('Invalid email or password');
+      }
+      throw Exception('Login failed: ${e.message}');
+    } catch (e) {
+      throw Exception('Login failed: ${e.toString()}');
     }
   }
 
   @override
   Future<String> signUp({
-    required String fullName,
+    required String username,
     required String email,
     required String password,
   }) async {
-    // Simulate network delay
-    await Future.delayed(const Duration(seconds: 2));
+    try {
+      final response = await _apiClient.post(
+        '/register',
+        {
+          'username': username,
+          'email': email,
+          'password': password,
+        },
+        requiresAuth: false,
+      );
 
-    // Simulate API response: accept anything that's not test@example.com
-    if (email != "test@example.com") {
-      return "user_created_token_987654";
-    } else {
-      throw Exception("Email already exists");
+      // Handle different successful response formats
+      if (response.containsKey('token')) {
+        final token = response['token'] as String;
+        await _localStorage.saveAuthToken(token);
+
+        if (response.containsKey('user')) {
+          final userData = response['user'] as Map<String, dynamic>;
+          await _localStorage.saveUserId(userData['id'] as String);
+          await _localStorage.saveUserEmail(userData['email'] as String);
+        }
+
+        return token;
+      }
+
+      if (response['message'] == 'User registered successfully') {
+        return 'registration_successful';
+      }
+
+      throw Exception('Unexpected response format');
+    } on ApiException catch (e) {
+      if (e.statusCode == 409) {
+        throw Exception('Email already exists');
+      }
+      throw Exception('Registration failed: ${e.message}');
+    } catch (e) {
+      throw Exception('Registration failed: ${e.toString()}');
+    }
+  }
+
+  @override
+  Future<void> logout() async {
+    try {
+      await _apiClient.post('/auth/logout', {});
+    } finally {
+      // Always clear local storage on logout
+      await _localStorage.clearAllUserData();
+    }
+  }
+
+  @override
+  Future<String> refreshToken() async {
+    final refreshToken = _localStorage.getRefreshToken();
+    if (refreshToken == null) {
+      throw Exception('No refresh token available');
+    }
+
+    try {
+      final response = await _apiClient.post(
+        '/auth/refresh',
+        {'refresh_token': refreshToken},
+        requiresAuth: false,
+      );
+
+      final newToken = response['token'] as String;
+      await _localStorage.saveAuthToken(newToken);
+
+      if (response.containsKey('refresh_token')) {
+        await _localStorage
+            .saveRefreshToken(response['refresh_token'] as String);
+      }
+
+      return newToken;
+    } on ApiException catch (e) {
+      await _localStorage.clearAllUserData();
+      throw Exception('Session expired. Please login again.');
     }
   }
 }

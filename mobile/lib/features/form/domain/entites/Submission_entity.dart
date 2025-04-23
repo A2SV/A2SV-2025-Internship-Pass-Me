@@ -1,58 +1,66 @@
 import 'package:mobile/features/form/domain/entites/question.dart';
 
 class SubmissionEntity {
-  final List<QuestionEntity> questions;
-  final DateTime flightDate;
-  final String flightName;
-  final String startName;
-  final String destinationName;
+  final List<QuestionEntity> qa;
+  final DateTime date;
+  final String title;
+  final String from_country;
+  final String to_country;
+  //final String user_id;
+  final String language;
 
   const SubmissionEntity({
-    required this.questions,
-    required this.flightDate,
-    required this.flightName,
-    required this.startName,
-    required this.destinationName,
+    required this.qa,
+    required this.date,
+    required this.title,
+    required this.from_country,
+    required this.to_country,
+    //required this.user_id,
+    required this.language
   });
 
   // Creates a copy with updated value
   SubmissionEntity copyWith({
-    List<QuestionEntity>? questions,
-    DateTime? flightDate,
-    String? flightName,
-    String? startName,
-    String? destinationName,
+    List<QuestionEntity>? qa,
+    DateTime? date,
+    String? title,
+    String? from_country,
+    String? to_country,
+    //String? user_id,
+    String? language,
   }) {
     return SubmissionEntity(
-      questions: questions ?? this.questions,
-      flightDate: flightDate ?? this.flightDate,
-      flightName: flightName ?? this.flightName,
-      startName: startName ?? this.startName,
-      destinationName: destinationName ?? this.destinationName,
-    );
+        qa: qa ?? this.qa,
+        date: date ?? this.date,
+        title: title ?? this.title,
+        from_country: from_country ?? this.from_country,
+        to_country: to_country ?? this.to_country,
+        //user_id: user_id ?? this.user_id,
+        language: language?? this.language);
   }
 
   // Converts to Map
   Map<String, dynamic> toMap() {
     return {
-      'questions': questions.map((q) => q.toMap()).toList(),
-      'flightDate': flightDate.toIso8601String(),
-      'flightName': flightName,
-      'startName': startName,
-      'destinationName': destinationName,
+      'qa': qa.map((q) => q.toMap()).toList(),
+      'date': date.toIso8601String(),
+      'title': title,
+      'from_country': from_country,
+      'to_country': to_country,
+      'language':language,
     };
   }
 
   // Creates from Map
   factory SubmissionEntity.fromMap(Map<String, dynamic> map) {
     return SubmissionEntity(
-      questions: (map['questions'] as List)
-          .map((q) => QuestionEntity.fromMap(q))
-          .toList(),
-      flightDate: DateTime.parse(map['flightDate'] as String),
-      flightName: map['flightName'] as String,
-      startName: map['startName'] as String,
-      destinationName: map['destinationName'] as String,
+      qa: (map['qa'] as List).map((q) => QuestionEntity.fromMap(q)).toList(),
+      date: DateTime.parse(map['date'] as String),
+      title: map['title'] as String,
+      from_country: map['from_country'] as String,
+      to_country: map['to_country'] as String,
+      //user_id: map['user_id'] as String,
+      language:map['language'] as String,
     );
   }
 
@@ -63,10 +71,10 @@ class SubmissionEntity {
 
   @override
   int get hashCode {
-    return questions.hashCode ^
-        flightDate.hashCode ^
-        flightName.hashCode ^
-        startName.hashCode ^
-        destinationName.hashCode;
+    return qa.hashCode ^
+        date.hashCode ^
+        title.hashCode ^
+        from_country.hashCode ^
+        to_country.hashCode;
   }
 }

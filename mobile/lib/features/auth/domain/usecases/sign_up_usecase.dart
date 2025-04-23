@@ -10,21 +10,21 @@ class SignUpUseCase {
   SignUpUseCase(this.repository);
 
   Future<Either<Failure, User>> call(SignUpParams params) {
-    return repository.signUp(params.email, params.password, params.fullName);
+    return repository.signUp(params.email, params.password, params.username);
   }
 }
 
 class SignUpParams extends Equatable {
   final String email;
   final String password;
-  final String fullName;
+  final String username;
 
   const SignUpParams({
     required this.email,
     required this.password,
-    required this.fullName,
+    required this.username,
   });
 
   @override
-  List<Object?> get props => [email, password, fullName];
+  List<Object?> get props => [email, password, username];
 }
