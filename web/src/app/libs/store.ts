@@ -4,6 +4,7 @@ import { flightsApi } from "@/app/services/flightsApi";
 import { chatApi } from "@/app/services/chatApi";
 import { manualChatApi } from "@/app/services/manualChatApi";
 import { profileApi } from "@/app/services/profileApi";
+
 export const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
