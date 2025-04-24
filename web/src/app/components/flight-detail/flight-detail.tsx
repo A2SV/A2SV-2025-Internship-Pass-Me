@@ -75,12 +75,6 @@ export default function FlightDetail({ flightId }: { flightId: string }) {
                 </span>
                 <div className="rounded-lg px-4 py-2 bg-[#26252A] text-sm whitespace-pre-wrap">
                   <p>{message.question}</p>
-                  {message.question && (
-                    <div className="mt-2 text-blue-50">
-                      <strong>ጥያቄ:</strong>
-                      <p>{message.question}</p>
-                    </div>
-                  )}
                 </div>
               </div>
 
@@ -90,12 +84,6 @@ export default function FlightDetail({ flightId }: { flightId: string }) {
                   <span className="text-sm text-green-100">Answer:</span>
                   <div className="rounded-lg px-4 py-2 bg-[#323232] text-sm whitespace-pre-wrap">
                     <p>{message.answer}</p>
-                    {message.answer && (
-                      <div className="mt-2 text-blue-50">
-                        <strong>መልስ:</strong>
-                        <p>{message.answer}</p>
-                      </div>
-                    )}
                   </div>
                 </div>
               ): null}
