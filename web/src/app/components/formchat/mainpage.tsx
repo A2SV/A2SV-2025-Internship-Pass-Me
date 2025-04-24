@@ -96,6 +96,7 @@ const Mainpage = () => {
       </div>
     
 <FormComponent
+key={lanaguage}
 setPopup={setPopup}
 lanaguage={lanaguage}
 flightName={flightName}
