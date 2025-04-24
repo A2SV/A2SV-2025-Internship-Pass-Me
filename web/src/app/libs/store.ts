@@ -5,7 +5,7 @@ import { chatApi } from '@/app/services/chatApi';
 import { profileApi } from "@/app/services/profileApi";
 import { manualChatApi } from '@/app/services/manualChatApi';
 
-export const store = configureStore({
+export const store =configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
     [flightsApi.reducerPath]: flightsApi.reducer,
@@ -18,7 +18,6 @@ export const store = configureStore({
       .concat(authApi.middleware)
       .concat(flightsApi.middleware)
       .concat(chatApi.middleware)
-      .concat(profileApi.middleware)
       .concat(profileApi.middleware)
       .concat(manualChatApi.middleware)
 });
