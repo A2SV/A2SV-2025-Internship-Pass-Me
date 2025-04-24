@@ -42,7 +42,8 @@ class ProfilePage extends StatelessWidget {
             ProfileOption(
               title: "Language Preference",
               onTap: () {},
-              leadingIcon: const Icon(Icons.language_outlined, size: 30),
+              leadingIcon: const Icon(Icons.language_outlined,
+                  size: 30, color: Colors.white),
               trailingIcon: Text(
                 "English",
                 style: GoogleFonts.poppins(
@@ -56,7 +57,8 @@ class ProfilePage extends StatelessWidget {
             ProfileOption(
               title: "Clear History",
               onTap: () {},
-              leadingIcon: const Icon(Icons.history_rounded, size: 30),
+              leadingIcon: const Icon(Icons.history_rounded,
+                  size: 30, color: Colors.white),
               trailingIcon: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
@@ -83,7 +85,8 @@ class ProfilePage extends StatelessWidget {
             ProfileOption(
               title: "About",
               onTap: () {},
-              leadingIcon: const Icon(Icons.info_outline_rounded, size: 30),
+              leadingIcon: const Icon(Icons.info_outline_rounded,
+                  size: 30, color: Colors.white),
             ),
             const SizedBox(height: 20),
             ProfileOption(
