@@ -8,7 +8,15 @@ import type {
 } from "@reduxjs/toolkit/query";
 
 export interface ChatResponse {
-  ai_reply: string;
+  question: {
+    main: string;
+    Translated: string;
+  };
+  answer: {
+    main: string;
+    Translation: string;
+    Pronounciation: string;
+  };
 }
 
 export interface SendAudioPayload {
@@ -49,13 +57,6 @@ export const chatApi = createApi({
 
         return result;
       },
-    }),
-    sendManualAnswer: builder.mutation<ChatResponse, string>({
-      query: (text) => ({
-        url: "/manual-answer",
-        method: "POST",
-        body: { text },
-      }),
     }),
   }),
 });

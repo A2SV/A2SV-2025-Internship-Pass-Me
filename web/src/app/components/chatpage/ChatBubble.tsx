@@ -15,17 +15,21 @@ interface ChatBubbleProps {
   isLatest?: boolean
 }
 
-const ChatBubble: React.FC<ChatBubbleProps> = ({ chatItem, isLatest = false }) => {
+const ChatBubble: React.FC<ChatBubbleProps> = ({
+  chatItem,
+  isLatest = false,
+}) => {
   const isQuestion = chatItem.role === 'question'
 
   const [approved, setApproved] = useState(!isLatest)
   const [isEditing, setIsEditing] = useState(false)
   const [answerText, setAnswerText] = useState(chatItem.text)
   const [customAnswer, setCustomAnswer] = useState('')
-  const [transliterationText, setTransliterationText] = useState(chatItem.transliteration || '')
-  const [loading, setLoading] = useState(false)
-
-  const [sendManualAnswer, { isLoading: isTranslating }] = useSendManualAnswerMutation()
+  const [transliterationText, setTransliterationText] = useState(
+    chatItem.transliteration || ''
+  )
+  const [sendManualAnswer, { isLoading: isTranslating }] =
+    useSendManualAnswerMutation()
 
   const handleApprove = () => {
     setApproved(true)
@@ -39,44 +43,46 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ chatItem, isLatest = false }) =
     const text = customAnswer.trim()
     if (!text) return
 
-    setLoading(true)
     try {
-      const raw = (await sendManualAnswer(text).unwrap()).ai_reply
-
-      const transMatch = raw.match(/1\.\s*Translation:\s*([^\r\n]+)/)
-      const pronMatch  = raw.match(/2\.\s*Pronunciation:\s*([^\r\n]+)/)
-
-      const newTranslation   = transMatch   ? transMatch[1].trim() : raw
-      const newPronunciation = pronMatch    ? pronMatch[1].trim()  : ''
-
-      setAnswerText(newTranslation)
-      setTransliterationText(newPronunciation)
+      const { translation, pronunciation } = await sendManualAnswer(text).unwrap()
+      setAnswerText(translation)
+      setTransliterationText(pronunciation)
       setApproved(true)
     } catch (error) {
       console.error('Error translating custom answer:', error)
     } finally {
-      setLoading(false)
       setIsEditing(false)
       setCustomAnswer('')
     }
   }
 
   return (
-    <div className={`flex flex-col max-w-md ${
-      isQuestion
-        ? isEditing ? 'self-center w-300' : 'self-start'
-        : 'self-end'
-    }`}>
-      <span className={`text-sm mb-1 ${
-        isQuestion ? 'text-gray-400' : 'text-green-100'
-      }`}>
+    <div
+      className={`flex flex-col max-w-md ${
+        isQuestion
+          ? isEditing
+            ? 'self-center w-300'
+            : 'self-start'
+          : 'self-end'
+      }`}
+    >
+      <span
+        className={`text-sm mb-1 ${
+          isQuestion ? 'text-gray-400' : 'text-green-100'
+        }`}
+      >
         {isQuestion ? 'Question:' : 'Answer:'}
       </span>
 
-      <div className={`rounded-lg px-4 py-2 ${
-        isEditing ? 'bg-indigo-500 w-100'
-        : isQuestion ? 'bg-[#26252A]' : 'bg-[#323232]'
-      } text-sm relative`}>
+      <div
+        className={`rounded-lg px-4 py-2 ${
+          isEditing
+            ? 'bg-indigo-500 w-100'
+            : isQuestion
+            ? 'bg-[#26252A]'
+            : 'bg-[#323232]'
+        } text-sm relative`}
+      >
         {isQuestion ? (
           <>
             <p className="whitespace-pre-wrap">{chatItem.text}</p>
@@ -103,14 +109,14 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ chatItem, isLatest = false }) =
                   value={customAnswer}
                   onChange={(e) => setCustomAnswer(e.target.value)}
                   placeholder="Type your desired answer..."
-                  rows={1}
+                  rows={2}
                 />
                 <button
                   onClick={handleSubmitCustom}
-                  disabled={loading || isTranslating}
+                  disabled={isTranslating}
                   className="mt-2 px-3 py-1 bg-blue-600 text-white rounded disabled:opacity-50"
                 >
-                  {loading || isTranslating ? 'Translating...' : 'Submit'}
+                  {isTranslating ? 'Translating...' : 'Submit'}
                 </button>
               </div>
             )}

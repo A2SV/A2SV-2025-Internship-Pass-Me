@@ -5,7 +5,7 @@ import { chatApi } from "@/app/services/chatApi";
 import { manualChatApi } from "@/app/services/manualChatApi";
 import { profileApi } from "@/app/services/profileApi";
 
-export const store = configureStore({
+export const store =configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
     [flightsApi.reducerPath]: flightsApi.reducer,
@@ -19,7 +19,7 @@ export const store = configureStore({
       .concat(flightsApi.middleware)
       .concat(chatApi.middleware)
       .concat(profileApi.middleware)
-      .concat(manualChatApi.middleware),
+      .concat(manualChatApi.middleware)
 });
 
 export type RootState = ReturnType<typeof store.getState>;
