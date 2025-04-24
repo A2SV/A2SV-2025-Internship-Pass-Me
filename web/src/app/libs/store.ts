@@ -1,9 +1,9 @@
-<import { configureStore } from '@reduxjs/toolkit';
-import { authApi }    from '@/app/services/authApi';
-import { flightsApi } from '@/app/services/flightsApi';
-import { chatApi } from '@/app/services/chatApi';
+import { configureStore } from "@reduxjs/toolkit";
+import { authApi } from "@/app/services/authApi";
+import { flightsApi } from "@/app/services/flightsApi";
+import { chatApi } from "@/app/services/chatApi";
+import { manualChatApi } from "@/app/services/manualChatApi";
 import { profileApi } from "@/app/services/profileApi";
-import { manualChatApi } from '@/app/services/manualChatApi';
 
 export const store = configureStore({
   reducer: {
@@ -18,8 +18,8 @@ export const store = configureStore({
       .concat(authApi.middleware)
       .concat(flightsApi.middleware)
       .concat(chatApi.middleware)
-      .concat(profileApi.middleware),
-      .concat(manualChatApi.middleware)
+      .concat(profileApi.middleware)
+      .concat(manualChatApi.middleware),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
