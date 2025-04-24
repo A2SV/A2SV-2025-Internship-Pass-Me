@@ -4,8 +4,8 @@ import Image from "next/image";
 import questions from "../../../../question";
 import questionsAmharic from "../../../../amharic";
 import FormComponent from "./FormComponent";
-import FlightDetails from "./FlightDetails";
-import {inter} from "@/app/libs/font";
+import turkishquestions from "../../../../turkish";
+// import {inter} from "@/app/libs/font";
 // import Link from 'next/link'
 
 const Mainpage = () => {
@@ -22,20 +22,7 @@ const Mainpage = () => {
     [key: string]: string; // Adjust the types based on your form fields
   }
 
-  const onSubmit = (data: FormData) => {
-     const  flightDetails = {
-      flightName: flightName, 
-      flightFrom: flightFrom,
-      flightTo: flightTo,
-      time: time,
-    };
-    console.log("Flight Details:", flightDetails);
-    console.log("Form Data:", data);
-
-    setPopup(false);
-
-    console.log(data);
-  };
+  
   const handleLangaugechange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -58,7 +45,7 @@ const Mainpage = () => {
   };
 
   return (
-    <div className={`w-full h-full bg-[#1C1C1C] overflow-scroll ${inter.className}`}>
+    <div className={`w-full h-full bg-[#1C1C1C] overflow-scroll`}>
       <div className="w-full ">
         <div>
                 {/* Banner at the top, horizontally centered */}
@@ -78,60 +65,53 @@ const Mainpage = () => {
         </div>
       </div>
 
-      <div className="flex mx-20 justify-between mt-10">
+      <div className="flex flex-col gap-6 md:flex-row mx-20 justify-between mt-10">
         <div>
           <p className="text-white text-[14px]">From:</p>
-          <div className="w-[280px] h-[56px] bg-[#676470] rounded-lg px-4 flex items-center gap-4">
+          <div className="w-full md:w-[280px] h-[56px] bg-[#676470] rounded-lg px-4 flex items-center gap-4">
             <select
               title="Select language"
               value={lanaguage}
               onChange={handleLangaugechange}
-              className="w-full h-full bg-transparent text-white text-base outline-none"
+              className="bg-[#676470] hover:bg-[#676470] w-full h-full text-white text-base outline-none"
             >
               <option value="en">English</option>
               <option value="am">Amharic</option>
+              <option value="tr">Turkish</option>
             </select>
           </div>
         </div>
 
         <div>
           <p className="text-white text-[14px]">To:</p>
-          <div className="w-[280px] h-[56px] bg-[#676470] rounded-lg px-4 flex items-center gap-4">
+          <div className="w-full md:w-[280px] h-[56px] bg-[#676470] rounded-lg px-4 flex items-center gap-4">
             <select
               className="w-full h-full bg-[#676470] text-white text-base outline-none"
               value={toLanguage}
               onChange={handletoLangaugechange} >
-              <option value="am">Amharic</option>
               <option value="en">English</option>
             </select>
           </div>
         </div>
       </div>
-
-      <FlightDetails
-        flightName={flightName}
-        setFlightName={setFlightName}
-        flightFrom={flightFrom}
-        setFlightFrom={setFlightFrom}
-        flightTo={flightTo}
-        setFlightTo={setFlightTo}
-        time={time}
-        setTime={setTime}
-        langauage={lanaguage}
-        />
-
-      <h1 className="mt-10 text-white text-[24px] font-bold font-inter mx-20">
-        {lanaguage === "en" ? "common airport questions " : "የአየር ማረፊያ የተደጋጉ ጥያቄዎች"}
-        </h1>
-     <FormComponent
     
-        questions={questions}
-        questionsAmharic={questionsAmharic}
-        lanaguage={lanaguage}
-        onSubmit={onSubmit}
-        popup={popup}
-        handlethepop={handlethepopup}
-        handleedit={handleedit}   
+<FormComponent
+key={lanaguage}
+setPopup={setPopup}
+lanaguage={lanaguage}
+flightName={flightName}
+setFlightName={setFlightName}
+flightFrom={flightFrom}
+setFlightFrom={setFlightFrom}
+flightTo={flightTo}
+setFlightTo={setFlightTo}
+time={time}
+setTime={setTime}
+questions={questions}
+questionsAmharic={questionsAmharic}
+popup={popup}
+handlethepop={handlethepopup}
+handleedit={handleedit}   
       />
     </div>
   );
