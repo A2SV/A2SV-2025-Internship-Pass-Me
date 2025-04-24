@@ -12,12 +12,24 @@ class SignUpPage extends StatelessWidget {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: AppColors.backgroundColor,
-        title: Image.asset('assets/images/logo.png'),
+        elevation: 0, // Remove shadow from AppBar
       ),
-      body: const Center(
+      body: Center(
         child: SingleChildScrollView(
-          padding: EdgeInsets.symmetric(horizontal: 32, vertical: 24),
-          child: SignUpForm(),
+          padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // Add the logo image above the form
+              Image.asset(
+                'assets/images/logo.png',
+                height: 100, // Adjust the height as needed
+              ),
+              const SizedBox(
+                  height: 24), // Add spacing between the image and the form
+              const SignUpForm(),
+            ],
+          ),
         ),
       ),
     );
