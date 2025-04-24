@@ -19,6 +19,7 @@ export const store = configureStore({
       .concat(flightsApi.middleware)
       .concat(chatApi.middleware)
       .concat(profileApi.middleware)
+      .concat(profileApi.middleware)
       .concat(manualChatApi.middleware)
 });
 
