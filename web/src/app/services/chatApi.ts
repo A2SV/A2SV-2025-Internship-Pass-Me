@@ -1,21 +1,15 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { getSession } from "next-auth/react";
-import type {
-  FetchBaseQueryError,
-  FetchBaseQueryMeta,
-  BaseQueryApi,
-  QueryReturnValue,
-} from "@reduxjs/toolkit/query";
 
 export interface ChatResponse {
   question: {
     main: string;
-    Translated: string;
+    translated: string;
   };
   answer: {
     main: string;
-    Translation: string;
-    Pronounciation: string;
+    translation: string;
+    pronounciation: string;
   };
 }
 
@@ -37,25 +31,46 @@ export const chatApi = createApi({
       }
       return headers;
     },
+    responseHandler: (response) => response.json(),
   }),
   endpoints: (builder) => ({
     sendAudioChat: builder.mutation<ChatResponse, SendAudioPayload>({
-      async queryFn(arg, _queryApi: BaseQueryApi, _extraOptions, fetchWithBQ) {
+      query: ({ flightId, file }) => {
         const formData = new FormData();
-        formData.append("flight_id", arg.flightId);
-        formData.append("audio", arg.file);
-
-        const result = (await fetchWithBQ({
+        formData.append("flight_id", flightId);
+        formData.append("audio", file);
+        return {
           url: "/chat-ai",
           method: "POST",
           body: formData,
-        })) as QueryReturnValue<
-          ChatResponse,
-          FetchBaseQueryError,
-          FetchBaseQueryMeta
-        >;
+        };
+      },
+      transformResponse: (raw: {
+        status: string;
+        originalStatus: number;
+        data: string;
+        error?: string;
+      }) => {
+        // raw.data is your JS‐style object literal
+        let s = raw.data.trim();
 
-        return result;
+        // 1) Wrap in braces if missing
+        if (!s.startsWith("{")) s = "{" + s;
+        if (!s.endsWith("}"))   s = s + "}";
+
+        // 2) Quote keys: question, answer, main, translated, translation, pronounciation
+        s = s.replace(
+          /(\b(?:question|answer|main|translated|translation|pronounciation)\b)(?=\s*:)/g,
+          `"$1"`
+        );
+
+        // 3) Remove trailing commas before } or ]
+        s = s.replace(/,(\s*[}\]])/g, "$1");
+
+        // 4) Parse into your typed shape
+        const parsed = JSON.parse(s) as ChatResponse;
+
+        return parsed;
       },
     }),
   }),

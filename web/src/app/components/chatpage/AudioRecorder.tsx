@@ -36,6 +36,7 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({
         const audioBlob = new Blob(audioChunksRef.current, {
           type: 'audio/wav',
         });
+        console.log(audioBlob)
         const file = new File([audioBlob], 'recording.wav', {
           type: 'audio/wav',
         });

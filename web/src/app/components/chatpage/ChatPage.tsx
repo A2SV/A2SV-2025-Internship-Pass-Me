@@ -14,21 +14,24 @@ export default function ChatPage() {
   const [chatData, setChatData] = useState<ChatItem[]>([]);
 
   const handleNewReply = (resp: ChatResponse) => {
+    console.log("resp", resp)
     const baseId = chatData.length;
     const items: ChatItem[] = [
       {
         id: baseId + 1,
         role: "question",
         text: resp.question.main,
-        translation: resp.question.Translated,
+        translation: resp.question.translated,
       },
       {
         id: baseId + 2,
         role: "answer",
         text: resp.answer.main,
-        transliteration: resp.answer.Pronounciation,
+        translation: resp.answer.translation,
+        transliteration: resp.answer.pronounciation,
       },
-    ];
+    ]
+    console.log("items", items)
     setChatData((prev) => [...prev, ...items]);
   };
 
