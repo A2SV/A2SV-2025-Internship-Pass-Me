@@ -1,4 +1,4 @@
-<import { configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import { authApi }    from '@/app/services/authApi';
 import { flightsApi } from '@/app/services/flightsApi';
 import { chatApi } from '@/app/services/chatApi';
@@ -18,7 +18,7 @@ export const store = configureStore({
       .concat(authApi.middleware)
       .concat(flightsApi.middleware)
       .concat(chatApi.middleware)
-      .concat(profileApi.middleware),
+      .concat(profileApi.middleware)
       .concat(manualChatApi.middleware)
 });
 
