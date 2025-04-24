@@ -122,6 +122,22 @@ const { control, handleSubmit, reset } = useForm<FormDefaultValues>({
 const currentLang = (flight as Translations)[lanaguage as keyof Translations] || flight.en
 
 const triggerSubmit = handleSubmit(onSubmitForm);
+const validateInputByLanguage = (input: string, language: string): boolean => {
+  const patterns: Record<string, RegExp> = {
+    "en": /^[a-zA-Z0-9\s.,!?@#$%^&*()_+=-]+$/, // English + special characters
+    "am": /^[\u1200-\u137F\s.,!?@#$%^&*()_+=-]+$/, // Amharic + special characters
+    "tr": /^[a-zA-ZçÇğĞıİöÖşŞüÜ\s.,!?@#$%^&*()_+=-]+$/, // Turkish + special characters
+  };
+
+  const pattern = patterns[language];
+  if (!pattern) {
+    console.error(`Unsupported language: ${language}`);
+    return false;
+  }
+
+  return pattern.test(input);
+};
+
 
 
   return (
@@ -141,10 +157,9 @@ const triggerSubmit = handleSubmit(onSubmitForm);
         control={control}
         rules={{
           required:currentLang.validation.Required,
-          pattern: {
-            value:currentLang.validation.pattern,
-            message:currentLang.validation.Lettryonly
-          },
+          validate: (value) =>(
+            validateInputByLanguage(value, lanaguage) ||
+            currentLang.validation.LettersOnly),
         }}
         render={({ field, fieldState: { error } }) => (
           <div className="relative px-2 py-4">
@@ -173,10 +188,10 @@ const triggerSubmit = handleSubmit(onSubmitForm);
        
         rules={{
           required:currentLang.validation.Required,
-          pattern: {
-            value:currentLang.validation.pattern,
-            message:currentLang.validation.Lettryonly
-          },
+          validate: (value) =>(
+            validateInputByLanguage(value, lanaguage) ||
+            currentLang.validation.LettersOnly),
+      
         }}
         render={({ field, fieldState: { error } }) => (
           <div className=" md:mr-32  relative px-2 py-4 ">
@@ -201,10 +216,9 @@ const triggerSubmit = handleSubmit(onSubmitForm);
         control={control}
         rules={{
           required:currentLang.validation.Required,
-          pattern: {
-            value:currentLang.validation.pattern,
-            message:currentLang.validation.Lettryonly
-          },
+          validate: (value) =>(
+            validateInputByLanguage(value, lanaguage) ||
+            currentLang.validation.LettersOnly),
         }}
          
         render={({ field, fieldState: { error } }) => (
@@ -230,13 +244,9 @@ const triggerSubmit = handleSubmit(onSubmitForm);
       <Controller
         name="flightDate"
         control={control}
-        rules={{
-          required:currentLang.validation.Required,
-          pattern: {
-            value:currentLang.validation.pattern,
-            message:currentLang.validation.Lettryonly
-          },
-        }}
+        // rules={{
+        //   required:currentLang.validation.Required,
+        // }}
         
         render={({ field }) => (
           <div className="w-full  px-2 py-4">
@@ -277,7 +287,7 @@ const triggerSubmit = handleSubmit(onSubmitForm);
               rules={{
                 required: "This field is required",
                 pattern: {
-                  value: /^[a-zA-Z0-9\s.,!?]+$/,
+                  value:  /^[a-zA-Z0-9\s.,!?@#$%^&*()_+=-]+$/,
                   message: "Please use English letters and numbers only.",
                 },
               }}
@@ -315,7 +325,7 @@ const triggerSubmit = handleSubmit(onSubmitForm);
               rules={{
                 required: "ይህን መሞላት አስፈላጊ ነው።",
                 pattern: {
-                  value: /^[\u1200-\u137F]+$/,
+                  value: /^[\u1200-\u137F\s.,!?@#$%^&*()_+=-]+$/,
                   message: "ይቅርታ፣ እባኮትን የአማርኛ ፊደል በመጠቀም ይሞሉ።",
                 },
               }}
@@ -355,7 +365,7 @@ const triggerSubmit = handleSubmit(onSubmitForm);
               rules={{
                 required: "Bu alanın doldurulması zorunludur.",
                 pattern: {
-               value: /^[a-zA-ZçÇğĞıİöÖşŞüÜ\s]+$/, // Allows Turkish + Latin chars
+               value: /^[a-zA-ZçÇğĞıİöÖşŞüÜ\s.,!?@#$%^&*()_+=-]+$/, // Allows Turkish + Latin chars
               message: "Lütfen yalnızca Türkçe karakterler kullanın.", // "Please use only Turkish characters."
                 },
               }}
@@ -396,9 +406,9 @@ const triggerSubmit = handleSubmit(onSubmitForm);
         </button>
       </div>
     {popup &&
-            <div className="absolute w-[90%] sm:w-[80%] md:w-[550px] md:top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-center text-center bg-black bg-opacity-60  h-[300px]">
+            <div className="absolute w-[90%] sm:w-[80%] md:w-[550px] top-[320%] md:top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 justify-center text-center bg-black bg-opacity-60  h-[300px]">
             
-              <div className=" flex  w-full  md:h-[40px]  md:w-[550px] justify-center align-middle mt-20 text-white font-inter font-normal text-[23px] leading-[100%] tracking-[0] text-center">
+              <div className="flex  w-full  md:h-[40px]  md:w-[550px] justify-center align-middle mt-20 text-white font-inter font-normal text-[23px] leading-[100%] tracking-[0] text-center">
                 <p>{currentLang.confirmationQuestion}</p>
               </div>
               <div className="flex justify-center gap-4  mt-15">
