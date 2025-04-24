@@ -1,4 +1,5 @@
 "use client";
+
 import { signOut } from "next-auth/react";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -6,7 +7,11 @@ import Image from "next/image";
 import {
   useGetFlightsQuery,
   useDeleteFlightMutation,
-} from "@/app/services/flightsApi";
+} from "../../services/flightsApi";
+import { useGetProfileQuery } from "../../services/profileApi";
+import ChangePasswordModal from "../../components/modals/ChangePasswordModal";
+import ChangeUsernameModal from "../../components/modals/ChangeUsernameModal";
+import AboutModal from "../../components/modals/AboutModal";
 
 // Types
 interface Flight {
@@ -33,11 +38,49 @@ export default function Sidebar() {
   );
   flights.reverse();
   const router = useRouter();
-  // const [flights, setFlights] = useState<Flight[]>(flights);
   const [selectedFlightId, setSelectedFlightId] = useState<string | null>(null);
   const [showAccountModal, setShowAccountModal] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  // Modal states
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [showUsernameModal, setShowUsernameModal] = useState(false);
+  const [showAboutModal, setShowAboutModal] = useState(false);
+
+  const {
+    data: profileData,
+    isLoading: isProfileLoading,
+    error: profileError,
+  } = useGetProfileQuery();
+
+  useEffect(() => {
+    if (!isProfileLoading) {
+      console.log("Profile Data:", profileData);
+      if (profileError) {
+        console.error("Profile Error:", profileError);
+        // Check if it's an authentication error
+        if ("status" in profileError && profileError.status === 401) {
+          console.error(
+            "Authentication error: Please check if you're logged in properly"
+          );
+        }
+        // Check if it's a network error (API endpoint not reachable)
+        if (
+          "error" in profileError &&
+          profileError.error === "TypeError: Failed to fetch"
+        ) {
+          console.error(
+            "Network error: Check if NEXT_PUBLIC_BACKEND_URL is set correctly"
+          );
+          console.log(
+            "Current NEXT_PUBLIC_BACKEND_URL:",
+            process.env.NEXT_PUBLIC_BACKEND_URL
+          );
+        }
+      }
+    }
+  }, [isProfileLoading, profileData, profileError]);
 
   // Check if we're on mobile and set initial sidebar state
   useEffect(() => {
@@ -369,17 +412,31 @@ export default function Sidebar() {
             <div className="py-3 w-full border-b-2 border-white-700 flex justify-between items-center gap-2">
               <div className="ml-0">
                 <div className="flex items-center">
-                  <h3 className="font-medium text-lg">Your name</h3>
+                  <h3 className="font-medium text-lg">
+                    {isProfileLoading
+                      ? "Loading..."
+                      : profileData?.username || "Your name"}
+                  </h3>
                 </div>
-                <p className="text-l text-gray-400 pb-2">yourname@gmail.com</p>
+                <p className="text-l text-gray-400 pb-2">
+                  {isProfileLoading
+                    ? "Loading..."
+                    : profileData?.email || "yourname@gmail.com"}
+                </p>
                 <div>
-                  <Image
-                    src="/edit.png"
-                    alt="Edit"
-                    width={21}
-                    height={21}
-                    className="filter invert brightness-0"
-                  />
+                  <button
+                    onClick={() => setShowUsernameModal(true)}
+                    className="cursor-pointer"
+                    title="Edit Username"
+                  >
+                    <Image
+                      src="/edit.png"
+                      alt="Edit"
+                      width={21}
+                      height={21}
+                      className="filter invert brightness-0"
+                    />
+                  </button>
                 </div>
               </div>
             </div>
@@ -392,18 +449,28 @@ export default function Sidebar() {
                   <span className="text-lg font-medium">Change Password</span>
                 </div>
 
-                <Image
-                  src="/edit.png"
-                  alt="Edit"
-                  width={21}
-                  height={21}
-                  className="filter invert brightness-0"
-                />
+                <button
+                  onClick={() => setShowPasswordModal(true)}
+                  className="cursor-pointer"
+                >
+                  <Image
+                    src="/edit.png"
+                    alt="Edit"
+                    width={21}
+                    height={21}
+                    className="filter invert brightness-0"
+                  />
+                </button>
               </div>
 
-              <div className=" flex items-center pb-5 gap-2">
+              <div className="flex items-center pb-5 gap-2">
                 <Image src="/about.png" alt="About" width={40} height={40} />
-                <div className="font-medium text-lg">About</div>
+                <button
+                  onClick={() => setShowAboutModal(true)}
+                  className="font-medium text-lg text-left"
+                >
+                  About
+                </button>
               </div>
 
               <div>
@@ -427,6 +494,30 @@ export default function Sidebar() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Change Password Modal */}
+      {showPasswordModal && (
+        <ChangePasswordModal onClose={() => setShowPasswordModal(false)} />
+      )}
+
+      {/* Change Username Modal */}
+      {showUsernameModal && (
+        <ChangeUsernameModal
+          currentUsername={profileData?.username || ""}
+          onClose={() => setShowUsernameModal(false)}
+        />
+      )}
+
+      {/* About Modal */}
+      {showAboutModal && (
+        <AboutModal
+          aboutText={
+            profileData?.about ||
+            "This app helps users schedule flights and translate queries."
+          }
+          onClose={() => setShowAboutModal(false)}
+        />
       )}
     </>
   );
