@@ -11,7 +11,6 @@ import {
 import { useGetProfileQuery } from "../../services/profileApi";
 import ChangePasswordModal from "../../components/modals/ChangePasswordModal";
 import ChangeUsernameModal from "../../components/modals/ChangeUsernameModal";
-import AboutModal from "../../components/modals/AboutModal";
 
 // Types
 interface Flight {
@@ -46,8 +45,6 @@ export default function Sidebar() {
   // Modal states
   const [showPasswordModal, setShowPasswordModal] = useState(false);
   const [showUsernameModal, setShowUsernameModal] = useState(false);
-  const [showAboutModal, setShowAboutModal] = useState(false);
-
   const {
     data: profileData,
     isLoading: isProfileLoading,
@@ -409,21 +406,14 @@ export default function Sidebar() {
             </button>
 
             {/* User section */}
-            <div className="py-3 w-full border-b-2 border-white-700 flex justify-between items-center gap-2">
+            <div className="py-3 w-full border-b-2 border-white-700">
               <div className="ml-0">
-                <div className="flex items-center">
+                <div className="flex items-center gap-2">
                   <h3 className="font-medium text-lg">
                     {isProfileLoading
                       ? "Loading..."
                       : profileData?.username || "Your name"}
                   </h3>
-                </div>
-                <p className="text-l text-gray-400 pb-2">
-                  {isProfileLoading
-                    ? "Loading..."
-                    : profileData?.email || "yourname@gmail.com"}
-                </p>
-                <div>
                   <button
                     onClick={() => setShowUsernameModal(true)}
                     className="cursor-pointer"
@@ -432,12 +422,17 @@ export default function Sidebar() {
                     <Image
                       src="/edit.png"
                       alt="Edit"
-                      width={21}
-                      height={21}
+                      width={18}
+                      height={18}
                       className="filter invert brightness-0"
                     />
                   </button>
                 </div>
+                <p className="text-l text-gray-400 pb-2">
+                  {isProfileLoading
+                    ? "Loading..."
+                    : profileData?.email || "yourname@gmail.com"}
+                </p>
               </div>
             </div>
 
@@ -463,14 +458,17 @@ export default function Sidebar() {
                 </button>
               </div>
 
-              <div className="flex items-center pb-5 gap-2">
-                <Image src="/about.png" alt="About" width={40} height={40} />
-                <button
-                  onClick={() => setShowAboutModal(true)}
-                  className="font-medium text-lg text-left"
-                >
-                  About
-                </button>
+              <div className="pb-5">
+                <div className="flex items-center gap-2">
+                  <Image src="/about.png" alt="About" width={40} height={40} />
+                  <span className="font-medium text-lg">About</span>
+                </div>
+                <p className="text-gray-400 ml-12 mt-2">
+                  {isProfileLoading
+                    ? "Loading..."
+                    : profileData?.about ||
+                      "This app helps users schedule flights and translate queries."}
+                </p>
               </div>
 
               <div>
@@ -509,16 +507,7 @@ export default function Sidebar() {
         />
       )}
 
-      {/* About Modal */}
-      {showAboutModal && (
-        <AboutModal
-          aboutText={
-            profileData?.about ||
-            "This app helps users schedule flights and translate queries."
-          }
-          onClose={() => setShowAboutModal(false)}
-        />
-      )}
+      {/* About Modal removed as it's no longer needed */}
     </>
   );
 }
