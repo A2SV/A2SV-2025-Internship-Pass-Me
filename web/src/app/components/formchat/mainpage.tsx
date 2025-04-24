@@ -73,7 +73,7 @@ const Mainpage = () => {
               title="Select language"
               value={lanaguage}
               onChange={handleLangaugechange}
-              className="w-full h-full bg-transparent text-white text-base outline-none"
+              className="bg-[#676470] hover:bg-[#676470] w-full h-full text-white text-base outline-none"
             >
               <option value="en">English</option>
               <option value="am">Amharic</option>
@@ -89,7 +89,6 @@ const Mainpage = () => {
               className="w-full h-full bg-[#676470] text-white text-base outline-none"
               value={toLanguage}
               onChange={handletoLangaugechange} >
-              <option value="am">Amharic</option>
               <option value="en">English</option>
             </select>
           </div>
@@ -97,6 +96,7 @@ const Mainpage = () => {
       </div>
     
 <FormComponent
+key={lanaguage}
 setPopup={setPopup}
 lanaguage={lanaguage}
 flightName={flightName}

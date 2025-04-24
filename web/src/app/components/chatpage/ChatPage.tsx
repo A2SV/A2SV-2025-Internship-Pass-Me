@@ -43,7 +43,7 @@ export default function ChatPage() {
     if (aEng) {
       items.push({ id: items.length + 1, role: 'answer', text: aEng, transliteration: aAmh });
     }
-
+    console.log(items)
     return items;
   };
 
@@ -59,9 +59,9 @@ export default function ChatPage() {
         <Image
           src="/banner.png"
           alt="A2SV Translator Banner"
-          width={200}
-          height={50}
-          className="w-65 h-12 md:w-83 md:h-16 object-fit"
+          width={333}
+          height={62}
+          className="md:w-[400px] md:h-auto object-contain"
           priority
         />
       </header>
@@ -96,8 +96,8 @@ export default function ChatPage() {
 
             {/* Text content */}
             <p className="font-normal text-white text-center max-w-[617px] text-[22px] leading-[30px]">
-              Start you converstion with the interviwer by recording what question you are asking, press the recording button again to stop recording get your answer and answer proudly!!!
-            </p>
+            When you’re ready, tap Record to capture the question you’ll ask, tap Record again to stop and retrieve the AI’s answer, then confidently record your own response to that generated reply.
+              </p>
           </div>
         )}
       </main>

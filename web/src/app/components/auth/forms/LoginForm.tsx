@@ -83,6 +83,7 @@ const LoginForm: React.FC = () => {
             type={showPassword ? "text" : "password"}
             {...register("password", {
               required: "Password is required",
+              
             })}
             placeholder="Enter your password"
             className="w-full h-12 px-3 py-2 border border-violet-200 hover:border-[#424242] rounded-md opacity-70 placeholder:text-sm focus:outline-none"
