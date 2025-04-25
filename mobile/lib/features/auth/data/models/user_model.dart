@@ -8,13 +8,14 @@ class UserModel extends User {
     required String username,
     required String email,
     required this.token,
-  }) : super(id: id, username: username, email: email);
+  }) : super(id: id, token: token, username: username, email: email);
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
+    final userJson = json['user'] ?? {};
     return UserModel(
-      id: json['id'] ?? '',
-      username: json['username'] ?? '',
-      email: json['email'] ?? '',
+      id: userJson['id'] ?? '',
+      username: userJson['username'] ?? '',
+      email: userJson['email'] ?? '',
       token: json['token'] ?? '',
     );
   }

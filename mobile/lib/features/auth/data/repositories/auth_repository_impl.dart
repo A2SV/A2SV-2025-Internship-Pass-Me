@@ -1,7 +1,9 @@
+import 'dart:convert'; // Import the jsonDecode function
+
 import 'package:dartz/dartz.dart';
 import 'package:mobile/core/errors/failures.dart';
 import 'package:mobile/features/auth/domain/entities/user.dart';
-
+import 'package:mobile/features/auth/data/models/user_model.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_remote_datasource.dart';
 
@@ -11,8 +13,15 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this.remoteDataSource);
 
   @override
-  Future<String> login(String email, String password) {
-    return remoteDataSource.login(email, password);
+  Future<Either<Failure, User>> login(String email, String password) async {
+    try {
+      final userMap = await remoteDataSource.login(email, password);
+      final user = UserModel.fromJson(userMap);
+      // Pass the Map to fromJson
+      return Right(user);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
   }
 
   @override
@@ -28,16 +37,15 @@ class AuthRepositoryImpl implements AuthRepository {
         password: password,
       );
 
-      // Create a user from the token and username
       final user = User(
-        id: token, // using token as ID for now
+        id: '', // You may want to get ID from response if available
+        token: token,
         username: username,
         email: email,
       );
 
       return Right(user);
     } catch (e) {
-      // If it's a specific error about email existing, return that
       if (e.toString().contains('Email already exists')) {
         return Left(ServerFailure('Email already exists'));
       }

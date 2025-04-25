@@ -47,6 +47,7 @@ Future<void> _initCore() async {
   sl.registerLazySingleton<ApiClient>(() => ApiClient(
         baseUrl: dotenv.env['API_URL']!,
         localStorage: sl(),
+        debugMode: true,
       ));
 }
 

@@ -195,23 +195,40 @@ class ApiClient {
 
   Map<String, dynamic> _handleResponse(http.Response response) {
     try {
-      final responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      final decoded = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        return responseBody;
+        if (decoded is Map<String, dynamic>) {
+          return decoded;
+        } else if (decoded is String) {
+          return {'data': decoded}; // Wrap plain string response into a map
+        } else {
+          throw ApiException(
+            statusCode: response.statusCode,
+            message: 'Unexpected response format',
+            response: decoded,
+          );
+        }
       }
 
+      if (decoded is Map<String, dynamic>) {
+        throw ApiException(
+          statusCode: response.statusCode,
+          message:
+              decoded['message'] ?? decoded['error'] ?? 'An error occurred',
+          response: decoded,
+        );
+      } else {
+        throw ApiException(
+          statusCode: response.statusCode,
+          message: 'Unexpected error format',
+          response: decoded,
+        );
+      }
+    } on FormatException catch (e) {
       throw ApiException(
         statusCode: response.statusCode,
-        message: responseBody['message'] ??
-            responseBody['error'] ??
-            'An error occurred',
-        response: responseBody,
-      );
-    } on FormatException {
-      throw ApiException(
-        statusCode: response.statusCode,
-        message: 'Invalid response format',
+        message: 'Invalid response format: ${e.message}',
         response: response.body,
       );
     }

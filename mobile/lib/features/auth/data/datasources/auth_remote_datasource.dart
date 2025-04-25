@@ -1,5 +1,5 @@
 abstract class AuthRemoteDataSource {
-  Future<String> login(String email, String password);
+  Future<Map<String, dynamic>> login(String email, String password);
 
   /// Registers a new user and returns a token
   Future<String> signUp({
@@ -7,4 +7,8 @@ abstract class AuthRemoteDataSource {
     required String email,
     required String password,
   });
+
+  Future<void> logout();
+
+  Future<String> refreshToken();
 }
