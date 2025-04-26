@@ -12,7 +12,7 @@ import { signOut } from "next-auth/react";
 import {
   useGetFlightsQuery,
   useDeleteFlightMutation,
-} from "../src/app/services/flightsApi";
+} from "../../web/src/app/services/flightsApi"
 
 import { useGetProfileQuery } from "../src/app/services/profileApi";
 // Mock next-auth and next/router
@@ -33,9 +33,15 @@ jest.mock("next/image", () => ({
 }));
 
 // Mock child components
+// jest.mock("../../components/modals/ChangePasswordModal", () => ({
+//   __esModule: true,
+//   default: () => <div data-testid="change-password-modal"/>,
+// }));
 jest.mock("../../components/modals/ChangePasswordModal", () => ({
   __esModule: true,
-  default: () => <div data-testid="change-password-modal" />,
+  default: jest.fn().mockImplementation(() => (
+    <div data-testid="change-password-modal" />
+  )),
 }));
 
 jest.mock("../../components/modals/ChangeUsernameModal", () => ({
