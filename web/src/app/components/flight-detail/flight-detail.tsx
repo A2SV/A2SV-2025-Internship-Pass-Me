@@ -4,37 +4,34 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { useGetFlightQuery } from "@/app/services/flightsApi";
 
-
 export default function FlightDetail({ flightId }: { flightId: string }) {
   const router = useRouter();
-  const {data, isLoading} = useGetFlightQuery(flightId)
+  const { data, isLoading } = useGetFlightQuery(flightId);
 
-  const selectedConversation = data?.qa
+  const selectedConversation = data?.qa;
 
-  const handleUseChat = (flightId: {flightId: string}) => {
+  const handleUseChat = (flightId: { flightId: string }) => {
     const params = new URLSearchParams({
-      flightId: flightId.flightId
-    })
+      flightId: flightId.flightId,
+    });
 
-    router.push(`/dashboard/chat?${params.toString()}`)
-  }
+    router.push(`/dashboard/chat?${params.toString()}`);
+  };
 
   if (!selectedConversation && isLoading) {
     return (
       <div className="flex-1 flex flex-col items-center h-full relative bg-[#1A1A1A] text-white">
         <div className="flex justify-center items-center py-4 sticky top-0 bg-[#1A1A1A] z-10">
-        <Image
-          src="/banner.png"
-          alt="A2SV Translator Banner"
-          width={333}
-          height={62}
-          className="md:w-[400px] md:h-auto object-contain"
-          priority
-        />
-      </div>
-        <p className="text-gray-400">
-          Loading ...
-        </p>
+          <Image
+            src="/banner.png"
+            alt="A2SV Translator Banner"
+            width={333}
+            height={62}
+            className="md:w-[400px] md:h-auto object-contain"
+            priority
+          />
+        </div>
+        <p className="text-gray-400">Loading ...</p>
       </div>
     );
   }
@@ -60,7 +57,14 @@ export default function FlightDetail({ flightId }: { flightId: string }) {
             Your date of flight
           </span>
           <div className="bg-[#5D5D6D] text-white rounded-md p-3 w-[240px] flex justify-between items-center">
-            <span>Wednesday, 11th January</span>
+            <span>
+              {data &&
+                new Date(data.date).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+            </span>
           </div>
         </div>
 
@@ -70,9 +74,7 @@ export default function FlightDetail({ flightId }: { flightId: string }) {
             <div key={idx} className="flex flex-col space-y-4">
               {/* Question bubble */}
               <div className="flex flex-col max-w-md self-start space-y-1">
-                <span className="text-sm text-gray-400">
-                  Question:
-                </span>
+                <span className="text-sm text-gray-400">Question:</span>
                 <div className="rounded-lg px-4 py-2 bg-[#26252A] text-sm whitespace-pre-wrap">
                   <p>{message.question}</p>
                 </div>
@@ -86,14 +88,14 @@ export default function FlightDetail({ flightId }: { flightId: string }) {
                     <p>{message.answer}</p>
                   </div>
                 </div>
-              ): null}
+              ) : null}
             </div>
           ))}
         </div>
         {/* Use Chat button with specified dimensions */}
         <div className="fixed bottom-4 right-8">
           <button
-            onClick={() => handleUseChat({flightId})}
+            onClick={() => handleUseChat({ flightId })}
             className="w-[227px] h-[61px] bg-[#3972FF] hover:bg-blue-600 text-white rounded-[10px] px-[65px] py-[8px] gap-[8px] flex items-center justify-center"
           >
             Use Chat
