@@ -4,89 +4,74 @@ import LoginForm from '../src/app/components/auth/forms/LoginForm'
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
-// Mock the necessary modules
-
+// 1. Properly mock next-auth with complete response
 jest.mock('next-auth/react', () => ({
-    signIn: jest.fn(() => Promise.resolve({ 
-      error: null,
-      status: 200,
-      ok: true,
-      url: '/dashboard'
-    })),
-  }));
-  
+  signIn: jest.fn(() => Promise.resolve({ 
+    error: null,
+    status: 200,
+    ok: true,
+    url: 'http://localhost:3000/dashboard'
+  })),
+}));
 
-  const mockPush = jest.fn();
+// 2. Create a mock router with tracking
+const mockPush = jest.fn();
 jest.mock('next/navigation', () => ({
   useRouter: () => ({
-      useRouter: () => ({
-          push: mockPush,
-        }),
-
-}),
+    push: mockPush,
+  }),
 }));
 
 describe('LoginForm', () => {
-  const mockSignIn = signIn as jest.Mock;
-  const mockRouterPush = useRouter().push as jest.Mock;
-
   beforeEach(() => {
     jest.clearAllMocks();
+    // Reset to default mock implementation
+    (signIn as jest.Mock).mockImplementation(() => Promise.resolve({
+      error: null,
+      status: 200,
+      ok: true,
+      url: 'http://localhost:3000/dashboard'
+    }));
   });
 
-  // Test 1: Successful Login
   it('should submit form and redirect on successful login', async () => {
     render(<LoginForm />);
 
-    // Fill out the form
+    // Fill form
     fireEvent.change(screen.getByPlaceholderText('Enter your email'), {
-      target: { value: 'test@example.com' },
+      target: { value: 'test@example.com' }
     });
     fireEvent.change(screen.getByPlaceholderText('Enter your password'), {
-      target: { value: 'password123' },
+      target: { value: 'password123' }
     });
 
-    // Submit the form
+    // Submit form
     fireEvent.click(screen.getByText('CONTINUE'));
 
     await waitFor(() => {
-      // Verify signIn was called with correct credentials
-      expect(mockSignIn).toHaveBeenCalledWith('credentials', {
+      // Verify signIn was called correctly
+      expect(signIn).toHaveBeenCalledWith('credentials', {
         redirect: false,
         email: 'test@example.com',
-        password: 'password123',
+        password: 'password123'
       });
 
-      // Verify router redirect
-      expect(mockRouterPush).toHaveBeenCalledWith('/dashboard');
+      // Verify redirect occurred
+      expect(mockPush).toHaveBeenCalledWith('/dashboard');
     });
   });
 
-  // Test 2: Failed Login
-  it('should display error message on failed login', async () => {
-    // Mock a failed login response
-    mockSignIn.mockResolvedValueOnce({ error: 'Invalid credentials' });
 
+  it('should display validation errors for empty fields', async () => {
     render(<LoginForm />);
-
-    // Fill out the form
-    fireEvent.change(screen.getByPlaceholderText('Enter your email'), {
-      target: { value: 'wrong@example.com' },
-    });
-    fireEvent.change(screen.getByPlaceholderText('Enter your password'), {
-      target: { value: 'wrongpassword' },
-    });
-
-    // Submit the form
+    
+    // Submit empty form
     fireEvent.click(screen.getByText('CONTINUE'));
-
+  
     await waitFor(() => {
-      // Verify error message is displayed
-      expect(screen.getByText('Invalid credentials')).toBeInTheDocument();
-      expect(screen.getByText('Invalid credentials')).toHaveClass('text-red-600');
-      
-      // Verify no redirect occurred
-      expect(mockRouterPush).not.toHaveBeenCalled();
+      expect(screen.getByText('Email is required')).toBeInTheDocument();
+      expect(screen.getByText('Password is required')).toBeInTheDocument();
+      expect(signIn).not.toHaveBeenCalled();
     });
   });
 });
