@@ -42,8 +42,11 @@ class ProfilePage extends StatelessWidget {
             ProfileOption(
               title: "Language Preference",
               onTap: () {},
-              leadingIcon: const Icon(Icons.language_outlined,
-                  size: 30, color: Colors.white),
+              leadingIcon: const Icon(
+                Icons.language_outlined,
+                size: 30,
+                color: Colors.white,
+              ),
               trailingIcon: Text(
                 "English",
                 style: GoogleFonts.poppins(
@@ -57,8 +60,11 @@ class ProfilePage extends StatelessWidget {
             ProfileOption(
               title: "Clear History",
               onTap: () {},
-              leadingIcon: const Icon(Icons.history_rounded,
-                  size: 30, color: Colors.white),
+              leadingIcon: const Icon(
+                Icons.history_rounded,
+                size: 30,
+                color: Colors.white,
+              ),
               trailingIcon: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
@@ -85,8 +91,11 @@ class ProfilePage extends StatelessWidget {
             ProfileOption(
               title: "About",
               onTap: () {},
-              leadingIcon: const Icon(Icons.info_outline_rounded,
-                  size: 30, color: Colors.white),
+              leadingIcon: const Icon(
+                Icons.info_outline_rounded,
+                size: 30,
+                color: Colors.white,
+              ),
             ),
             const SizedBox(height: 20),
             ProfileOption(
@@ -96,7 +105,48 @@ class ProfilePage extends StatelessWidget {
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
               ),
-              onTap: () {},
+              onTap: () async {
+                // Show a confirmation dialog
+                final shouldLogout = await showDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    backgroundColor: const Color(0xFF2E2E2E),
+                    title: Text(
+                      'Confirm Logout',
+                      style: GoogleFonts.poppins(color: Colors.white),
+                    ),
+                    content: Text(
+                      'Are you sure you want to log out?',
+                      style: GoogleFonts.poppins(color: Colors.white70),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: Text(
+                          'Cancel',
+                          style: GoogleFonts.poppins(color: Colors.grey),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(true),
+                        child: Text(
+                          'Logout',
+                          style: GoogleFonts.poppins(color: Colors.redAccent),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+
+                if (shouldLogout == true) {
+                  // Clear session
+                  context.read<LoginCubit>().logout();
+
+                  // Navigate to login page and clear previous stack
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/login', (route) => false);
+                }
+              },
               leadingIcon: const Icon(
                 Icons.logout_outlined,
                 size: 30,

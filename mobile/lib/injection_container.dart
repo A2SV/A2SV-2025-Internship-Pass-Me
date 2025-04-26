@@ -67,7 +67,10 @@ void _initAuth() {
   sl.registerLazySingleton(() => SignUpUseCase(sl()));
 
   // Auth BLoCs/Cubits
-  sl.registerFactory(() => LoginCubit(sl()));
+  sl.registerFactory(() => LoginCubit(
+        loginUser: sl<LoginUser>(),
+        localStorageService: sl<LocalStorageService>(),
+      ));
   sl.registerFactory(() => SignUpBloc(sl()));
   sl.registerFactory(() => OnboardingBloc());
 }

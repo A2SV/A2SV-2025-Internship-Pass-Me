@@ -1,77 +1,83 @@
-// lib/data/datasources/profile_remote_data_source.dart
-import 'dart:convert';
-import 'package:http/http.dart' as http;
+// lib/data/datasources/profile_remote_data_source_impl.dart
+
+import 'package:mobile/core/network/api_client.dart';
 import 'package:mobile/core/service/local_storage_service.dart';
 import '../models/profile_model.dart';
 
-class ProfileRemoteDataSource {
-  final String baseUrl;
-  final http.Client client;
-  final LocalStorageService localStorageService;
-
-  ProfileRemoteDataSource({
-    required this.baseUrl,
-    required this.client,
-    required this.localStorageService,
+abstract class ProfileRemoteDataSource {
+  Future<ProfileModel> getProfile();
+  Future<void> updateUsername(String newUsername);
+  Future<void> updatePassword({
+    required String oldPassword,
+    required String newPassword,
+    required String confirmPassword,
   });
+}
 
+class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
+  final ApiClient _apiClient;
+  final LocalStorageService _localStorageService;
+
+  ProfileRemoteDataSourceImpl(this._apiClient, this._localStorageService);
+
+  @override
   Future<ProfileModel> getProfile() async {
-    final token = localStorageService.getAuthToken();
-    if (token == null) throw Exception('User not authenticated');
+    try {
+      final response = await _apiClient.get(
+        '/profile',
+        requiresAuth: true,
+      );
 
-    final response = await client.get(
-      Uri.parse("$baseUrl/profile"),
-      headers: {'Authorization': 'Bearer $token'},
-    );
-
-    if (response.statusCode == 200) {
-      return ProfileModel.fromJson(json.decode(response.body));
-    } else {
-      throw Exception('Failed to load profile');
+      return ProfileModel.fromJson(response);
+    } on ApiException catch (e) {
+      throw Exception('Failed to load profile: ${e.message}');
+    } catch (e) {
+      throw Exception('Failed to load profile: ${e.toString()}');
     }
   }
 
+  @override
   Future<void> updateUsername(String newUsername) async {
-    final token = localStorageService.getAuthToken();
-    if (token == null) throw Exception('User not authenticated');
+    try {
+      final response = await _apiClient.put(
+        '/profile/username',
+        {
+          'new_username': newUsername,
+        },
+        requiresAuth: true,
+      );
 
-    final response = await client.put(
-      Uri.parse("$baseUrl/profile/username"),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json'
-      },
-      body: json.encode({'new_username': newUsername}),
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception('Failed to update username');
+      if (response.containsKey('username')) {
+        // Optionally update locally stored username if you have that feature
+        await _localStorageService.saveUsername(response['username']);
+      }
+    } on ApiException catch (e) {
+      throw Exception('Failed to update username: ${e.message}');
+    } catch (e) {
+      throw Exception('Failed to update username: ${e.toString()}');
     }
   }
 
+  @override
   Future<void> updatePassword({
     required String oldPassword,
     required String newPassword,
     required String confirmPassword,
   }) async {
-    final token = localStorageService.getAuthToken();
-    if (token == null) throw Exception('User not authenticated');
-
-    final response = await client.put(
-      Uri.parse("$baseUrl/profile/password"),
-      headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json'
-      },
-      body: json.encode({
-        'old_password': oldPassword,
-        'new_password': newPassword,
-        'confirm_password': confirmPassword,
-      }),
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception('Failed to update password');
+    try {
+      await _apiClient.put(
+        '/profile/password',
+        {
+          'old_password': oldPassword,
+          'new_password': newPassword,
+          'confirm_password': confirmPassword,
+        },
+        requiresAuth: true,
+      );
+    } on ApiException catch (e) {
+      throw Exception('Failed to update password: ${e.message}');
+    } catch (e) {
+      throw Exception('Failed to update password: ${e.toString()}');
     }
   }
 }

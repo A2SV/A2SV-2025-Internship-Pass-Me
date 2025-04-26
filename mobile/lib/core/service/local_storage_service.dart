@@ -1,4 +1,3 @@
-// core/service/local_storage_service.dart
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalStorageService {
@@ -7,6 +6,7 @@ class LocalStorageService {
   static const String _userIdKey = 'user_id';
   static const String _userEmailKey = 'user_email';
   static const String _rememberMeKey = 'remember_me';
+  static const String _usernameKey = 'username'; // Add a key for the username
 
   final SharedPreferences _prefs;
 
@@ -23,6 +23,19 @@ class LocalStorageService {
 
   Future<void> clearAuthToken() async {
     await _prefs.remove(_authTokenKey);
+  }
+
+  // Username Methods
+  Future<void> saveUsername(String username) async {
+    await _prefs.setString(_usernameKey, username); // Save the username
+  }
+
+  String? getUsername() {
+    return _prefs.getString(_usernameKey); // Retrieve the username
+  }
+
+  Future<void> clearUsername() async {
+    await _prefs.remove(_usernameKey); // Clear the username
   }
 
   // Refresh Token Methods
@@ -80,11 +93,16 @@ class LocalStorageService {
       clearRefreshToken(),
       clearUserId(),
       clearUserEmail(),
+      clearUsername(), // Clear the username as well
     ]);
   }
 
   // Helper to check if user is authenticated
   bool isAuthenticated() {
     return getAuthToken() != null;
+  }
+
+  Future<void> saveUserData(String token, String username, String email) async {
+    // Save token, username, email
   }
 }

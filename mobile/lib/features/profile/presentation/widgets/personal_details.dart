@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobile/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:mobile/features/profile/presentation/pages/update_profile_page.dart';
 
 class PersonalDetails extends StatelessWidget {
@@ -46,7 +48,11 @@ class PersonalDetails extends StatelessWidget {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (_) => const UpdateProfilePage(),
+                builder: (_) => BlocProvider<ProfileBloc>(
+                  create: (context) =>
+                      ProfileBloc(), // ← Ensure the constructor matches the expected arguments
+                  child: const UpdateProfilePage(),
+                ),
               ),
             );
           },
