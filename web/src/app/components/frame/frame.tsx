@@ -2,7 +2,10 @@ import Image from "next/image";
 
 const Frame = () => {
   return (
-    <div className="flex flex-col h-full w-full bg-[#1A1A1A] text-white">
+    <div
+      data-testid="frame-container" // Add this data-testid for testing purposes
+      className="flex flex-col h-full w-full bg-[#1A1A1A] text-white"
+    >
       {/* Banner at the top, horizontally centered */}
       <div className="w-full flex justify-center py-4">
         <Image
