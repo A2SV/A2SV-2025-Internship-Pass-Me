@@ -1,20 +1,24 @@
 'use client';
 import React, { useState, useRef } from 'react';
 import Image from 'next/image';
-import { useSendAudioChatMutation } from '@/app/services/chatApi';
+import { useSendAudioChatMutation, ChatResponse } from '@/app/services/chatApi';
 
 interface AudioRecorderProps {
   flightId: string;
-  onNewReply: (reply: string) => void;
+  onNewReply: (reply: ChatResponse) => void;
 }
 
-const AudioRecorder: React.FC<AudioRecorderProps> = ({ flightId, onNewReply }) => {
+const AudioRecorder: React.FC<AudioRecorderProps> = ({
+  flightId,
+  onNewReply,
+}) => {
   const [recording, setRecording] = useState(false);
   const [audioURL, setAudioURL] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const audioChunksRef = useRef<Blob[]>([]);
-  const [sendAudioChat, { isLoading: isSending }] = useSendAudioChatMutation();
+  const [sendAudioChat, { isLoading: isSending }] =
+    useSendAudioChatMutation();
 
   const startRecording = async () => {
     setError(null);
@@ -29,12 +33,16 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ flightId, onNewReply }) =
       };
 
       mediaRecorder.onstop = async () => {
-        const audioBlob = new Blob(audioChunksRef.current, { type: 'audio/wav' });
-        const file = new File([audioBlob], 'recording.wav', { type: 'audio/wav' });
+        const audioBlob = new Blob(audioChunksRef.current, {
+          type: 'audio/wav',
+        });
+        const file = new File([audioBlob], 'recording.wav', {
+          type: 'audio/wav',
+        });
         setAudioURL(URL.createObjectURL(audioBlob));
         try {
           const response = await sendAudioChat({ flightId, file }).unwrap();
-          onNewReply(response.ai_reply);
+          onNewReply(response);
         } catch (err) {
           console.error('Error sending audio:', err);
           setError('Failed to send audio to AI.');
@@ -50,14 +58,13 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ flightId, onNewReply }) =
   };
 
   const stopRecording = () => {
-    if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+    if (
+      mediaRecorderRef.current &&
+      mediaRecorderRef.current.state !== 'inactive'
+    ) {
       mediaRecorderRef.current.stop();
       setRecording(false);
     }
-  };
-
-  const handleRecordButton = () => {
-    recording ? stopRecording() : startRecording();
   };
 
   return (
@@ -65,9 +72,11 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ flightId, onNewReply }) =
       {error && <p className="mt-2 text-red-500">{error}</p>}
       <footer className="flex items-center justify-center sticky bottom-5 w-full bg-[#1C1C1C] z-10">
         <button
-          onClick={handleRecordButton}
+          onClick={() => (recording ? stopRecording() : startRecording())}
           disabled={isSending}
-          className={`flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 py-2 transition ${recording ? 'animate-pulse border-4' : ''}`}
+          className={`flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white rounded-full px-6 py-2 transition ${
+            recording ? 'animate-pulse border-4' : ''
+          }`}
         >
           <Image src="/mic.svg" alt="Mic" height={30} width={30} />
         </button>
