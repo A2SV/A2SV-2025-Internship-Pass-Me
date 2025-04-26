@@ -58,11 +58,12 @@ export default function FlightDetail({ flightId }: { flightId: string }) {
           </span>
           <div className="bg-[#5D5D6D] text-white rounded-md p-3 w-[240px] flex justify-between items-center">
             <span>
-              {new Date(data.date).toLocaleDateString("en-US", {
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
+              {data &&
+                new Date(data.date).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
             </span>
           </div>
         </div>
