@@ -18,4 +18,4 @@ class DeleteFlightEvent extends FlightEvent {
 
   @override
   List<Object> get props => [flightId];
-}
+}//
