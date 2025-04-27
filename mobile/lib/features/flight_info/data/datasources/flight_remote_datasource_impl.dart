@@ -1,16 +1,69 @@
+import 'dart:convert';
+
+import '../../../../core/errors/exceptions.dart';
+import '../../../../core/network/api_client.dart';
 import 'flight_remote_datasource.dart';
 import '../models/flight_model.dart';
 
 class FlightRemoteDatasourceImpl implements FlightRemoteDatasource {
-  final List<FlightModel> _mockDB = [];
+  final ApiClient _apiClient;
+
+  FlightRemoteDatasourceImpl(this._apiClient);
 
   @override
-  Future<List<FlightModel>> fetchFlights() async => _mockDB;
+  Future<List<FlightModel>> fetchFlights() async {
+    final response = await _apiClient.get("/flights", requiresAuth: true);
+    print(response);
+
+    // Check if response is null or empty
+    if (response == null || response.isEmpty) {
+      print('No flights found.');
+      return [];
+    }
+
+    final flights = response
+        .map((json) {
+          try {
+            return FlightModel.fromJson(json);
+          } catch (e) {
+            print('Error parsing flight: $e');
+            return null;
+          }
+        })
+        .whereType<FlightModel>()
+        .toList();
+
+    print('Successfully parsed ${flights.length} flights');
+    return flights;
+  }
 
   @override
-  Future<void> addFlight(FlightModel flight) async => _mockDB.add(flight);
-
-  @override
-  Future<void> deleteFlight(String flightId) async =>
-      _mockDB.removeWhere((f) => f.id == flightId);
+  Future<void> deleteFlight(String flightId) async {
+    try {
+      final response = await _apiClient.delete(
+        '/flights/$flightId',
+        requiresAuth: true,
+      );
+      return response['message'];
+    } catch (e) {
+      throw ServerException('Failed to delete flight: ${e.toString()}');
+    }
+  }
 }
+    /**
+     * try {
+      final response = await _apiClient.get('/flights', requiresAuth: true);
+
+      if (response != null && response is List) {
+        return (response as List)
+            .where((flightData) => flightData is Map<String, dynamic>)
+            .map<FlightModel>((flightData) => FlightModel.fromJson(flightData))
+            .toList();
+      } else {
+        throw ServerException('Invalid response format');
+      }
+    } catch (e) {
+      throw ServerException('Failed to fetch flights: ${e.toString()}');
+    }
+  }
+     */
