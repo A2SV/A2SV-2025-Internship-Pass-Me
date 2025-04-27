@@ -4,11 +4,11 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'backend/**'
+      - '**'
   pull_request:
     branches: [ main ]
     paths:
-      - 'backend/**'
+      - '**'
 
 env:
   DOCKER_IMAGE: ${{ github.repository }}-backend
@@ -27,12 +27,10 @@ jobs:
       
       - name: Install dependencies
         run: |
-          cd backend
           go mod download
       
       - name: Run tests
         run: |
-          cd backend
           go test -v ./...
 
   build-and-push:
@@ -54,7 +52,7 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: ./backend
+          context: .
           push: true
           tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ env.DOCKER_TAG }}
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:buildcache
