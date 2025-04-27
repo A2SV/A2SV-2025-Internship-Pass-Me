@@ -13,7 +13,7 @@ const Frame = () => {
           alt="A2SV Translator Banner"
           width={333}
           height={62}
-          className="md:w-[400px] md:h-auto object-contain"
+          className="w-[180px] md:w-[220px] md:h-auto object-contain"
           priority
         />
       </div>
