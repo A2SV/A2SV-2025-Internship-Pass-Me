@@ -60,7 +60,7 @@ export default function FlightDetail({ flightId }: { flightId: string }) {
           <span className="text-gray-400 text-sm block mb-1">
             Your date of flight
           </span>
-          <div className="bg-[#5D5D6D] text-white rounded-md p-3 w-[240px] flex justify-center items-center">
+          <div className="bg-[#5D5D6D] text-white rounded-md md:p-3 p-1 md:w-[240px] w-[200px] flex justify-center items-center">
             <span>{new Date(data?.date ?? "").toLocaleDateString('en-GB', { weekday: 'long' }) + ', ' + new Date(data?.date ?? "").toLocaleDateString('en-GB', { day: 'numeric', month: 'long' })}
             </span>
           </div>
