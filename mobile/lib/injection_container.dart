@@ -3,6 +3,13 @@ import 'package:mobile/core/network/api_client.dart';
 import 'package:mobile/core/service/local_storage_service.dart';
 import 'package:mobile/features/auth/domain/usecases/sign_up_usecase.dart';
 import 'package:mobile/features/auth/presentation/blocs/sign_up_bloc.dart';
+import 'package:mobile/features/flight_info/data/datasources/flight_remote_datasource.dart';
+import 'package:mobile/features/flight_info/data/datasources/flight_remote_datasource_impl.dart';
+import 'package:mobile/features/flight_info/data/repositories/flight_repository_impl.dart';
+import 'package:mobile/features/flight_info/domain/repositories/flight_repository.dart';
+import 'package:mobile/features/flight_info/domain/usecases/delete_flight.dart';
+import 'package:mobile/features/flight_info/domain/usecases/get_all_flights.dart';
+import 'package:mobile/features/flight_info/presentation/blocs/flight_bloc.dart';
 import 'package:mobile/features/form/data/datasource/question_remote_datasource.dart';
 import 'package:mobile/features/form/data/repositories/question_repository_impl.dart';
 import 'package:mobile/features/form/domain/repositories/question_repository.dart';
@@ -28,6 +35,7 @@ Future<void> init() async {
   // Then initialize feature-specific dependencies
   _initAuth();
   _initForm();
+  _initFlight();
 }
 
 Future<void> _initCore() async {
@@ -88,4 +96,29 @@ void _initForm() {
 
   // Form BLoC
   sl.registerFactory(() => FormBloc(questionRepository: sl()));
+}
+
+void _initFlight() {
+  // Flight Data Source
+  sl.registerLazySingleton<FlightRemoteDatasource>(
+    () => FlightRemoteDatasourceImpl(sl()),
+  );
+
+  // Flight Repository
+  sl.registerLazySingleton<FlightRepository>(() => FlightRepositoryImpl(
+      remoteDatasource:
+          sl())); // You'll need to add NetworkInfo if not already present),);
+
+  // Flight Use Cases
+  sl.registerLazySingleton(() => GetAllFlights(sl()));
+
+  sl.registerLazySingleton(() => DeleteFlight(sl()));
+
+  // Flight BLoC
+  sl.registerFactory(
+    () => FlightBloc(
+      getFlights: sl(),
+      deleteFlight: sl(),
+    ),
+  );
 }

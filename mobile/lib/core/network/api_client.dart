@@ -97,7 +97,7 @@ class ApiClient {
     }
   }
 
-  Future<Map<String, dynamic>> get(
+  Future<dynamic> get(
     String endpoint, {
     Map<String, String>? queryParams,
     bool requiresAuth = true,
@@ -193,19 +193,25 @@ class ApiClient {
     }
   }
 
-  Map<String, dynamic> _handleResponse(http.Response response) {
+  dynamic _handleResponse(http.Response response) {
     try {
       final responseBody = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
+        // ✅ Allow either Map or List
         return responseBody;
+      }
+
+      String errorMessage = 'An error occurred';
+
+      if (responseBody is Map<String, dynamic>) {
+        errorMessage =
+            responseBody['message'] ?? responseBody['error'] ?? errorMessage;
       }
 
       throw ApiException(
         statusCode: response.statusCode,
-        message: responseBody['message'] ??
-            responseBody['error'] ??
-            'An error occurred',
+        message: errorMessage,
         response: responseBody,
       );
     } on FormatException {
@@ -239,3 +245,4 @@ class ApiException implements Exception {
     return 'ApiException: $message (Status $statusCode)$responseStr';
   }
 }
+//

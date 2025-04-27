@@ -9,8 +9,8 @@ import {
   useDeleteFlightMutation,
 } from "../../services/flightsApi";
 import { useGetProfileQuery } from "../../services/profileApi";
-import ChangePasswordModal from "../../components/modals/ChangePasswordModal";
-import ChangeUsernameModal from "../../components/modals/ChangeUsernameModal";
+import ChangePasswordModal from "../modals/ChangePasswordModal";
+import ChangeUsernameModal from "../modals/ChangeUsernameModal";
 
 // Types
 interface Flight {
@@ -511,4 +511,3 @@ export default function Sidebar() {
     </>
   );
 }
-

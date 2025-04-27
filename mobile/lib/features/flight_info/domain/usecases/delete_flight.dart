@@ -1,10 +1,16 @@
 // domain/usecases/add_flight.dart
+import 'package:mobile/core/usecase/usecase.dart';
+
 import '../entities/flight.dart';
 import '../repositories/flight_repository.dart';
 
-class AddFlight {
+class DeleteFlight {
   final FlightRepository repository;
-  AddFlight(this.repository);
 
-  Future<void> call(Flight flight) => repository.addFlight(flight);
+  DeleteFlight(this.repository);
+
+  @override
+  Future<void> call(String flightId) {
+    return repository.deleteFlight(flightId);
+  }
 }

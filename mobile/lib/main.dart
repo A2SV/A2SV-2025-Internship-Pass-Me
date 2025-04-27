@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/features/auth/presentation/blocs/sign_up_bloc.dart';
 import 'package:mobile/features/auth/presentation/pages/signup_pages.dart';
+import 'package:mobile/features/flight_info/presentation/blocs/flight_bloc.dart';
+// import 'package:mobile/features/flight_info/presentation/pages/translator_page.dart';
 import 'package:mobile/features/chat/presentation/pages/translator_page.dart';
 import 'package:mobile/features/profile/presentation/pages/profile_page.dart';
 import 'package:mobile/features/form/presentation/blocs/form_bloc.dart';
@@ -39,6 +41,9 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider<FormBloc>(
           create: (_) => di.sl<FormBloc>(),
+        ),
+        BlocProvider<FlightBloc>(
+          create: (_) => di.sl<FlightBloc>(),
         )
       ],
       child: MaterialApp(
@@ -52,12 +57,12 @@ class MyApp extends StatelessWidget {
             primary: Color(0xFF2196F3),
           ),
         ),
-        initialRoute: '/flights/chat',
+        initialRoute: '/flights',
         routes: {
           '/onboarding': (_) => const OnboardingPage(),
           '/login': (_) => LoginPage(),
           '/signup': (_) => SignUpPage(),
-          '/flights': (_) => FlightPage(flights: []),
+          '/flights': (_) => FlightPage(),
           '/profile': (_) => const ProfilePage(),
           '/flights/detail': (_) => FlightDetailPage(),
           '/form': (_) => TranslatorFormPage(),

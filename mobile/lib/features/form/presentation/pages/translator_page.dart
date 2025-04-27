@@ -11,7 +11,7 @@ import '../../../../core/widgets/language_selector.dart';
 import '../../../../injection_container.dart';
 import '../../data/datasource/question_remote_datasource.dart'
     show QuestionRemoteDataSourceImpl;
-import '../../data/repositories/question_repository_impl.dart';
+
 import '../../domain/entites/Submission_entity.dart';
 import '../../domain/entites/question.dart';
 
@@ -555,5 +555,6 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
         backgroundColor: Colors.green,
       ),
     );
+    Navigator.pushReplacementNamed(context, '/flights');
   }
 }
