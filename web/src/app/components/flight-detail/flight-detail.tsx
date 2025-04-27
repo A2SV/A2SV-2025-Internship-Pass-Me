@@ -89,7 +89,6 @@ export default function FlightDetail({ flightId }: { flightId: string }) {
                   </div>
                 </div>
               ) : null}
-              ) : null}
             </div>
           ))}
         </div>
