@@ -44,8 +44,8 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 .env
-/linux
-/macos
-/web
-/windows
+.linux/
+.macos/
+.web/
+.windows/
 pubspec.lock
