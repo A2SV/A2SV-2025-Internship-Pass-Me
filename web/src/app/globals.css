@@ -5,6 +5,10 @@
      font-family: "Zen Kaku Gothic Antique", sans-serif;
 }
 
+body {
+     background-color:#1A1A1A;
+}
+
 ::-webkit-scrollbar {
      width: 20px;
 }
