@@ -3,6 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/features/profile/presentation/bloc/profile_bloc.dart';
 import 'package:mobile/features/profile/presentation/pages/update_profile_page.dart';
+import 'package:mobile/features/profile/data/datasources/profile_remote_datasource.dart';
+import 'package:mobile/core/network/api_client.dart';
+import 'package:mobile/core/service/local_storage_service.dart';
+import 'package:mobile/injection_container.dart';
 
 class PersonalDetails extends StatelessWidget {
   final String imageUrl;
@@ -49,8 +53,7 @@ class PersonalDetails extends StatelessWidget {
               context,
               MaterialPageRoute(
                 builder: (_) => BlocProvider<ProfileBloc>(
-                  create: (context) =>
-                      ProfileBloc(), // ← Ensure the constructor matches the expected arguments
+                  create: (context) => sl<ProfileBloc>(),
                   child: const UpdateProfilePage(),
                 ),
               ),

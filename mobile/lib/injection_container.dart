@@ -19,6 +19,9 @@ import 'features/auth/domain/repositories/auth_repository.dart';
 import 'features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import 'package:mobile/features/profile/data/datasources/profile_remote_datasource.dart';
+import 'package:mobile/features/profile/presentation/bloc/profile_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -28,6 +31,15 @@ Future<void> init() async {
   // Then initialize feature-specific dependencies
   _initAuth();
   _initForm();
+  _initProfile();
+}
+
+void _initProfile() {
+  sl.registerLazySingleton<ProfileRemoteDataSource>(
+    () =>
+        ProfileRemoteDataSourceImpl(sl<ApiClient>(), sl<LocalStorageService>()),
+  );
+  sl.registerFactory(() => ProfileBloc(sl<ProfileRemoteDataSource>()));
 }
 
 Future<void> _initCore() async {

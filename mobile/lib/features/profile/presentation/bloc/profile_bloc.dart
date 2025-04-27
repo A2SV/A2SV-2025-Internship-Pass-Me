@@ -1,7 +1,6 @@
-// profile_bloc.dart
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/models/profile_model.dart';
+import 'package:mobile/features/profile/data/datasources/profile_remote_datasource.dart';
 
 /// -------------------------
 /// Profile Events
@@ -57,7 +56,9 @@ class PasswordUpdated extends ProfileState {}
 /// Profile Bloc
 /// -------------------------
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  ProfileBloc() : super(ProfileInitial()) {
+  final ProfileRemoteDataSource dataSource;
+
+  ProfileBloc(this.dataSource) : super(ProfileInitial()) {
     on<LoadProfile>(_onLoadProfile);
     on<UpdateUsername>(_onUpdateUsername);
     on<UpdatePassword>(_onUpdatePassword);
@@ -69,12 +70,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ) async {
     emit(ProfileLoading());
     try {
-      // Simulate fetching profile data
-      final profile = ProfileModel(
-        username: 'testuser',
-        email: 'test@example.com',
-        about: 'This is a test user',
-      );
+      final profile = await dataSource.getProfile();
       emit(ProfileLoaded(profile));
     } catch (e) {
       emit(ProfileError('Failed to load profile'));
@@ -87,10 +83,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ) async {
     emit(ProfileLoading());
     try {
-      // Simulate updating username
-      await Future.delayed(const Duration(seconds: 1)); // Simulate API call
+      await dataSource.updateUsername(event.newUsername);
       emit(UsernameUpdated());
-      add(LoadProfile()); // Reload profile after update
+      add(LoadProfile());
     } catch (e) {
       emit(ProfileError('Failed to update username'));
     }
@@ -102,8 +97,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ) async {
     emit(ProfileLoading());
     try {
-      // Simulate updating password
-      await Future.delayed(const Duration(seconds: 1)); // Simulate API call
+      await dataSource.updatePassword(
+        oldPassword: event.oldPassword,
+        newPassword: event.newPassword,
+        confirmPassword: event.confirmPassword,
+      );
       emit(PasswordUpdated());
     } catch (e) {
       emit(ProfileError('Failed to update password'));
