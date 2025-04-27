@@ -50,20 +50,3 @@ class FlightRemoteDatasourceImpl implements FlightRemoteDatasource {
     }
   }
 }
-    /**
-     * try {
-      final response = await _apiClient.get('/flights', requiresAuth: true);
-
-      if (response != null && response is List) {
-        return (response as List)
-            .where((flightData) => flightData is Map<String, dynamic>)
-            .map<FlightModel>((flightData) => FlightModel.fromJson(flightData))
-            .toList();
-      } else {
-        throw ServerException('Invalid response format');
-      }
-    } catch (e) {
-      throw ServerException('Failed to fetch flights: ${e.toString()}');
-    }
-  }
-     */

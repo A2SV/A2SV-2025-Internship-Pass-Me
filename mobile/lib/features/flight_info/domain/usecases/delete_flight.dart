@@ -1,4 +1,3 @@
-// domain/usecases/add_flight.dart
 import 'package:mobile/core/usecase/usecase.dart';
 
 import '../entities/flight.dart';
