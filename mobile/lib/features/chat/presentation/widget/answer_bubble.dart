@@ -23,12 +23,14 @@ class AnswerBubble extends StatefulWidget {
 class _AnswerBubbleState extends State<AnswerBubble> {
   late bool isAccepted;
   late bool isDeclined;
+  late bool isEditing;
 
   @override
   void initState() {
     super.initState();
     isAccepted = false;
     isDeclined = false;
+    isEditing = false;
   }
 
   void handleAccept() {
@@ -57,12 +59,14 @@ class _AnswerBubbleState extends State<AnswerBubble> {
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        final translation = responseData['Translation'];
-        final pronunciation = responseData['Pronunciation'];
+        final translation = responseData['translation'];
+        final pronunciation = responseData['pronunciation'];
+        final audio = responseData['audio'];
 
         setState(() {
           widget.question["answer"]["translation"] = translation;
           widget.question["answer"]["pronounciation"] = pronunciation;
+          widget.question["answer"]["audio"] = audio;
           isDeclined = false;
           isAccepted = true;
         });
@@ -115,10 +119,10 @@ class _AnswerBubbleState extends State<AnswerBubble> {
                   padding: const EdgeInsets.all(8.0),
                   child: Row(
                     children: [
-                      AnimatedListeningIcon(),
+                      AnimatedUpdatingIcon(),
                       const SizedBox(width: 12),
                       Text(
-                        "Listening...",
+                        "Updating...",
                         style: GoogleFonts.inter(
                           color: Colors.white,
                           fontWeight: FontWeight.w400,
@@ -142,26 +146,38 @@ class _AnswerBubbleState extends State<AnswerBubble> {
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0, top: 2, bottom: 2),
-                  child: Text(
-                    widget.question["answer"]["main"] ?? "",
-                    style: GoogleFonts.inter(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12,
-                    ),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          widget.question["answer"]["main"] ?? "",
+                          style: GoogleFonts.inter(
+                            color: Colors.white,
+                            fontWeight: FontWeight.w400,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.volume_up, color: Colors.blue),
+                        onPressed: () {},
+                      ),
+                    ],
                   ),
                 ),
                 const SizedBox(height: 4),
                 Padding(
                   padding: const EdgeInsets.only(left: 8, top: 8),
-                  child: Text(
-                    "መልስ:",
-                    style: GoogleFonts.inter(
-                      color: Colors.white,
-                      fontWeight: FontWeight.w400,
-                      fontSize: 12,
+                  child: Expanded(
+                    child: Text(
+                      "መልስ:",
+                      style: GoogleFonts.inter(
+                        color: Colors.white,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 12,
+                      ),
                     ),
-                  ),
+                  )
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 20.0, top: 2, bottom: 8),
@@ -255,6 +271,39 @@ class _AnimatedListeningIconState extends State<AnimatedListeningIcon>
     return ScaleTransition(
       scale: _animation,
       child: const Icon(Icons.mic, color: Colors.blue, size: 24),
+    );
+  }
+}
+
+class AnimatedUpdatingIcon extends StatefulWidget {
+  @override
+  State<AnimatedUpdatingIcon> createState() => _AnimatedUpdatingIconState();
+}
+
+class _AnimatedUpdatingIconState extends State<AnimatedUpdatingIcon>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 2),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RotationTransition(
+      turns: _controller,
+      child: const Icon(Icons.update, color: Colors.blue, size: 24),
     );
   }
 }

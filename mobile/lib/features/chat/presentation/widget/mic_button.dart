@@ -9,8 +9,9 @@ import 'dart:convert';
 class MicButton extends StatefulWidget {
   final void Function(Map<String, dynamic> aiReply)? onAIResponse;
   final void Function(bool isRecording)? onRecordingChanged;
+  final String? flightId;
 
-  const MicButton({super.key, this.onAIResponse, this.onRecordingChanged});
+  const MicButton({super.key, this.onAIResponse, this.onRecordingChanged, this.flightId});
 
   @override
   State<MicButton> createState() => _MicButtonState();
@@ -24,7 +25,7 @@ class _MicButtonState extends State<MicButton> {
     try {
       final uri = Uri.parse('https://7cab-196-189-152-26.ngrok-free.app/chat-ai');
       final request = http.MultipartRequest('POST', uri)
-        ..fields['flight_id'] = '6808e71511b52bc8b06ebd79'
+        ..fields['flight_id'] = widget.flightId ?? ''
         ..files.add(await http.MultipartFile.fromPath('audio', filePath));
 
       final response = await request.send();
@@ -42,7 +43,7 @@ class _MicButtonState extends State<MicButton> {
           SnackBar(
             backgroundColor: Colors.red,
             content: const Text(
-              'Please make sure to stay audible and try again.',
+              'Failed to get AI response. Please try again.',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 14,
@@ -75,7 +76,7 @@ class _MicButtonState extends State<MicButton> {
       onLongPressStart: (_) async {
         if (await audioRecorder.hasPermission()) {
           final Directory? externalDir =
-              Directory('/storage/emulated/0/Download');
+          Directory('/storage/emulated/0/Download');
 
           if (!await externalDir!.exists()) {
             await externalDir.create(recursive: true);

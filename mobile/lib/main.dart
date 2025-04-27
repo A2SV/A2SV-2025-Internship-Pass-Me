@@ -19,6 +19,7 @@ import 'features/flight_info/presentation/pages/flight_page.dart';
 import 'features/onboarding/presentation/pages/onboarding_page.dart';
 
 import 'injection_container.dart' as di;
+import 'features/flight_info/domain/entities/flight.dart';
 
 void main() {
   di.init();
@@ -52,7 +53,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.dark().copyWith(
           textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
           primaryTextTheme:
-              GoogleFonts.interTextTheme(ThemeData.dark().primaryTextTheme),
+          GoogleFonts.interTextTheme(ThemeData.dark().primaryTextTheme),
           colorScheme: const ColorScheme.dark(
             primary: Color(0xFF2196F3),
           ),
@@ -64,7 +65,8 @@ class MyApp extends StatelessWidget {
           '/signup': (_) => SignUpPage(),
           '/flights': (_) => FlightPage(),
           '/profile': (_) => const ProfilePage(),
-          '/flights/detail': (_) => FlightDetailPage(),
+          '/flights/detail': (context) => FlightDetailPage(
+              flight: ModalRoute.of(context)!.settings.arguments as Flight),
           '/form': (_) => TranslatorFormPage(),
           '/flights/chat': (_) => TranslatorPage(),
         },

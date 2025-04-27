@@ -5,6 +5,16 @@ import 'package:mobile/features/chat/presentation/widget/answer_bubble.dart';
 import 'package:mobile/features/chat/presentation/widget/edit_input.dart';
 import 'package:mobile/features/chat/presentation/widget/question_bubble.dart';
 import '../widget/mic_button.dart';
+import 'package:mobile/features/flight_info/domain/entities/flight.dart';
+
+extension StringExtension on String {
+  String capitalize() {
+    if (isEmpty) {
+      return this;
+    }
+    return "${this[0].toUpperCase()}${substring(1).toLowerCase()}";
+  }
+}
 
 class TranslatorPage extends StatefulWidget {
   const TranslatorPage({super.key});
@@ -17,10 +27,20 @@ class _TranslatorPageState extends State<TranslatorPage> {
   final List<Map<String, dynamic>> questionData = [];
   bool isListening = false;
   final ScrollController _scrollController = ScrollController();
+  Flight? flight; // To store the flight object
 
   @override
   void initState() {
     super.initState();
+    // Retrieve the flight object from the route arguments
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final args = ModalRoute.of(context)!.settings.arguments;
+      if (args != null && args is Flight) {
+        setState(() {
+          flight = args;
+        });
+      }
+    });
     // Ensure the initial scroll position after the layout is built
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToBottom();
@@ -54,6 +74,7 @@ class _TranslatorPageState extends State<TranslatorPage> {
 
   @override
   Widget build(BuildContext context) {
+    print("Flight in build method: $flight"); // Add this line
     List<Card> buildQuestionCards() {
       return questionData.asMap().entries.map((entry) {
         final index = entry.key;
@@ -76,14 +97,13 @@ class _TranslatorPageState extends State<TranslatorPage> {
                   question: question,
                   isListening: question["isListening"] ?? false,
                 ),
-                const SizedBox(height: 12),
-                if (!(question["isListening"] ?? false))
-                  AnswerBubble(
-                    question: question,
-                    onStateChanged: () {
-                      setState(() {}); // Rebuild to update MicButton visibility
-                    },
-                  ),
+                AnswerBubble(
+                  question: question,
+                  isListening: question["isListening"] ?? false,
+                  onStateChanged: () {
+                    setState(() {});
+                  },
+                ),
               ],
             ),
           ),
@@ -95,13 +115,15 @@ class _TranslatorPageState extends State<TranslatorPage> {
       backgroundColor: const Color(0xFF26252A),
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () {},
+          onPressed: () {
+            Navigator.pop(context);
+          },
           icon: const Icon(Icons.arrow_back_ios_rounded),
           color: Colors.white,
         ),
         centerTitle: true,
         title: Text(
-          "My First Trip to USA",
+          flight?.title ?? "My First Trip to USA",
           style: GoogleFonts.inter(
               color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700),
         ),
@@ -130,8 +152,9 @@ class _TranslatorPageState extends State<TranslatorPage> {
                     child: Text(
                       "English",
                       style: GoogleFonts.inter(
-                          color: const Color(0xFFF5F5F5),
-                          fontWeight: FontWeight.w400),
+                        color: const Color(0xFFF5F5F5),
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
                 ),
@@ -144,10 +167,11 @@ class _TranslatorPageState extends State<TranslatorPage> {
                   ),
                   child: Center(
                     child: Text(
-                      "Amharic",
+                      flight?.language.capitalize() ?? "Amharic",
                       style: GoogleFonts.inter(
-                          color: const Color(0xFFF5F5F5),
-                          fontWeight: FontWeight.w400),
+                        color: const Color(0xFFF5F5F5),
+                        fontWeight: FontWeight.w400,
+                      ),
                     ),
                   ),
                 ),
@@ -170,6 +194,7 @@ class _TranslatorPageState extends State<TranslatorPage> {
           !(questionData.last["isListening"] ?? false)
           ? null
           : MicButton(
+        flightId: flight?.id, // Pass the flight ID to MicButton
         onAIResponse: (Map<String, dynamic> qa) {
           setState(() {
             // Remove the placeholder question if it exists
