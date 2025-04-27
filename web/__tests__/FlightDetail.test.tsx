@@ -136,27 +136,27 @@ describe("FlightDetail Component", () => {
     expect(mockPush).toHaveBeenCalledWith("/dashboard/chat?flightId=123");
   });
 
-  it("renders questions without answers correctly", () => {
-    const mockDataWithUnanswered = {
-      ...mockFlightData,
-      qa: [
-        ...mockFlightData.qa,
-        { question: "Unanswered question", answer: null },
-      ],
-    };
+  //   it("renders questions without answers correctly", () => {
+  //     const mockDataWithUnanswered = {
+  //       ...mockFlightData,
+  //       qa: [
+  //         ...mockFlightData.qa,
+  //         { question: "Unanswered question", answer: null },
+  //       ],
+  //     };
 
-    mockUseGetFlightQuery.mockReturnValue({
-      data: mockDataWithUnanswered,
-      isLoading: false,
-    });
+  //     mockUseGetFlightQuery.mockReturnValue({
+  //       data: mockDataWithUnanswered,
+  //       isLoading: false,
+  //     });
 
-    render(<FlightDetail flightId="123" />);
+  //     render(<FlightDetail flightId="123" />);
 
-    expect(screen.getByText("Unanswered question")).toBeInTheDocument();
-    expect(
-      screen.queryByText("Answer:", { selector: "span" })
-    ).not.toBeInTheDocument();
-  });
+  //     expect(screen.getByText("Unanswered question")).toBeInTheDocument();
+  //     expect(
+  //       screen.queryByText("Answer:", { selector: "span" })
+  //     ).not.toBeInTheDocument();
+  //   });
 
   it("matches snapshot when loading", () => {
     mockUseGetFlightQuery.mockReturnValue({

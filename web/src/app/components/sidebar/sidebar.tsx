@@ -9,8 +9,8 @@ import {
   useDeleteFlightMutation,
 } from "../../services/flightsApi";
 import { useGetProfileQuery } from "../../services/profileApi";
-import ChangePasswordModal from "../../components/modals/ChangePasswordModal";
-import ChangeUsernameModal from "../../components/modals/ChangeUsernameModal";
+import ChangePasswordModal from "../modals/ChangePasswordModal";
+import ChangeUsernameModal from "../modals/ChangeUsernameModal";
 
 // Types
 interface Flight {
@@ -61,7 +61,7 @@ export default function Sidebar() {
           console.error(
             "Authentication error: Please check if you're logged in properly"
           );
-        }
+        } 
         // Check if it's a network error (API endpoint not reachable)
         if (
           "error" in profileError &&
@@ -511,8 +511,3 @@ export default function Sidebar() {
     </>
   );
 }
-
-
-
-
-                            
