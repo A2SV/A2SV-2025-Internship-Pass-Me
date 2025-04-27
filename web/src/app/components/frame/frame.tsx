@@ -33,8 +33,8 @@ const Frame = () => {
         </div>
 
         {/* Text content */}
-        <p className="font-normal text-white text-center max-w-[617px] text-[22px] leading-[30px]">
-          Translate anything, anytime, with ease. A2SV Translator breaks
+        <p className="font-normal text-white text-center max-w-[617px] text-[22px] leading-[30px] px-6">
+          Do airport interviews anytime, with ease. Passme breaks
           language barriers, making communication smooth, fast, and accessible
           for everyone.
         </p>
