@@ -9,12 +9,16 @@ class FlightRepositoryImpl implements FlightRepository {
   FlightRepositoryImpl({required this.remoteDatasource});
 
   @override
-  Future<List<Flight>> getAllFlights() async =>
-      await remoteDatasource.fetchFlights();
-
-  @override
-  Future<void> addFlight(Flight flight) async =>
-      await remoteDatasource.addFlight(flight as FlightModel);
+  Future<List<FlightModel>> getAllFlights() async {
+    //if (await networkInfo.isConnected) {
+    final flights = await remoteDatasource.fetchFlights();
+    return flights;
+    //    .map((flight) => FlightModel.fromJson(flight as Map<String, dynamic>))
+    //    .toList();
+    //} else {
+    //  throw Exception('No internet connection');
+    //}
+  }
 
   @override
   Future<void> deleteFlight(String flightId) async =>
