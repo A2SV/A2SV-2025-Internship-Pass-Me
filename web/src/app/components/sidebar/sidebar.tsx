@@ -8,16 +8,10 @@ import {
   useGetFlightsQuery,
   useDeleteFlightMutation,
 } from "../../services/flightsApi";
-<<<<<<< HEAD
-import { useGetProfileQuery } from "../../services/profileApi";
-import ChangePasswordModal from "../modals/ChangePasswordModal";
-import ChangeUsernameModal from "../modals/ChangeUsernameModal";
-=======
 import { useGetProfileQuery } from "@/app/services/profileApi";
 import ChangePasswordModal from "@/app/components/modals/ChangePasswordModal";
 import ChangeUsernameModal from "@/app/components/modals/ChangeUsernameModal";
 import AboutModal from "@/app/components/modals/AboutModal";
->>>>>>> f76b02b (refactor: Make it more reponsive and fix the issue when clicking the newchat button)
 
 interface Flight {
   id: string;
