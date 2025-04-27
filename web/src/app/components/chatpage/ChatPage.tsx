@@ -120,44 +120,42 @@ export default function ChatPage() {
               />
             ))}
             {isLoading && (
-              <div className="mt-6 animate-fadeIn">
-                <div className="flex items-center content-center p-4">
-                  <div className="flex mx-auto items-end space-x-1">
-                    {[1, 2, 3, 4, 5].map((i) => (
-                      <div
-                        key={i}
-                        className="w-1.5 bg-purple-500 rounded-full animate-pulse"
-                        style={{
-                          height: `${15 + Math.random() * 20}px`,
-                          animationDelay: `${i * 0.1}s`,
-                          animationDuration: "1s",
-                        }}
-                      />
-                    ))}
+              <div className="flex items-center content-center p-4">
+                <div className="flex mx-auto items-end space-x-1">
+                  {[1, 2, 3, 4, 5].map((i) => (
                     <div
-                      className="w-1.5 h-10 bg-blue-500 rounded-full animate-pulse"
-                      style={{ animationDelay: "0.6s" }}
+                      key={i}
+                      className="w-1.5 bg-purple-500 rounded-full animate-pulse"
+                      style={{
+                        height: `${15 + Math.random() * 20}px`,
+                        animationDelay: `${i * 0.1}s`,
+                        animationDuration: "1s",
+                      }}
                     />
+                  ))}
+                  <div
+                    className="w-1.5 h-10 bg-blue-500 rounded-full animate-pulse"
+                    style={{ animationDelay: "0.6s" }}
+                  />
+                  <div
+                    className="w-1.5 h-12 bg-blue-400 rounded-full animate-pulse"
+                    style={{ animationDelay: "0.7s" }}
+                  />
+                  <div
+                    className="w-1.5 h-8 bg-blue-600 rounded-full animate-pulse"
+                    style={{ animationDelay: "0.8s" }}
+                  />
+                  {[1, 2, 3, 4, 5].map((i) => (
                     <div
-                      className="w-1.5 h-12 bg-blue-400 rounded-full animate-pulse"
-                      style={{ animationDelay: "0.7s" }}
+                      key={i + 5}
+                      className="w-1.5 bg-purple-500 rounded-full animate-pulse"
+                      style={{
+                        height: `${15 + Math.random() * 20}px`,
+                        animationDelay: `${(i + 5) * 0.1}s`,
+                        animationDuration: "1s",
+                      }}
                     />
-                    <div
-                      className="w-1.5 h-8 bg-blue-600 rounded-full animate-pulse"
-                      style={{ animationDelay: "0.8s" }}
-                    />
-                    {[1, 2, 3, 4, 5].map((i) => (
-                      <div
-                        key={i + 5}
-                        className="w-1.5 bg-purple-500 rounded-full animate-pulse"
-                        style={{
-                          height: `${15 + Math.random() * 20}px`,
-                          animationDelay: `${(i + 5) * 0.1}s`,
-                          animationDuration: "1s",
-                        }}
-                      />
-                    ))}
-                  </div>
+                  ))}
                 </div>
               </div>
             )}
