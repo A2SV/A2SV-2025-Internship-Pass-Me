@@ -52,12 +52,12 @@ function Banner() {
         alt="A2SV Translator Banner"
         width={200}
         height={100}
-        className="md:w-152 md:h-25 object-cover"
+        className="md:w-100 h-auto object-fit"
         priority
       />
 
       <div
-        className={`w-150 relative z-10 flex flex-col items-center text-center px-4`}
+        className={`w-150 relative z-10 flex flex-col items-center text-center px-8`}
       >
         <div
           className={`w-[70%] m-auto text-lg md:text-2xl transition-opacity duration-500 ${
