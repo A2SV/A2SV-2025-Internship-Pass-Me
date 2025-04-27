@@ -22,12 +22,12 @@ export type TranslationKeys = {
 };
 
 export type Translations = {
-  en: TranslationKeys;
-  am: TranslationKeys;
-  tr: TranslationKeys;
+  english: TranslationKeys;
+  amharic: TranslationKeys;
+  turkish: TranslationKeys;
 };
 const  flight= {
-    "en": {
+    "english": {
       "flightDetails": "Flight Details",
       "flightName": "Flight name",
       "flightNamePlaceholder": "Your flight name",
@@ -42,7 +42,7 @@ const  flight= {
       "flightDate": "Flight date",
       "flightDatePlaceholder": "Set your flight time and date",
       "flightDateRequired": "Flight date is required",
-      "commonQuestions": "Common airport questions",
+      "commonQuestions": "Common Airport Questions",
       "submitButton": "Submit",
     "confirmationQuestion": "Are you sure you want to continue with this information?",
     "backToEdit": "Back to Edit",
@@ -53,7 +53,7 @@ const  flight= {
       "pattern": "^[a-zA-Z\\s]+$"
     },
   },
-    "am": {
+    "amharic": {
       "flightDetails": "የበረራ ዝርዝሮች",
       "flightName": "የበረራ ስም",
       "flightNamePlaceholder": "የበረራ ስም",
@@ -80,7 +80,7 @@ const  flight= {
 
     }
     },
-    "tr": {
+    "turkish": {
       "flightDetails": "Uçuş Detayları",
       "flightName": "Uçuş Adı",
       "flightNamePlaceholder": "Uçuş adınız",
