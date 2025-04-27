@@ -179,8 +179,14 @@ class FlightDetailPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: AppColors.backgroundColor,
+      backgroundColor: Color(0xFF26252A),
       appBar: AppBar(
+          centerTitle: true,
+          title: Text(
+            "My First Trip to USA",
+            style: GoogleFonts.inter(
+                color: Colors.white, fontSize: 18, fontWeight: FontWeight.w700),
+          ),
           leading: IconButton(
             onPressed: () {},
             icon: Icon(Icons.arrow_back_ios_rounded),
@@ -196,16 +202,7 @@ class FlightDetailPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Center(
-              child: Text(
-                "My First Trip to USA",
-                style: GoogleFonts.inter(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700),
-              ),
-            ),
-            SizedBox(height: 20),
+            SizedBox(height: 14),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
