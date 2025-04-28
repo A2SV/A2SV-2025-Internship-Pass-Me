@@ -21,8 +21,8 @@ import 'features/onboarding/presentation/pages/onboarding_page.dart';
 import 'injection_container.dart' as di;
 import 'features/flight_info/domain/entities/flight.dart';
 
-void main() {
-  di.init();
+void main() async {
+  await di.init();
   runApp(MyApp());
 }
 
@@ -53,7 +53,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.dark().copyWith(
           textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
           primaryTextTheme:
-          GoogleFonts.interTextTheme(ThemeData.dark().primaryTextTheme),
+              GoogleFonts.interTextTheme(ThemeData.dark().primaryTextTheme),
           colorScheme: const ColorScheme.dark(
             primary: Color(0xFF2196F3),
           ),
