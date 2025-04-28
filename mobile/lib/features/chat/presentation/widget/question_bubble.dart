@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/features/chat/presentation/widget/answer_bubble.dart';
+import 'package:mobile/core/theme/app_colors.dart';
 
 class QuestionBubble extends StatefulWidget {
   final Map<String, dynamic> question;
@@ -39,8 +40,9 @@ Widget build(BuildContext context) {
           : Container(
               width: MediaQuery.of(context).size.width * 0.7,
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: AppColors.cardColor,
+                borderRadius: const BorderRadius.only(
                   topRight: Radius.circular(10),
                   bottomRight: Radius.circular(10),
                 ),

@@ -83,7 +83,7 @@ class _TranslatorPageState extends State<TranslatorPage> {
         return Card(
           elevation: 0.0,
           clipBehavior: Clip.antiAlias,
-          color: const Color(0xFF26252A),
+          color: AppColors.backgroundColor,
           child: Padding(
             padding: const EdgeInsets.only(
               left: 4.0,
@@ -97,6 +97,7 @@ class _TranslatorPageState extends State<TranslatorPage> {
                   question: question,
                   isListening: question["isListening"] ?? false,
                 ),
+                const SizedBox(height: 12),
                 AnswerBubble(
                   question: question,
                   isListening: question["isListening"] ?? false,
