@@ -44,9 +44,10 @@ This repository contains the backend service for the PassMe application, written
 ## Configuration
 
 The application uses environment variables for configuration. For local development, create a `.env` file.
-# For local MongoDB: mongodb://localhost:27017
-# For Atlas: mongodb+srv://<username>:<password>@<cluster-address>/<db-name>?retryWrites=true&w=majority
+For local MongoDB: mongodb://localhost:27017
+For Atlas: mongodb+srv://<username>:<password>@<cluster-address>/<db-name>?retryWrites=true&w=majority
 MONGO_URI="your_mongodb_connection_string"
+Flask = http://localhost:5000
 
 # Testing
 This project includes unit tests for controllers, use cases, infrastructure components, and routers, as well as integration tests for repositories.
