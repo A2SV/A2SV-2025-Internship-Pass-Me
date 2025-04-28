@@ -202,10 +202,5 @@ Important:
         if os.path.exists(audio_path) and audio_path.startswith("uploads/"):
             os.remove(audio_path)
 
-# Set up ngrok for exposing the Flask app
-ngrok.set_auth_token("2va6EHPOABbjvP2wooI23x157DY_8yRGQtmqXTCu5xpbeBMm")
-public_url = ngrok.connect(5000)
-print(f"🌍 Your public endpoint is: {public_url}")
-
 if __name__ == "__main__":
     app.run(port=5000)
