@@ -64,10 +64,7 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         centerTitle: true,
         backgroundColor: AppColors.backgroundColor,
-        title: const Text(
-          'PASSME 🌐 TRANSLATOR',
-          style: TextStyle(color: Colors.white70, fontSize: 16),
-        ),
+        title: Image.asset('assets/images/logo.png', height: 35),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -209,11 +206,11 @@ class _LoginPageState extends State<LoginPage> {
                                   style: TextStyle(color: Colors.white70)),
                             ],
                           ),
-                          TextButton(
-                            onPressed: () {},
-                            child: const Text("Forget Password?",
-                                style: TextStyle(color: Colors.white70)),
-                          ),
+                          // TextButton(
+                          //   onPressed: () {},
+                          //   child: const Text("Forget Password?",
+                          //       style: TextStyle(color: Colors.white70)),
+                          // ),
                         ],
                       ),
                       const SizedBox(height: 24),

@@ -43,6 +43,16 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
   final TextEditingController _destinationNameController =
       TextEditingController();
   final Map<String, TextEditingController> _answerControllers = {};
+
+  @override
+  void initState() {
+    super.initState();
+    // Load questions when the page initializes
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<FormBloc>().add(LoadQuestions(Language.english));
+    });
+  }
+
   String _getLanguage() {
     switch (_selectedLanguage) {
       case Language.english:
@@ -92,16 +102,12 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
           color: Colors.white,
           onPressed: () => Navigator.pop(context),
         ),
-        title: Align(
-          alignment: Alignment.centerRight,
-          child: Image.asset(
-            'assets/images/logo.png',
-            height: 32,
-          ),
+        title: Image.asset(
+          'assets/images/logo.png',
+          height: 35,
         ),
-        backgroundColor: Colors.transparent,
-        foregroundColor: Colors.white,
-        elevation: 0,
+        backgroundColor: AppColors.backgroundColor,
+        centerTitle: true,
       ),
       body: BlocConsumer<FormBloc, FormsSates>(
         listener: (context, state) {
@@ -114,58 +120,74 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
           }
         },
         builder: (context, state) {
-          return Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Language Selector
-                Text(
-                  _getLocalizedText("Choose language", "ቋንቋ ይምረጡ", "Dil seçin"),
-                  style: const TextStyle(color: Colors.white),
-                ),
-                const SizedBox(height: 5),
-                _buildLanguageSelectors(context),
-                const SizedBox(height: 5),
-                _buildCountryInputColumn(
-                  controller: _flightNameController,
-                  hint: _getLocalizedText(
-                      "Enter flight name", "የበረራ ስም አስገባ", "Uçuş adını girin"),
-                  label:
-                      _getLocalizedText("Flight Name", "የበረራ ስም", "Uçuş Adı"),
-                ),
-                const SizedBox(height: 10),
-                _buildStartandDestinationPlace(context),
-                const SizedBox(height: 5),
-                Text(
-                  _getLocalizedText("Choose date of flight", "የበረራ ቀን ይምረጡ",
-                      "Uçuş tarihini seçin"),
-                  style: const TextStyle(color: Colors.grey),
-                ),
-                _buildDatePickerButton(context),
-                const SizedBox(height: 10),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Icon(
-                      Icons.message,
-                      color: Colors.white,
-                    ),
-                    Text(
-                      _getLocalizedText(
-                          "Common Airport questions ",
-                          "በተለምዶ አየር መንገድ ላይ  የሚጠየቁ ጥያቄዎች",
-                          "Genel Havaalanı Soruları"),
-                      style: TextStyle(color: Colors.white, fontSize: 16.0),
-                    )
-                  ],
-                ),
-                const SizedBox(height: 10),
-                Text.rich(TextSpan()),
-                // Questions List
-                Expanded(child: _buildQuestionsList(context, state)),
-              ],
+          return SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Language Selector
+                  Text(
+                    _getLocalizedText("Choose language", "ቋንቋ ይምረጡ", "Dil seçin"),
+                    style: const TextStyle(color: AppColors.textColor),
+                  ),
+                  const SizedBox(height: 16),
+                  _buildLanguageSelectors(context),
+                  const SizedBox(height: 24),
+                  _buildCountryInputColumn(
+                    controller: _flightNameController,
+                    hint: _getLocalizedText(
+                        "Enter flight name", "የበረራ ስም አስገባ", "Uçuş adını girin"),
+                    label:
+                        _getLocalizedText("Flight Name", "የበረራ ስም", "Uçuş Adı"),
+                  ),
+                  const SizedBox(height: 24),
+                  _buildStartandDestinationPlace(context),
+                  const SizedBox(height: 24),
+                  Text(
+                    _getLocalizedText("Choose date of flight", "የበረራ ቀን ይምረጡ",
+                        "Uçuş tarihini seçin"),
+                    style: TextStyle(color: AppColors.textColor,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14)
+                  ),
+                  const SizedBox(height: 16),
+                  _buildDatePickerButton(context),
+                  const SizedBox(height: 24),
+                  if (state is QuestionsLoaded) ...[
+                    ...state.questions.map((question) {
+                      final controller = _answerControllers.putIfAbsent(
+                        question.id.toString(),
+                        () => TextEditingController(text: question.answer ?? ''),
+                      );
+                      return Column(
+                        children: [
+                          QuestionCard(
+                            question: question,
+                            isSelected: question.id == _selectedCardIndex,
+                            onTap: () => setState(() => _selectedCardIndex = question.id),
+                            onChanged: (value) {
+                              context.read<FormBloc>().add(
+                                    UpdateAnswer(
+                                      question.id.toString(),
+                                      value,
+                                    ),
+                                  );
+                            },
+                            controller: controller,
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                      );
+                    }),
+                    const SizedBox(height: 24),
+                    _buildSubmitButton(context, state.questions),
+                  ] else if (state is QuestionsLoading) 
+                    const Center(child: CircularProgressIndicator())
+                  else if (state is QuestionsError)
+                    Center(child: Text(state.message, style: const TextStyle(color: AppColors.textColor))),
+                ],
+              ),
             ),
           );
         },
@@ -174,34 +196,24 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
   }
 
   Widget _buildStartandDestinationPlace(BuildContext context) {
-    return IntrinsicHeight(
-      // Add this wrapper
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start, // Align at the top
-        children: [
-          Expanded(
-            // Keep Expanded here
-            child: _buildCountryInputColumn(
-              label: _getLocalizedText("From Country", "ከዚህ ሃገር", "Ülkeden"),
-              hint: _getLocalizedText("Country name", "የሃገር ስም", "Ülke adı"),
-              controller: _startNameController,
-            ),
+    return Column(
+      children: [
+        _buildCountryInputColumn(
+          label: _getLocalizedText("From Country", "ከዚህ ሃገር", "Ülkeden"),
+          hint: _getLocalizedText("Country name", "የሃገር ስም", "Ülke adı"),
+          controller: _startNameController,
+        ),
+        const SizedBox(height: 16),
+        _buildCountryInputColumn(
+          label: _getLocalizedText("To Country", "ወደዚህ ሃገር", "Ülkeye"),
+          hint: _getLocalizedText(
+            "Country name",
+            "የሃገር ስም",
+            "Ülke adı",
           ),
-          const SizedBox(width: 10),
-          Expanded(
-            // Keep Expanded here
-            child: _buildCountryInputColumn(
-              label: _getLocalizedText("To Country", "ወደዚህ ሃገር", "Ülkeye"),
-              hint: _getLocalizedText(
-                "Country name",
-                "የሃገር ስም",
-                "Ülke adı",
-              ),
-              controller: _destinationNameController,
-            ),
-          ),
-        ],
-      ),
+          controller: _destinationNameController,
+        ),
+      ],
     );
   }
 
@@ -212,30 +224,32 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
   }) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min, // This prevents extra space
+      mainAxisSize: MainAxisSize.min,
       children: [
         Text(
           label,
           style: const TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 16,
+            fontSize: 14,
+            color: AppColors.textColor,
           ),
         ),
         const SizedBox(height: 8),
         Container(
           decoration: BoxDecoration(
-            border: Border.all(color: Colors.grey),
+            border: Border.all(color: AppColors.borderColor),
             borderRadius: BorderRadius.circular(8),
+            color: AppColors.cardColor,
           ),
           padding: const EdgeInsets.symmetric(horizontal: 12),
           child: TextField(
             controller: controller,
+            style: const TextStyle(color: AppColors.textColor, fontSize: 14),
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: hint,
-              hintStyle: TextStyle(color: Colors.grey[600]),
+              hintStyle: TextStyle(color: AppColors.hintTextColor, fontSize: 14),
             ),
-            style: const TextStyle(fontSize: 16),
           ),
         ),
       ],
@@ -244,7 +258,7 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
 
   Widget _buildLanguageSelectors(BuildContext context) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
           child: LanguageSelector(
@@ -254,7 +268,7 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
         ),
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 12.0),
-          child: Icon(Icons.compare_arrows, color: Colors.white),
+          child: Icon(Icons.compare_arrows, color: AppColors.textColor),
         ),
         Expanded(
           child: LanguageSelector(
@@ -267,103 +281,58 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
   }
 
   Widget _buildDatePickerButton(BuildContext context) {
-    return SizedBox(
-      width: 200,
+    return Container(
+      width: double.infinity,
       height: 50,
+      decoration: BoxDecoration(
+        border: Border.all(color: AppColors.borderColor),
+        borderRadius: BorderRadius.circular(8),
+        color: AppColors.cardColor,
+      ),
       child: ElevatedButton.icon(
         onPressed: () => _pickDate(context),
-        icon: const Icon(Icons.calendar_today, color: Colors.white),
+        icon: const Icon(Icons.calendar_today, color: AppColors.textColor, size: 20),
         label: Text(
           _selectedDate == null
               ? _getLocalizedText("Select Date", "ቀን ይምረጡ", "Tarih Seçin")
               : DateFormat('EEEE, MMMM d, y').format(_selectedDate!),
-          style: const TextStyle(color: Colors.white),
+          style: const TextStyle(color: AppColors.textColor, fontSize: 14),
         ),
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0Xff676470),
+          backgroundColor: Colors.transparent,
           elevation: 0,
           padding: const EdgeInsets.symmetric(horizontal: 16),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
-            side: const BorderSide(color: Colors.grey),
           ),
         ),
       ),
     );
   }
 
-  Widget _buildQuestionsList(BuildContext context, FormsSates state) {
-    if (state is QuestionsLoading) {
-      return const Center(child: CircularProgressIndicator());
-    } else if (state is QuestionsError) {
-      return Center(child: Text(state.message));
-    } else if (state is QuestionsLoaded) {
-      return ListView.builder(
-        itemCount: state.questions.length + 1,
-        itemBuilder: (ctx, index) {
-          if (index < state.questions.length) {
-            final question = state.questions[index];
-            // Get or create controller for this question
-            final controller = _answerControllers.putIfAbsent(
-              question.id.toString(),
-              () => TextEditingController(text: question.answer ?? ''),
-            );
-
-            return BlocBuilder<FormBloc, FormsSates>(
-              builder: (context, blocState) {
-                final currentState =
-                    blocState is QuestionsLoaded ? blocState : state;
-                final updatedQuestion = currentState.questions[index];
-
-                // Update controller text if answer changed from outside
-                if (controller.text != updatedQuestion.answer) {
-                  controller.text = updatedQuestion.answer ?? '';
-                }
-
-                return QuestionCard(
-                  question: updatedQuestion,
-                  isSelected: index == _selectedCardIndex,
-                  onTap: () => setState(() => _selectedCardIndex = index),
-                  onChanged: (value) {
-                    context.read<FormBloc>().add(
-                          UpdateAnswer(
-                            question.id.toString(),
-                            value,
-                          ),
-                        );
-                  },
-                  controller: controller,
-                );
-              },
-            );
-          } else {
-            return _buildSubmitButton(context, state.questions);
-          }
-        },
-      );
-    }
-    return const SizedBox();
-  }
-
   Widget _buildSubmitButton(
       BuildContext context, List<QuestionEntity> questions) {
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         child: ElevatedButton(
           onPressed: () => _handleSubmit(context, questions),
           style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.white,
-            foregroundColor: Colors.blue,
+            backgroundColor: AppColors.primaryColor,
+            foregroundColor: AppColors.textColor,
             elevation: 4,
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            minimumSize: const Size(double.infinity, 50),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
           ),
           child: Text(
             _submitText,
-            style: const TextStyle(fontWeight: FontWeight.bold),
+            style: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 16,
+            ),
           ),
         ),
       ),
@@ -386,7 +355,14 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
       lastDate: DateTime(2100),
       builder: (context, child) {
         return Theme(
-          data: ThemeData.dark(),
+          data: ThemeData.dark().copyWith(
+            colorScheme: ColorScheme.dark(
+              primary: AppColors.primaryColor,
+              surface: AppColors.cardColor,
+              onSurface: AppColors.textColor,
+            ),
+            dialogBackgroundColor: AppColors.backgroundColor,
+          ),
           child: child!,
         );
       },
@@ -421,12 +397,13 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
             ),
             style: const TextStyle(color: Colors.white),
           ),
+          actionsPadding: const EdgeInsets.only(left: 16, right: 16, bottom: 16),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
               child: Text(
                 _getLocalizedText(
-                    "Back to Edit", "ለማስተካከል ይመለሱ", "Düzenlemeye Dön"),
+                    "Back to Edit", "ለማረም ተመለስ", "Düzenlemeye Dön"),
                 style: const TextStyle(color: Colors.blue),
               ),
             ),
@@ -448,7 +425,7 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
               },
               child: Text(
                 _getLocalizedText("Yes", "አዎ", "Evet"),
-                style: const TextStyle(color: Colors.green),
+                style: const TextStyle(color: AppColors.primaryColor),
               ),
             ),
           ],
@@ -515,7 +492,7 @@ class _TranslatorFormViewState extends State<_TranslatorFormView> {
         context,
         _getLocalizedText(
             "Source and target languages cannot be the same",
-            "የመነሻ እና የመዳረሻ ቋንቋዎች መመሳሰል �ይለበትም",
+            "የመነሻ እና የመዳረሻ ቋንቋዎች መመሳሰል ይለበትም",
             "Kaynak ve hedef diller aynı olamaz"),
       );
       return false;

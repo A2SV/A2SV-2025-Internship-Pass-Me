@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobile/core/theme/app_colors.dart';
 
 enum Language { english, amharic, turkish }
 
@@ -27,46 +28,38 @@ class LanguageSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final options = Language.values
-        .map((lang) => DropdownMenuItem(
-              value: lang,
-              child: Text(
-                _getLanguageName(lang),
-                style: const TextStyle(color: Colors.white),
-              ),
-            ))
-        .toList();
-
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12),
       decoration: BoxDecoration(
-        border: Border.all(color: Color(0Xff676470)),
-        color: Color(0Xff676470),
+        border: Border.all(color: AppColors.borderColor),
         borderRadius: BorderRadius.circular(8),
+        color: AppColors.cardColor,
       ),
-      child: DropdownButton<Language>(
-        value: selectedLanguage,
-        dropdownColor: const Color(0Xff676470),
-        iconEnabledColor: Colors.white,
-        underline: const SizedBox(),
-        onChanged: (Language? newValue) {
-          if (newValue != null) {
-            onChanged(newValue);
-          }
-        },
-        items: options,
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<Language>(
+          value: selectedLanguage,
+          isExpanded: true,
+          dropdownColor: AppColors.cardColor,
+          style: const TextStyle(color: AppColors.textColor, fontSize: 14),
+          icon: const Icon(Icons.arrow_drop_down, color: AppColors.textColor),
+          items: Language.values.map((Language language) {
+            return DropdownMenuItem<Language>(
+              value: language,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Text(
+                  language.toString().split('.').last,
+                  style: const TextStyle(color: AppColors.textColor),
+                ),
+              ),
+            );
+          }).toList(),
+          onChanged: (Language? newValue) {
+            if (newValue != null) {
+              onChanged(newValue);
+            }
+          },
+        ),
       ),
     );
-  }
-
-  String _getLanguageName(Language lang) {
-    switch (lang) {
-      case Language.english:
-        return 'English';
-      case Language.amharic:
-        return 'አማርኛ';
-      case Language.turkish:
-        return "Türkçe";
-    }
   }
 }

@@ -21,8 +21,9 @@ import 'features/onboarding/presentation/pages/onboarding_page.dart';
 import 'injection_container.dart' as di;
 import 'features/flight_info/domain/entities/flight.dart';
 
-void main() {
-  di.init();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await di.init();
   runApp(MyApp());
 }
 
@@ -32,19 +33,19 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<LoginCubit>(
-          create: (_) => di.sl<LoginCubit>(),
+          create: (context) => di.sl<LoginCubit>(),
         ),
         BlocProvider<SignUpBloc>(
-          create: (_) => di.sl<SignUpBloc>(),
+          create: (context) => di.sl<SignUpBloc>(),
         ),
         BlocProvider<OnboardingBloc>(
-          create: (_) => di.sl<OnboardingBloc>(),
+          create: (context) => di.sl<OnboardingBloc>(),
         ),
         BlocProvider<FormBloc>(
-          create: (_) => di.sl<FormBloc>(),
+          create: (context) => di.sl<FormBloc>(),
         ),
         BlocProvider<FlightBloc>(
-          create: (_) => di.sl<FlightBloc>(),
+          create: (context) => di.sl<FlightBloc>(),
         )
       ],
       child: MaterialApp(
