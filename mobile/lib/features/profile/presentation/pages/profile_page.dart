@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobile/core/theme/app_colors.dart';
 import 'package:mobile/features/auth/presentation/blocs/login_cubit.dart';
 import 'package:mobile/features/profile/presentation/widgets/personal_details.dart';
 import 'package:mobile/features/profile/presentation/widgets/profile_option.dart';
@@ -19,9 +20,9 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF26252A),
+      backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
-        backgroundColor: const Color(0xFF26252A),
+        backgroundColor: AppColors.backgroundColor,
         title: SizedBox(
           height: 36,
           child: Image.asset("assets/images/logo.png"),

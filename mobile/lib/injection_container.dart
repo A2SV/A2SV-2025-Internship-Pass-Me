@@ -38,6 +38,7 @@ Future<void> init() async {
   // Then initialize feature-specific dependencies
   _initAuth();
   _initForm();
+  _initFlight();
   _initProfile();
 }
 

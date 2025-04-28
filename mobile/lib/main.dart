@@ -65,7 +65,8 @@ class MyApp extends StatelessWidget {
           '/onboarding': (_) => const OnboardingPage(),
           '/login': (_) => LoginPage(),
           '/signup': (_) => SignUpPage(),
-          '/flights/empty': (_) => const FlightEmptyPage(),
+          // '/flights/empty': (_) => const FlightEmptyPage(),
+          '/flights': (_) => FlightPage(),
           '/flights/detail': (context) => FlightDetailPage(
               flight: ModalRoute.of(context)!.settings.arguments as Flight),
           '/profile': (_) => const ProfilePage(),

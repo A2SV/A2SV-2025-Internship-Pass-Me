@@ -94,7 +94,7 @@ class FlightDetailPage extends StatelessWidget {
                     Container(
                       width: MediaQuery.of(context).size.width * 0.7,
                       padding:
-                      const EdgeInsets.only(left: 8, top: 8, bottom: 8),
+                          const EdgeInsets.only(left: 8, top: 8, bottom: 8),
                       decoration: const BoxDecoration(
                           color: Color(0xFF323232),
                           borderRadius: BorderRadius.only(
@@ -159,7 +159,7 @@ class FlightDetailPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFF26252A),
+      backgroundColor: const Color(0xFF1A1A1A),
       appBar: AppBar(
           centerTitle: true,
           title: Text(
@@ -190,14 +190,14 @@ class FlightDetailPage extends StatelessWidget {
               children: [
                 Container(
                   padding:
-                  const EdgeInsets.symmetric(vertical: 8, horizontal: 45),
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 45),
                   decoration: BoxDecoration(
                     color: const Color(0xFF676470),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Center(
                     child: Text(
-                      "English",
+                      _getDisplayLanguage(flight.language),
                       style: GoogleFonts.inter(
                           color: const Color(0xFFF5F5F5),
                           fontWeight: FontWeight.w400),
@@ -207,14 +207,14 @@ class FlightDetailPage extends StatelessWidget {
                 const Icon(Icons.arrow_forward_rounded, color: Colors.white),
                 Container(
                   padding:
-                  const EdgeInsets.symmetric(vertical: 8, horizontal: 45),
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 45),
                   decoration: BoxDecoration(
                     color: const Color(0xFF676470),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Center(
                     child: Text(
-                      flight.language.capitalize(),
+                      'English',
                       style: GoogleFonts.inter(
                           color: const Color(0xFFF5F5F5),
                           fontWeight: FontWeight.w400),
@@ -234,7 +234,8 @@ class FlightDetailPage extends StatelessWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton.extended(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+        shape:
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
         backgroundColor: const Color(0xFF3A86FF),
         onPressed: () {
           if (flight != null) {
@@ -258,5 +259,18 @@ class FlightDetailPage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+String _getDisplayLanguage(String lang) {
+  switch (lang.toLowerCase()) {
+    case 'amharic':
+      return 'Amharic';
+    case 'turkish':
+      return 'Turkish';
+    case 'english':
+      return 'English';
+    default:
+      return lang.capitalize();
   }
 }
