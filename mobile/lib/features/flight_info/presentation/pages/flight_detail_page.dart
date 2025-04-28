@@ -159,7 +159,7 @@ class FlightDetailPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFF26252A),
+      backgroundColor: const Color(0xFF1A1A1A),
       appBar: AppBar(
           centerTitle: true,
           title: Text(
@@ -197,7 +197,7 @@ class FlightDetailPage extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      "English",
+                      _getDisplayLanguage(flight.language),
                       style: GoogleFonts.inter(
                           color: const Color(0xFFF5F5F5),
                           fontWeight: FontWeight.w400),
@@ -214,7 +214,7 @@ class FlightDetailPage extends StatelessWidget {
                   ),
                   child: Center(
                     child: Text(
-                      flight.language.capitalize(),
+                      'English',
                       style: GoogleFonts.inter(
                           color: const Color(0xFFF5F5F5),
                           fontWeight: FontWeight.w400),
@@ -258,5 +258,18 @@ class FlightDetailPage extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+String _getDisplayLanguage(String lang) {
+  switch (lang.toLowerCase()) {
+    case 'amharic':
+      return 'Amharic';
+    case 'turkish':
+      return 'Turkish';
+    case 'english':
+      return 'English';
+    default:
+      return lang.capitalize();
   }
 }
