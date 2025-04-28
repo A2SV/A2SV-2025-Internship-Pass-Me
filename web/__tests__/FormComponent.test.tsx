@@ -79,7 +79,7 @@ describe('FormComponent', () => {
     mockUseCreateFlightMutation.mockReturnValue([mockCreateFlight, { isLoading: false }]);
   });
 
-  const renderComponent = (language: 'en' | 'am' | 'tr' = 'en', popup = false) => {
+  const renderComponent = (language: 'english' | 'amharic' | 'turkish' = 'english', popup = false) => {
     render(
       <FormComponent
         lanaguage={language}
@@ -89,67 +89,60 @@ describe('FormComponent', () => {
         setPopup={mockSetPopup}
         handleedit={mockHandleEdit}
         handlethepop={mockHandleThePop}
-        flightName=""
-        setFlightName={mockSetFlightName}
-        flightFrom=""
-        setFlightFrom={mockSetFlightFrom}
-        flightTo=""
-        setFlightTo={mockSetFlightTo}
-        time=""
-        setTime={mockSetTime}
+      
       />
     );
   };
 
   it('renders common questions based on the selected language (Amharic)', () => {
-    renderComponent('am');
+    renderComponent('amharic');
     Object.values(questionsAmharic).forEach((questionText) => {
       expect(screen.getByText(questionText)).toBeInTheDocument();
     });
   });
 
   it('renders common questions based on the selected language (Turkish)', () => {
-    renderComponent('tr');
+    renderComponent('turkish');
     Object.values(turkishquestions).forEach((questionText) => {
       expect(screen.getByText(questionText)).toBeInTheDocument();
     });
   });
 
   it('calls handlethepop when the submit button is clicked', () => {
-    renderComponent('en');
-    const currentLang = (flight as Translations)['en'];
+    renderComponent('english');
+    const currentLang = (flight as Translations)['english'];
     const submitButton = screen.getByText(currentLang.submitButton);
     fireEvent.click(submitButton);
     expect(mockHandleThePop).toHaveBeenCalledTimes(1);
   });
 
   it('renders the confirmation popup with translated text when popup prop is true (English)', () => {
-    renderComponent('en', true);
-    const currentLang = (flight as Translations)['en'];
+    renderComponent('english', true);
+    const currentLang = (flight as Translations)['english'];
     expect(screen.getByText(currentLang.confirmationQuestion)).toBeInTheDocument();
     expect(screen.getByText(currentLang.backToEdit)).toBeInTheDocument();
     expect(screen.getByText(currentLang.confirmYes)).toBeInTheDocument();
   });
 
   it('renders the confirmation popup with translated text when popup prop is true (Amharic)', () => {
-    renderComponent('am', true);
-    const currentLang = (flight as Translations)['am'];
+    renderComponent('amharic', true);
+    const currentLang = (flight as Translations)['amharic'];
     expect(screen.getByText(currentLang.confirmationQuestion)).toBeInTheDocument();
     expect(screen.getByText(currentLang.backToEdit)).toBeInTheDocument();
     expect(screen.getByText(currentLang.confirmYes)).toBeInTheDocument();
   });
 
   it('renders the confirmation popup with translated text when popup prop is true (Turkish)', () => {
-    renderComponent('tr', true);
-    const currentLang = (flight as Translations)['tr'];
+    renderComponent('turkish', true);
+    const currentLang = (flight as Translations)['turkish'];
     expect(screen.getByText(currentLang.confirmationQuestion)).toBeInTheDocument();
     expect(screen.getByText(currentLang.backToEdit)).toBeInTheDocument();
     expect(screen.getByText(currentLang.confirmYes)).toBeInTheDocument();
   });
 
   it('calls handleedit when the "Back to Edit" button in the popup is clicked', () => {
-    renderComponent('en', true);
-    const currentLang = (flight as Translations)['en'];
+    renderComponent('english', true);
+    const currentLang = (flight as Translations)['english'];
     const backToEditButton = screen.getByText(currentLang.backToEdit);
     fireEvent.click(backToEditButton);
     expect(mockHandleEdit).toHaveBeenCalledTimes(1);
@@ -168,8 +161,8 @@ describe('FormComponent', () => {
       reset: mockReset,
       formState: { errors: {} },
     });
-    renderComponent('en', true);
-    const currentLang = (flight as Translations)['en'];
+    renderComponent('english', true);
+    const currentLang = (flight as Translations)['english'];
     const yesButton = screen.getByText(currentLang.confirmYes);
     fireEvent.click(yesButton);
 
@@ -191,8 +184,8 @@ describe('FormComponent', () => {
       reset: mockReset,
       formState: { errors: {} },
     });
-    renderComponent('en', true);
-    const currentLang = (flight as Translations)['en'];
+    renderComponent('english', true);
+    const currentLang = (flight as Translations)['english'];
     const yesButton = screen.getByText(currentLang.confirmYes);
     fireEvent.click(yesButton);
 

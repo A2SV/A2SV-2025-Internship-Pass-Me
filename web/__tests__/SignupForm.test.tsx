@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import SignupForm from '@/app/components/auth/forms/SignupForm';
+import SignupForm from'../src/app/components/auth/forms/SignupForm';
 
 // 1. Mock useRouter
 jest.mock('next/navigation', () => ({
