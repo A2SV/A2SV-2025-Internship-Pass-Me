@@ -24,18 +24,20 @@ class FlightDetailPage extends StatelessWidget {
         return Card(
           elevation: 0.0,
           clipBehavior: Clip.antiAlias,
-          color: const Color(0xFF26252A),
+          color: AppColors.backgroundColor,
           child: Padding(
             padding: const EdgeInsets.only(
               left: 4.0,
               top: 4.0,
               bottom: 4.0,
+              right: 4.0,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.7,
+                // Question (left, top)
+                Padding(
+                  padding: const EdgeInsets.only(left: 8, top: 8, right: 32, bottom: 4),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -43,114 +45,62 @@ class FlightDetailPage extends StatelessWidget {
                         "Question:",
                         style: GoogleFonts.inter(
                           color: Colors.white,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          fontSize: 13,
                         ),
                       ),
-                      Row(
-                        children: [
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: Text(
-                              question["question"]!,
-                              style: GoogleFonts.inter(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 4),
-                      Text("ጥያቄ:",
-                          style: GoogleFonts.inter(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                            fontSize: 12,
-                          )),
-                      Row(
-                        children: [
-                          const SizedBox(width: 20),
-                          Expanded(
-                            child: Text(
-                              question["answer"]!,
-                              style: GoogleFonts.inter(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ),
-                        ],
+                      const SizedBox(height: 2),
+                      Text(
+                        question["question"]!,
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w400,
+                          fontSize: 14,
+                        ),
                       ),
                     ],
                   ),
                 ),
-                const SizedBox(height: 12),
+                // Answer (right, chat bubble)
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     Container(
-                      width: MediaQuery.of(context).size.width * 0.7,
-                      padding:
-                      const EdgeInsets.only(left: 8, top: 8, bottom: 8),
-                      decoration: const BoxDecoration(
-                          color: Color(0xFF323232),
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(10),
-                              bottomLeft: Radius.circular(10))),
+                      constraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.85),
+                      decoration: BoxDecoration(
+                        color: AppColors.cardColor,
+                        borderRadius: const BorderRadius.only(
+                          topLeft: Radius.circular(10),
+                          bottomLeft: Radius.circular(10),
+                        ),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 18),
+                      margin: const EdgeInsets.only(bottom: 12, right: 8),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text("Answer:",
-                              style: GoogleFonts.inter(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 12,
-                              )),
-                          Row(
-                            children: [
-                              const SizedBox(width: 20),
-                              Expanded(
-                                child: Text(
-                                  question["question"]!,
-                                  style: GoogleFonts.inter(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            ],
+                          Text(
+                            "Answer:",
+                            style: GoogleFonts.inter(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                              fontSize: 13,
+                            ),
                           ),
-                          const SizedBox(height: 4),
-                          Text("መልስ:",
-                              style: GoogleFonts.inter(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 12,
-                              )),
-                          Row(
-                            children: [
-                              const SizedBox(width: 20),
-                              Expanded(
-                                child: Text(
-                                  question["answer"]!,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w400,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                            ],
+                          const SizedBox(height: 2),
+                          Text(
+                            question["answer"]!,
+                            style: GoogleFonts.inter(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400,
+                              fontSize: 14,
+                            ),
                           ),
                         ],
                       ),
                     ),
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -159,7 +109,7 @@ class FlightDetailPage extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFF26252A),
+      backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
           centerTitle: true,
           title: Text(
@@ -192,12 +142,12 @@ class FlightDetailPage extends StatelessWidget {
                   padding:
                   const EdgeInsets.symmetric(vertical: 8, horizontal: 45),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF676470),
+                    color: AppColors.cardColor,
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Center(
                     child: Text(
-                      "English",
+                      _getDisplayLanguage(flight.language),
                       style: GoogleFonts.inter(
                           color: const Color(0xFFF5F5F5),
                           fontWeight: FontWeight.w400),
@@ -209,12 +159,12 @@ class FlightDetailPage extends StatelessWidget {
                   padding:
                   const EdgeInsets.symmetric(vertical: 8, horizontal: 45),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF676470),
+                    color: AppColors.cardColor,
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Center(
                     child: Text(
-                      flight.language.capitalize(),
+                      'English',
                       style: GoogleFonts.inter(
                           color: const Color(0xFFF5F5F5),
                           fontWeight: FontWeight.w400),
@@ -248,15 +198,25 @@ class FlightDetailPage extends StatelessWidget {
             print("Flight object is null!");
           }
         },
-        label: Text(
-          "USE FLIGHT",
-          style: GoogleFonts.inter(
-            color: Colors.white,
-            fontWeight: FontWeight.w500,
-            fontSize: 16,
-          ),
+        label: const Icon(
+          Icons.send,
+          color: Colors.white,
+          size: 28,
         ),
       ),
     );
+  }
+}
+
+String _getDisplayLanguage(String lang) {
+  switch (lang.toLowerCase()) {
+    case 'amharic':
+      return 'Amharic';
+    case 'turkish':
+      return 'Turkish';
+    case 'english':
+      return 'English';
+    default:
+      return lang.capitalize();
   }
 }

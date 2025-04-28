@@ -3,6 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:mobile/features/chat/presentation/widget/edit_input.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class AnswerBubble extends StatefulWidget {
   final Map<String, dynamic> question;
@@ -24,6 +27,8 @@ class _AnswerBubbleState extends State<AnswerBubble> {
   late bool isAccepted;
   late bool isDeclined;
   late bool isEditing;
+  bool isPlaying = false;
+  AudioPlayer? _audioPlayer;
 
   @override
   void initState() {
@@ -88,6 +93,43 @@ class _AnswerBubbleState extends State<AnswerBubble> {
           backgroundColor: Colors.red,
         ),
       );
+    }
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer?.dispose();
+    super.dispose();
+  }
+
+  Future<void> _playAudio() async {
+    final audioBase64 = widget.question["answer"]["audio"];
+    if (audioBase64 == null || audioBase64.isEmpty) return;
+    try {
+      print('Base64 length: \\${audioBase64.length}');
+      setState(() { isPlaying = true; });
+      final audioBytes = base64Decode(audioBase64);
+      print('Decoded bytes length: \\${audioBytes.length}');
+      final tempDir = await getTemporaryDirectory();
+      final audioFile = File('${tempDir.path}/answer_audio_${widget.question.hashCode}.mp3');
+      await audioFile.writeAsBytes(audioBytes, flush: true);
+      print('Audio file path: \\${audioFile.path}');
+      print('Audio file size: \\${await audioFile.length()} bytes');
+      _audioPlayer ??= AudioPlayer();
+      try {
+        await _audioPlayer!.play(DeviceFileSource(audioFile.path));
+      } catch (e) {
+        print('AudioPlayer error: \\$e');
+      }
+      _audioPlayer!.onPlayerComplete.listen((event) {
+        setState(() { isPlaying = false; });
+      });
+    } catch (e) {
+      setState(() { isPlaying = false; });
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to play audio.'), backgroundColor: Colors.red),
+      );
+      print('Exception in _playAudio: \\$e');
     }
   }
 
@@ -158,10 +200,16 @@ class _AnswerBubbleState extends State<AnswerBubble> {
                           ),
                         ),
                       ),
-                      IconButton(
-                        icon: const Icon(Icons.volume_up, color: Colors.blue),
-                        onPressed: () {},
-                      ),
+                      isPlaying
+                          ? const SizedBox(
+                              width: 24,
+                              height: 24,
+                              child: CircularProgressIndicator(strokeWidth: 2, color: Colors.blue),
+                            )
+                          : IconButton(
+                              icon: const Icon(Icons.volume_up, color: Colors.blue),
+                              onPressed: _playAudio,
+                            ),
                     ],
                   ),
                 ),

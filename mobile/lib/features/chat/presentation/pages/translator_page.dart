@@ -83,7 +83,7 @@ class _TranslatorPageState extends State<TranslatorPage> {
         return Card(
           elevation: 0.0,
           clipBehavior: Clip.antiAlias,
-          color: const Color(0xFF26252A),
+          color: AppColors.backgroundColor,
           child: Padding(
             padding: const EdgeInsets.only(
               left: 4.0,
@@ -97,6 +97,7 @@ class _TranslatorPageState extends State<TranslatorPage> {
                   question: question,
                   isListening: question["isListening"] ?? false,
                 ),
+                const SizedBox(height: 12),
                 AnswerBubble(
                   question: question,
                   isListening: question["isListening"] ?? false,
@@ -112,7 +113,7 @@ class _TranslatorPageState extends State<TranslatorPage> {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFF26252A),
+      backgroundColor: AppColors.backgroundColor,
       appBar: AppBar(
         leading: IconButton(
           onPressed: () {
@@ -145,7 +146,7 @@ class _TranslatorPageState extends State<TranslatorPage> {
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 45),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF676470),
+                    color: AppColors.cardColor,
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Center(
@@ -162,7 +163,7 @@ class _TranslatorPageState extends State<TranslatorPage> {
                 Container(
                   padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 45),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF676470),
+                    color: AppColors.cardColor,
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Center(
@@ -179,11 +180,26 @@ class _TranslatorPageState extends State<TranslatorPage> {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: ListView(
-                controller: _scrollController,
-                shrinkWrap: true,
-                children: buildQuestionCards(),
-              ),
+              child: questionData.isEmpty
+                  ? Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.chat_bubble_outline, color: Colors.white54, size: 48),
+                          SizedBox(height: 16),
+                          Text(
+                            "No chat yet.\nStart by recording your first question \nand you will get your answer in your language.",
+                            textAlign: TextAlign.center,
+                            style: TextStyle(color: Colors.white70, fontSize: 16),
+                          ),
+                        ],
+                      ),
+                    )
+                  : ListView(
+                      controller: _scrollController,
+                      shrinkWrap: true,
+                      children: buildQuestionCards(),
+                    ),
             ),
           ],
         ),

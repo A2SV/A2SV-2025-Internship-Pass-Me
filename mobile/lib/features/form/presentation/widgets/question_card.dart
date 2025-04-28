@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobile/features/form/domain/entites/question.dart';
+import 'package:mobile/core/theme/app_colors.dart';
 
 class QuestionCard extends StatefulWidget {
   final QuestionEntity question;
@@ -58,65 +59,73 @@ class _QuestionCardState extends State<QuestionCard> {
         widget.onTap();
         _focusNode.requestFocus();
       },
-      child: Card(
-        color: widget.isSelected
-            ? Colors.blue.withOpacity(0.1)
-            : Colors.transparent,
-        shape: RoundedRectangleBorder(
-          side: widget.isSelected
-              ? const BorderSide(color: Colors.blueAccent)
-              : BorderSide.none,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 0),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text.rich(
-                TextSpan(
-                  children: [
+      child: SizedBox(
+        width: double.infinity,
+        child: Card(
+          color: AppColors.backgroundColor,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8),
+          ),
+          margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 0),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 1.0),
+                  child: Text.rich(
                     TextSpan(
-                      text: '${widget.question.id}. ',
-                      style: const TextStyle(
-                        color: Color(0xff3972FF),
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+                      children: [
+                        TextSpan(
+                          text: '${widget.question.id}. ',
+                          style: const TextStyle(
+                            color: AppColors.textColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        ),
+                        TextSpan(
+                          text: widget.question.questionText,
+                          style: const TextStyle(
+                            color: AppColors.textColor,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
                     ),
-                    TextSpan(
-                      text: widget.question.questionText,
-                      style: const TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 8),
-              TextField(
-                controller: widget.controller,
-                focusNode: _focusNode,
-                onChanged: widget.onChanged,
-                style: const TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                  hintText: widget.question.placeholder,
-                  hintStyle: const TextStyle(color: Colors.white54),
-                  fillColor: Colors.black12,
-                  filled: true,
-                  border: const OutlineInputBorder(),
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 16,
                   ),
                 ),
-                maxLines: null, // Allows for multiline input
-                textInputAction: TextInputAction.next,
-              ),
-            ],
+                const SizedBox(height: 8),
+                Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.borderColor),
+                    borderRadius: BorderRadius.circular(8),
+                    color: AppColors.cardColor,
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  child: TextField(
+                    controller: widget.controller,
+                    focusNode: _focusNode,
+                    onChanged: widget.onChanged,
+                    style: const TextStyle(color: AppColors.textColor, fontSize: 14),
+                    decoration: InputDecoration(
+                      hintText: widget.question.placeholder,
+                      hintStyle: TextStyle(color: AppColors.hintTextColor, fontSize: 14),
+                      border: InputBorder.none,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 0,
+                        vertical: 16,
+                      ),
+                    ),
+                    maxLines: null,
+                    textInputAction: TextInputAction.next,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
       ),

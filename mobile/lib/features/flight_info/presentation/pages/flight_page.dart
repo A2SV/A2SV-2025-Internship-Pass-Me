@@ -37,7 +37,7 @@ class _FlightPageState extends State<FlightPage> {
         },
         child: Scaffold(
           appBar: AppBar(
-            title: Image.asset('assets/images/logo.png', height: 40),
+            title: Image.asset('assets/images/logo.png', height: 35),
             backgroundColor: AppColors.backgroundColor,
             centerTitle: true,
           ),
@@ -66,15 +66,18 @@ class _FlightPageState extends State<FlightPage> {
           ),
           bottomNavigationBar: BottomNavigationBar(
             backgroundColor: AppColors.backgroundColor,
+            selectedItemColor: Colors.blue,
+            unselectedItemColor: Colors.white70,
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
                 label: 'Home',
-                activeIcon: Icon(Icons.home, color: AppColors.primaryColor),
+                activeIcon: Icon(Icons.home, color: Colors.blue),
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.person),
                 label: "Profile",
+                activeIcon: Icon(Icons.person, color: Colors.blue),
               ),
             ],
             onTap: (index) {
@@ -139,40 +142,44 @@ class _FlightPageState extends State<FlightPage> {
         }
 
         return Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
           child: Column(
             children: [
-              Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: "Find",
-                        filled: true,
-                        fillColor: Colors.grey[900],
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                        prefixIcon:
-                            const Icon(Icons.search, color: Colors.white),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintText: "Find",
+                          filled: true,
+                          fillColor: Colors.grey[900],
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12)),
+                          prefixIcon:
+                              const Icon(Icons.search, color: Colors.white),
+                        ),
+                        onChanged: (value) {
+                          setState(() {
+                            searchQuery = value;
+                          });
+                        },
                       ),
-                      onChanged: (value) {
-                        setState(() {
-                          searchQuery = value;
-                        });
-                      },
                     ),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.filter_alt, color: Colors.white),
-                    onPressed: () {
-                      showModalBottomSheet(
-                        backgroundColor: Colors.grey[900],
-                        context: context,
-                        builder: (_) => _buildFilterSheet(),
-                      );
-                    },
-                  )
-                ],
+                    const SizedBox(width: 8),
+                    IconButton(
+                      icon: const Icon(Icons.filter_alt, color: Colors.white),
+                      onPressed: () {
+                        showModalBottomSheet(
+                          backgroundColor: Colors.grey[900],
+                          context: context,
+                          builder: (_) => _buildFilterSheet(),
+                        );
+                      },
+                    )
+                  ],
+                ),
               ),
               const SizedBox(height: 20),
               Expanded(

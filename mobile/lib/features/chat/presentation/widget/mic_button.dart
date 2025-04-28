@@ -23,7 +23,7 @@ class _MicButtonState extends State<MicButton> {
 
   Future<void> uploadAudio(String filePath) async {
     try {
-      final uri = Uri.parse('https://7cab-196-189-152-26.ngrok-free.app/chat-ai');
+      final uri = Uri.parse('https://25db-196-189-152-144.ngrok-free.app/chat-ai');
       final request = http.MultipartRequest('POST', uri)
         ..fields['flight_id'] = widget.flightId ?? ''
         ..files.add(await http.MultipartFile.fromPath('audio', filePath));
