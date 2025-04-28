@@ -9,10 +9,10 @@ import { Translations } from "../../../../flight";
 
 
 interface FormComponentProps {
-  questions: any;
-  questionsAmharic: any;
-  handleedit: (data: any) => void;
-  handlethepop: (data: any) => void;
+  questions: Record<number, string>;
+  questionsAmharic: Record<number, string>;
+  handleedit: () => void;
+  handlethepop: () => void;
   popup: boolean;
   lanaguage: string;
   setPopup: (value: boolean) => void;
@@ -27,7 +27,7 @@ const FormComponent: React.FC<FormComponentProps> = ({
   handleedit,
   handlethepop,
 }) => {
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
   interface FormDefaultValues {
     flightName: string;
     flightOrigin: string;
@@ -58,8 +58,8 @@ const FormComponent: React.FC<FormComponentProps> = ({
     }
   });
 
-  const [createFlight, { isLoading: isCreating }] = useCreateFlightMutation();
-  const onSubmitForm = async (data: any) => {
+  const [ createFlight ] = useCreateFlightMutation();
+  const onSubmitForm = async (data: FormDefaultValues) => {
     const {
       flightName,
       flightOrigin,
@@ -78,8 +78,8 @@ const FormComponent: React.FC<FormComponentProps> = ({
         title: flightName,
         from_country: flightOrigin,
         to_country: flightDestination,
-        date: flightDate,
-        // @ts-ignore
+        date: flightDate ?? "",
+        // @ts-expect-error
         user_id: session?.user?.id ?? '',
         language: lanaguage,
         qa,

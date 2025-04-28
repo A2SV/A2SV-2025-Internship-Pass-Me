@@ -27,7 +27,7 @@ const SignupForm: React.FC = () => {
     setAuthError(null);
 
     try {
-      const res = await registerUser({
+      await registerUser({
         username:     data.fullName,
         email:    data.email,
         password: data.password,

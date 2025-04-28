@@ -48,13 +48,30 @@ export default function ChangePasswordModal({
       setTimeout(() => {
         onClose();
       }, 2000);
-    } catch (err: any) {
-      setError(err.data?.message || "Failed to update password");
+    } catch (error: unknown) {
+      // Default fallback
+      let message = "Failed to update password";
+
+      // RTK Query error payload?
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "data" in error &&
+        typeof (error as any).data?.message === "string"
+      ) {
+        message = (error as any).data.message;
+      }
+      // Plain JS Error?
+      else if (error instanceof Error) {
+        message = error.message;
+      }
+      setError(message);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
+    <div  data-testid="change-password-modal" 
+ className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm">
       <div className="inline-flex flex-col items-start gap-[10px] p-[40px] rounded-[12px] bg-[#202020] text-white w-full max-w-md relative">
         <button
           onClick={onClose}

@@ -26,9 +26,9 @@ export const flightsApi = createApi({
     baseUrl: process.env.NEXT_PUBLIC_BACKEND_URL,
     prepareHeaders: async (headers) => {
       const session = await getSession();
-      // @ts-ignore
+      // @ts-expect-error
       if (session?.accessToken) {
-        // @ts-ignore
+        // @ts-expect-error
         headers.set('Authorization', `Bearer ${session.accessToken}`);
       }
       headers.set('Content-Type', 'application/json');

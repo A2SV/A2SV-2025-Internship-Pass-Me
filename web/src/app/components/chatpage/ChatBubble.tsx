@@ -3,7 +3,7 @@ import { useState, useEffect } from "react"
 import type React from "react"
 
 import { useSendManualAnswerMutation } from "@/app/services/manualChatApi"
-import { Send, Volume2, Check, X, Edit2 } from "lucide-react"
+import { Send, Volume2, Check, X } from "lucide-react"
 
 export interface ChatItem {
   id: number
@@ -37,6 +37,7 @@ const ChatBubble: React.FC<ChatBubbleProps> = ({ chatItem, isLatest = false }) =
 
   const [sendManualAnswer, { isLoading: isTranslating }] = useSendManualAnswerMutation()
 
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   useEffect(() => {
     if (chatItem.audio && !userAnswer) {
       convertBase64ToBlob(chatItem.audio)
