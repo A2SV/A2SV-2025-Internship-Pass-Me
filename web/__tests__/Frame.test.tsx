@@ -89,8 +89,5 @@ describe("Frame Component", () => {
     );
   });
 
-  //   it("matches snapshot", () => {
-  //     const { asFragment } = render(<Frame />);
-  //     expect(asFragment()).toMatchSnapshot();
-  //   });
+  
 });
