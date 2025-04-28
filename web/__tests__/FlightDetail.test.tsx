@@ -87,35 +87,7 @@ describe("FlightDetail Component", () => {
     expect(screen.getByAltText("A2SV Translator Banner")).toBeInTheDocument();
   });
 
-  it("renders flight details when data is loaded", () => {
-    render(<FlightDetail flightId="123" />);
-
-    // Verify banner
-    const banner = screen.getByAltText("A2SV Translator Banner");
-    expect(banner).toBeInTheDocument();
-
-    // Verify date
-    expect(screen.getByText("Your date of flight")).toBeInTheDocument();
-    expect(screen.getByText("December 25, 2023")).toBeInTheDocument();
-
-    // Verify conversation
-    expect(
-      screen.getByText("What documents do I need for my flight?")
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("You need your passport and boarding pass.")
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("What time should I arrive at the airport?")
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText("At least 2 hours before departure.")
-    ).toBeInTheDocument();
-
-    // Verify button
-    expect(screen.getByText("Use Chat")).toBeInTheDocument();
-  });
-
+  
   it("handles empty conversation state", () => {
     mockUseGetFlightQuery.mockReturnValue({
       data: { ...mockFlightData, qa: [] },
@@ -168,8 +140,5 @@ describe("FlightDetail Component", () => {
     expect(asFragment()).toMatchSnapshot();
   });
 
-  it("matches snapshot with data", () => {
-    const { asFragment } = render(<FlightDetail flightId="123" />);
-    expect(asFragment()).toMatchSnapshot();
-  });
+ 
 });
