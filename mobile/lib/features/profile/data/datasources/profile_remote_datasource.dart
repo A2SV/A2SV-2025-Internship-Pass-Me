@@ -28,10 +28,14 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
         requiresAuth: true,
       );
 
+      print('Profile API Response: $response'); // Add this line
+
       return ProfileModel.fromJson(response);
     } on ApiException catch (e) {
+      print('API Exception: ${e.message}'); // Add this line
       throw Exception('Failed to load profile: ${e.message}');
     } catch (e) {
+      print('General Exception: $e'); // Add this line
       throw Exception('Failed to load profile: ${e.toString()}');
     }
   }
