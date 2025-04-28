@@ -29,6 +29,7 @@ class _AnswerBubbleState extends State<AnswerBubble> {
   late bool isEditing;
   bool isPlaying = false;
   AudioPlayer? _audioPlayer;
+  String? audioFilePath;
 
   @override
   void initState() {
@@ -102,22 +103,43 @@ class _AnswerBubbleState extends State<AnswerBubble> {
     super.dispose();
   }
 
-  Future<void> _playAudio() async {
-    final audioBase64 = widget.question["answer"]["audio"];
-    if (audioBase64 == null || audioBase64.isEmpty) return;
+  Future<void> _prepareAudio() async {
+    final audioBase64 = widget.question["answer"]["audio"] ?? widget.question["answer"]["audiob64"];
+    if (audioBase64 == null || audioBase64.isEmpty) {
+      setState(() { audioFilePath = null; });
+      return;
+    }
     try {
-      print('Base64 length: \\${audioBase64.length}');
-      setState(() { isPlaying = true; });
       final audioBytes = base64Decode(audioBase64);
-      print('Decoded bytes length: \\${audioBytes.length}');
       final tempDir = await getTemporaryDirectory();
-      final audioFile = File('${tempDir.path}/answer_audio_${widget.question.hashCode}.mp3');
+      final filePath = '${tempDir.path}/answer_audio_${widget.question.hashCode}.mp3';
+      final audioFile = File(filePath);
       await audioFile.writeAsBytes(audioBytes, flush: true);
-      print('Audio file path: \\${audioFile.path}');
-      print('Audio file size: \\${await audioFile.length()} bytes');
+      setState(() { audioFilePath = filePath; });
+    } catch (e) {
+      setState(() { audioFilePath = null; });
+      print('Failed to prepare audio: $e');
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant AnswerBubble oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    final oldAudio = oldWidget.question["answer"]["audio"] ?? oldWidget.question["answer"]["audiob64"];
+    final newAudio = widget.question["answer"]["audio"] ?? widget.question["answer"]["audiob64"];
+    if (oldAudio != newAudio) {
+      _prepareAudio();
+    }
+  }
+
+  Future<void> _playAudio() async {
+    if (audioFilePath == null) return;
+    try {
+      print('Audio file path: \\$audioFilePath');
+      print('Audio file size: \\${await File(audioFilePath!).length()} bytes');
       _audioPlayer ??= AudioPlayer();
       try {
-        await _audioPlayer!.play(DeviceFileSource(audioFile.path));
+        await _audioPlayer!.play(DeviceFileSource(audioFilePath!));
       } catch (e) {
         print('AudioPlayer error: \\$e');
       }
