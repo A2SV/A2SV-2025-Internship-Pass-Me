@@ -2,6 +2,8 @@ import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { store } from '@/app/libs/store';
 import { authApi, AuthResponse } from '@/app/services/authApi';
+import type { FetchBaseQueryError } from '@reduxjs/toolkit/query';
+import type { SerializedError } from '@reduxjs/toolkit';
 
 const { login } = authApi.endpoints;
 
@@ -25,7 +27,10 @@ export const authOptions: NextAuthOptions = {
           })
         );
 
-        const { data, error } = result as { data?: AuthResponse; error?: any };
+        const { data, error } = result as {
+          data?: AuthResponse;
+          error?: FetchBaseQueryError | SerializedError;
+        };
         if (error || !data) return null;
 
         const { user, token } = data;
@@ -50,12 +55,11 @@ export const authOptions: NextAuthOptions = {
     async session({ session, token }) {
       session.user = {
         ...session.user!,
-        // @ts-ignore
+        // @ts-expect-error
         id: token.sub as string,
-        // @ts-ignore
         username: token.username as string,
       };
-      // @ts-ignore
+      // @ts-expect-error
       session.accessToken = token.accessToken as string;
       return session;
     }

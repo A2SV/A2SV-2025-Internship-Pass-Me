@@ -14,7 +14,6 @@ interface AudioRecorderProps {
 
 const AudioRecorder: React.FC<AudioRecorderProps> = ({ flightId, onNewReply, setIsLoading }) => {
   const [recording, setRecording] = useState(false)
-  const [audioURL, setAudioURL] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const mediaRecorderRef = useRef<MediaRecorder | null>(null)
   const audioChunksRef = useRef<Blob[]>([])
@@ -44,11 +43,10 @@ const AudioRecorder: React.FC<AudioRecorderProps> = ({ flightId, onNewReply, set
         const file = new File([audioBlob], "recording.wav", {
           type: "audio/wav",
         })
-        setAudioURL(URL.createObjectURL(audioBlob))
         try {
           const response = await sendAudioChat({ flightId, file }).unwrap()
           onNewReply(response)
-        } catch (err) {
+        } catch {
           setError("We couldn't process your audio. Please try recording again.")
         }
       }

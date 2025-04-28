@@ -215,9 +215,10 @@ export default function ChatPage() {
                   />
                 </div>
                 <p className="text-white align-center text-center max-w-[617px] text-[15px] md:text-[18px]">
-                  When you're ready, tap Record to capture the question you'll ask, tap Record again to stop and
-                  retrieve the AI's answer, then confidently record your own response to that generated reply.
+                  When you&apos;re ready, tap Record to capture the question you&apos;ll ask, tap Record again to stop and
+                  retrieve the AI&apos;s answer, then confidently record your own response to that generated reply.
                 </p>
+
               </>
             )}
           </div>

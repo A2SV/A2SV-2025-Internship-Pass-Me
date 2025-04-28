@@ -48,8 +48,24 @@ export default function ChangePasswordModal({
       setTimeout(() => {
         onClose();
       }, 2000);
-    } catch (err: any) {
-      setError(err.data?.message || "Failed to update password");
+    } catch (error: unknown) {
+      // Default fallback
+      let message = "Failed to update password";
+
+      // RTK Query error payload?
+      if (
+        typeof error === "object" &&
+        error !== null &&
+        "data" in error &&
+        typeof (error as any).data?.message === "string"
+      ) {
+        message = (error as any).data.message;
+      }
+      // Plain JS Error?
+      else if (error instanceof Error) {
+        message = error.message;
+      }
+      setError(message);
     }
   };
 
