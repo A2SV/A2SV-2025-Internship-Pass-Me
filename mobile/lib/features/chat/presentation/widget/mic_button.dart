@@ -11,7 +11,8 @@ class MicButton extends StatefulWidget {
   final void Function(bool isRecording)? onRecordingChanged;
   final String? flightId;
 
-  const MicButton({super.key, this.onAIResponse, this.onRecordingChanged, this.flightId});
+  const MicButton(
+      {super.key, this.onAIResponse, this.onRecordingChanged, this.flightId});
 
   @override
   State<MicButton> createState() => _MicButtonState();
@@ -23,7 +24,8 @@ class _MicButtonState extends State<MicButton> {
 
   Future<void> uploadAudio(String filePath) async {
     try {
-      final uri = Uri.parse('https://7cab-196-189-152-26.ngrok-free.app/chat-ai');
+      final uri =
+          Uri.parse('https://7cab-196-189-152-26.ngrok-free.app/chat-ai');
       final request = http.MultipartRequest('POST', uri)
         ..fields['flight_id'] = widget.flightId ?? ''
         ..files.add(await http.MultipartFile.fromPath('audio', filePath));
@@ -76,7 +78,7 @@ class _MicButtonState extends State<MicButton> {
       onLongPressStart: (_) async {
         if (await audioRecorder.hasPermission()) {
           final Directory? externalDir =
-          Directory('/storage/emulated/0/Download');
+              Directory('/storage/emulated/0/Download');
 
           if (!await externalDir!.exists()) {
             await externalDir.create(recursive: true);

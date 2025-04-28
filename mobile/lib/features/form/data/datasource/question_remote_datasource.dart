@@ -28,28 +28,15 @@ class QuestionRemoteDataSourceImpl implements QuestionRemoteDataSource {
   @override
   Future<void> submitAnswers(Map<String, dynamic> data) async {
     try {
-      print('Submitting: ${jsonEncode(data)}');
-      final dateValue = data['date'];
-      final formattedDate = dateValue is DateTime
-          ? "${dateValue.toIso8601String()}Z"
-          : dateValue.toString().endsWith("Z")
-              ? dateValue.toString()
-              : "${dateValue}Z";
-// Debug what you're sending
-      final formattedData = {
-        ...data,
-        'date': formattedDate, // Add Z for UTC
-      };
+      print('Submitting: ${jsonEncode(data)}'); // Debug what you're sending
 
-      print('Submitting: ${jsonEncode(formattedData)}');
-
-      await _apiClient.post(
+      final response = await _apiClient.post(
         '/flights',
-        formattedData,
-        requiresAuth: true,
+        data,
+        requiresAuth: true, // Explicitly enable auth
       );
 
-      //print('Response: $response'); // Debug the response
+      print('Response: $response'); // Debug the response
     } catch (e) {
       print('Full error: $e'); // Get complete error details
       if (e is ApiException) {

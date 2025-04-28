@@ -26,6 +26,9 @@ import 'features/auth/domain/repositories/auth_repository.dart';
 import 'features/auth/data/datasources/auth_remote_datasource.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import 'package:mobile/features/profile/data/datasources/profile_remote_datasource.dart';
+import 'package:mobile/features/profile/presentation/bloc/profile_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -35,7 +38,15 @@ Future<void> init() async {
   // Then initialize feature-specific dependencies
   _initAuth();
   _initForm();
-  _initFlight();
+  _initProfile();
+}
+
+void _initProfile() {
+  sl.registerLazySingleton<ProfileRemoteDataSource>(
+    () =>
+        ProfileRemoteDataSourceImpl(sl<ApiClient>(), sl<LocalStorageService>()),
+  );
+  sl.registerFactory(() => ProfileBloc(sl<ProfileRemoteDataSource>()));
 }
 
 Future<void> _initCore() async {
@@ -55,6 +66,7 @@ Future<void> _initCore() async {
   sl.registerLazySingleton<ApiClient>(() => ApiClient(
         baseUrl: dotenv.env['API_URL']!,
         localStorage: sl(),
+        debugMode: true,
       ));
 }
 
@@ -74,7 +86,10 @@ void _initAuth() {
   sl.registerLazySingleton(() => SignUpUseCase(sl()));
 
   // Auth BLoCs/Cubits
-  sl.registerFactory(() => LoginCubit(sl()));
+  sl.registerFactory(() => LoginCubit(
+        loginUser: sl<LoginUser>(),
+        localStorageService: sl<LocalStorageService>(),
+      ));
   sl.registerFactory(() => SignUpBloc(sl()));
   sl.registerFactory(() => OnboardingBloc());
 }

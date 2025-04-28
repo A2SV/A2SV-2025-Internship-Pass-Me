@@ -19,7 +19,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
 
   final List<OnboardingScreenData> screens = [
     OnboardingScreenData(
-      title: 'A2SV TRANSLATOR',
+      title: 'A2SV PASSME',
       description:
           'Easily input your travel details — origin, destination, length of stay, and purpose — all in your preferred language',
       imagePath: 'assets/images/logo.png',

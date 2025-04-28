@@ -9,7 +9,7 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   AuthRemoteDataSourceImpl(this._apiClient, this._localStorage);
 
   @override
-  Future<String> login(String email, String password) async {
+  Future<Map<String, dynamic>> login(String email, String password) async {
     try {
       final response = await _apiClient.post(
         '/login',
@@ -23,18 +23,16 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       final token = response['token'] as String;
       final userData = response['user'] as Map<String, dynamic>;
 
-      // Save auth data using LocalStorageService
       await _localStorage.saveAuthToken(token);
       await _localStorage.saveUserId(userData['id'] as String);
       await _localStorage.saveUserEmail(userData['email'] as String);
 
-      // If you have refresh token
       if (response.containsKey('refresh_token')) {
         await _localStorage
             .saveRefreshToken(response['refresh_token'] as String);
       }
 
-      return token;
+      return response; // ✅ Return full response including token & user
     } on ApiException catch (e) {
       if (e.statusCode == 401) {
         throw Exception('Invalid email or password');
@@ -62,7 +60,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         requiresAuth: false,
       );
 
-      // Handle different successful response formats
       if (response.containsKey('token')) {
         final token = response['token'] as String;
         await _localStorage.saveAuthToken(token);
@@ -96,7 +93,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     try {
       await _apiClient.post('/auth/logout', {});
     } finally {
-      // Always clear local storage on logout
       await _localStorage.clearAllUserData();
     }
   }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:mobile/features/auth/presentation/blocs/login_cubit.dart';
 import 'package:mobile/features/profile/presentation/widgets/personal_details.dart';
 import 'package:mobile/features/profile/presentation/widgets/profile_option.dart';
 import 'package:shared_preferences/shared_preferences.dart'; // Import SharedPreferences
@@ -17,19 +19,9 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF26252A),
+      backgroundColor: const Color(0xFF26252A),
       appBar: AppBar(
-        backgroundColor: Color(0xFF26252A),
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back_ios_new, color: Colors.white),
-          onPressed: () {
-            if (Navigator.canPop(context)) {
-              Navigator.pop(context); 
-            } else {
-              Navigator.pushNamed(context, '/flights');
-            }
-          },
-        ),
+        backgroundColor: const Color(0xFF26252A),
         title: SizedBox(
           height: 36,
           child: Image.asset("assets/images/logo.png"),
@@ -37,34 +29,36 @@ class ProfilePage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: ListView(
           children: [
-            PersonalDetails(
-              imageUrl: 'assets/images/profile_picture(puppy).jpg',
-              name: "John Doe",
-              email: "john.doe@gmail.com",
+            BlocBuilder<LoginCubit, LoginState>(
+              builder: (context, state) {
+                final username = state.username ?? "johndoe";
+                final email = state.email ?? "john@example.com";
+
+                return PersonalDetails(
+                  imageUrl: 'assets/images/profile_picture(puppy).jpg',
+                  name: username,
+                  email: email,
+                );
+              },
             ),
             const SizedBox(height: 8),
-            Divider(
-              color: Colors.white,
-            ),
-            const SizedBox(height: 20),
-            ProfileOption(
-              title: "Change Password",
-              onTap: () {},
-              leadingIcon: Icon(Icons.lock_outline_rounded, size: 30),
-              trailingIcon: Icon(Icons.edit_outlined),
-            ),
+            const Divider(color: Colors.white),
             const SizedBox(height: 20),
             ProfileOption(
               title: "Language Preference",
               onTap: () {},
-              leadingIcon: Icon(Icons.language_outlined, size: 30),
+              leadingIcon: const Icon(
+                Icons.language_outlined,
+                size: 30,
+                color: Colors.white,
+              ),
               trailingIcon: Text(
                 "English",
                 style: GoogleFonts.poppins(
-                  color: Color(0xFFB7B7B7),
+                  color: const Color(0xFFB7B7B7),
                   fontSize: 16,
                   fontWeight: FontWeight.w400,
                 ),
@@ -74,15 +68,22 @@ class ProfilePage extends StatelessWidget {
             ProfileOption(
               title: "Clear History",
               onTap: () {},
-              leadingIcon: Icon(Icons.history_rounded, size: 30),
+              leadingIcon: const Icon(
+                Icons.history_rounded,
+                size: 30,
+                color: Colors.white,
+              ),
               trailingIcon: ElevatedButton(
                 onPressed: () {},
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFFFF2A3C),
+                  backgroundColor: const Color(0xFFFF2A3C),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(4.0),
                   ),
-                  padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12.0,
+                    vertical: 8.0,
+                  ),
                 ),
                 child: Text(
                   "Clear All",
@@ -98,18 +99,63 @@ class ProfilePage extends StatelessWidget {
             ProfileOption(
               title: "About",
               onTap: () {},
-              leadingIcon: Icon(Icons.info_outline_rounded, size: 30),
+              leadingIcon: const Icon(
+                Icons.info_outline_rounded,
+                size: 30,
+                color: Colors.white,
+              ),
             ),
             const SizedBox(height: 20),
             ProfileOption(
               title: "Log Out",
               titleStyle: GoogleFonts.poppins(
-                color: Color(0xFFF63C3C),
+                color: const Color(0xFFF63C3C),
                 fontSize: 16,
                 fontWeight: FontWeight.w400,
               ),
-              onTap: () => _logout(context), // Call the logout function
-              leadingIcon: Icon(
+              onTap: () async {
+                // Show a confirmation dialog
+                final shouldLogout = await showDialog<bool>(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    backgroundColor: const Color(0xFF2E2E2E),
+                    title: Text(
+                      'Confirm Logout',
+                      style: GoogleFonts.poppins(color: Colors.white),
+                    ),
+                    content: Text(
+                      'Are you sure you want to log out?',
+                      style: GoogleFonts.poppins(color: Colors.white70),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(false),
+                        child: Text(
+                          'Cancel',
+                          style: GoogleFonts.poppins(color: Colors.grey),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(true),
+                        child: Text(
+                          'Logout',
+                          style: GoogleFonts.poppins(color: Colors.redAccent),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+
+                if (shouldLogout == true) {
+                  // Clear session
+                  context.read<LoginCubit>().logout();
+
+                  // Navigate to login page and clear previous stack
+                  Navigator.of(context)
+                      .pushNamedAndRemoveUntil('/login', (route) => false);
+                }
+              },
+              leadingIcon: const Icon(
                 Icons.logout_outlined,
                 size: 30,
                 color: Color(0xFFF63C3C),

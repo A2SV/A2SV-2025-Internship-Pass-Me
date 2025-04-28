@@ -65,6 +65,26 @@ class LocalStorageService {
     await _sharedPreferences.remove(_userEmailKey);
   }
 
+  Future<void> saveUserData(String token, String username, String email) async {
+    await saveAuthToken(token);
+    await saveUserEmail(email);
+    await _sharedPreferences.setString('username', username); // Save username
+  }
+
+  // Retrieve username
+  String? getUsername() {
+    return _sharedPreferences.getString('username');
+  }
+
+  Future<void> saveUsername(String username) async {
+    await _sharedPreferences.setString('username', username);
+  }
+
+  // Clear username
+  Future<void> clearUsername() async {
+    await _sharedPreferences.remove('username');
+  }
+
   // Remember Me Methods
   Future<void> saveRememberMe(bool rememberMe) async {
     await _sharedPreferences.setBool(_rememberMeKey, rememberMe);

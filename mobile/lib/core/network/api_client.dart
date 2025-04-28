@@ -65,7 +65,8 @@ class ApiClient {
     return {};
   }
 
-  Future<Map<String, dynamic>> post(
+  // CHANGED: Return type is now Future<dynamic>
+  Future<dynamic> post(
     String endpoint,
     Map<String, dynamic> body, {
     bool requiresAuth = true,
@@ -97,6 +98,7 @@ class ApiClient {
     }
   }
 
+  // CHANGED: Return type is now Future<dynamic>
   Future<dynamic> get(
     String endpoint, {
     Map<String, String>? queryParams,
@@ -132,7 +134,8 @@ class ApiClient {
     }
   }
 
-  Future<Map<String, dynamic>> put(
+  // CHANGED: Return type is now Future<dynamic>
+  Future<dynamic> put(
     String endpoint,
     Map<String, dynamic> body, {
     bool requiresAuth = true,
@@ -164,7 +167,8 @@ class ApiClient {
     }
   }
 
-  Future<Map<String, dynamic>> delete(
+  // CHANGED: Return type is now Future<dynamic>
+  Future<dynamic> delete(
     String endpoint, {
     bool requiresAuth = true,
   }) async {
@@ -193,31 +197,43 @@ class ApiClient {
     }
   }
 
+  // CHANGED: Return type is now dynamic, supports both Map and List
   dynamic _handleResponse(http.Response response) {
     try {
-      final responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      final decoded = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (response.statusCode >= 200 && response.statusCode < 300) {
-        // ✅ Allow either Map or List
-        return responseBody;
+        if (decoded is Map<String, dynamic> || decoded is List) {
+          return decoded;
+        } else if (decoded is String) {
+          return {'data': decoded}; // Wrap plain string response into a map
+        } else {
+          throw ApiException(
+            statusCode: response.statusCode,
+            message: 'Unexpected response format',
+            response: decoded,
+          );
+        }
       }
 
-      String errorMessage = 'An error occurred';
-
-      if (responseBody is Map<String, dynamic>) {
-        errorMessage =
-            responseBody['message'] ?? responseBody['error'] ?? errorMessage;
+      if (decoded is Map<String, dynamic>) {
+        throw ApiException(
+          statusCode: response.statusCode,
+          message:
+              decoded['message'] ?? decoded['error'] ?? 'An error occurred',
+          response: decoded,
+        );
+      } else {
+        throw ApiException(
+          statusCode: response.statusCode,
+          message: 'Unexpected error format',
+          response: decoded,
+        );
       }
-
+    } on FormatException catch (e) {
       throw ApiException(
         statusCode: response.statusCode,
-        message: errorMessage,
-        response: responseBody,
-      );
-    } on FormatException {
-      throw ApiException(
-        statusCode: response.statusCode,
-        message: 'Invalid response format',
+        message: 'Invalid response format: ${e.message}',
         response: response.body,
       );
     }
@@ -245,4 +261,3 @@ class ApiException implements Exception {
     return 'ApiException: $message (Status $statusCode)$responseStr';
   }
 }
-//

@@ -15,22 +15,23 @@ class FlightRemoteDatasourceImpl implements FlightRemoteDatasource {
     final response = await _apiClient.get("/flights", requiresAuth: true);
     print(response);
 
-    // Check if response is null or empty
-    if (response == null || response.isEmpty) {
-      print('No flights found.');
+    // Check if response is null or not a list
+    if (response == null || response is! List) {
+      print('No flights found or response is not a list.');
       return [];
     }
 
     final flights = response
         .map((json) {
           try {
-            return FlightModel.fromJson(json);
+            return FlightModel.fromJson(json as Map<String, dynamic>);
           } catch (e) {
             print('Error parsing flight: $e');
             return null;
           }
         })
-        .whereType<FlightModel>()
+        .where((flight) => flight != null)
+        .cast<FlightModel>()
         .toList();
 
     print('Successfully parsed ${flights.length} flights');
